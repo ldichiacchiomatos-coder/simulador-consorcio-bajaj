@@ -243,7 +243,7 @@ img{max-width:100%;display:block}
 
   <section class="card" id="etapa-recomendacao" hidden>
     <div class="card__titulo"><span class="badge">5</span>Recomendação de lance e caminho de contemplação</div>
-    <p class="aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da variação escolhida e recomenda o caminho de contemplação ideal. No crédito +LE, o percentual considera o lance do cliente +30% de lance embutido coberto pelo próprio crédito.</p>
+    <p class="aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da variação escolhida e recomenda o caminho de contemplação ideal. No crédito +LE e no crédito 120% (BAJ09), o percentual efetivo já vem somado ao lance embutido do próprio crédito (+30% e +16,5%, respectivamente), e o valor em reais disponível como lance embutido é exibido.</p>
     <div class="lance-form">
       <div class="lance-field">
         <label for="valorLance">Valor do lance disponível do cliente (R$)</label>
@@ -339,6 +339,11 @@ img{max-width:100%;display:block}
    Por isso a NS400Z também oferece o seletor base <-> 120%.
    >>> EXTENSÃO DAS IMAGENS POR MODELO <<<
    pulsar-n150 e dominar-ns400z usam .webp — os demais usam .png.
+   >>> LANCE EMBUTIDO (decisão da versão travada) <<<
+   No caminho de contemplação, o percentual efetivo do lance já vem
+   somado ao lance embutido do crédito contratado (+LE soma 30 pontos;
+   BAJ09/120% soma 16,5 pontos) e o valor em R$ disponível como lance
+   embutido é exibido (excedente: crédito - valor da moto).
    ================================================================ */
 var EXTENSOES = {
   "pulsar-n150":    "webp",
@@ -369,6 +374,17 @@ var MODELOS = {
     "Cilindrada":"373,27 cc","Potência":"40 CV @ 8.800 RPM","Torque":"3,569 kgf.m @ 6.500 RPM","Tanque":"13 litros","Peso":"192 kg","Freios":"Disco ABS" } },
   "dominar-ns400z": { nome: "Dominar NS400Z", pasta: "dominar-ns400z", cores: ["preta","vermelha","branca"], ficha: {
     "Cilindrada":"373,27 cc","Potência":"40 CV @ 8.500 RPM","Torque":"3,57 kgf.m @ 7.000 RPM","Tanque":"12 litros","Peso":"174 kg","Freios":"Disco ABS + controle de tração" } }
+};
+
+/* Valor de tabela da moto (preço oficial da linha) — usado para calcular
+   o lance embutido disponível = crédito da variação - valor da moto. */
+var VALORES_MOTO = {
+  "pulsar-n150": 16500,
+  "dominar-ns160": 19500,
+  "dominar-ns200": 22500,
+  "dominar-250": 23400,
+  "dominar-400": 26990,
+  "dominar-ns400z": 26990
 };
 
 /* ============ TABELAS (fallback local identico a planilha) ============
@@ -456,6 +472,16 @@ function variacaoRotulo(v){
   if (v === "+LE") return { nome: "Crédito +LE", sub: "lance embutido +30%" };
   if (v === "120%") return { nome: "Crédito 120%", sub: "BAJ09 · recurso embutido máx. 16,5%" };
   return { nome: "Crédito base", sub: "" };
+}
+
+/* Valor da moto: prefere o crédito da variação base na tabela (que acompanha
+   a planilha); se o modelo não tiver variação base (Pulsar N150 só existe +LE),
+   usa o preço oficial registrado em VALORES_MOTO. */
+function valorMotoDoModelo(modeloId){
+  for (var i = 0; i < tabelas.length; i++) {
+    if (tabelas[i][0] === modeloId && tabelas[i][3] === "") return tabelas[i][5];
+  }
+  return VALORES_MOTO[modeloId] || 0;
 }
 
 /* Ofertas de um modelo+grupo+plano, ordenadas: base, +LE, 120% */
@@ -807,13 +833,14 @@ function renderPlanos(){
 }
 
 /* ================================================================
-   MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final)
+   MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final travada)
    ================================================================
-   REGRA +LE: percentual de lance SEMPRE considera o lance do cliente
-   +30% de lance embutido coberto pelo próprio crédito.
-   REGRA BAJ09: o bem BAJ09 (crédito 120%) serve tanto para o crédito
-   base BAJ03 (Dominar 400) quanto para o BAJ18 (NS400Z). Vale o teto
-   de recurso embutido de 16,5% do crédito.
+   REGRA +LE: percentual efetivo SEMPRE considera o lance do cliente
+   +30 pontos de lance embutido coberto pelo próprio crédito.
+   REGRA BAJ09 (linha 400): percentual efetivo considera o lance do
+   cliente +16,5 pontos de recurso embutido (teto documentado).
+   VALOR MONETÁRIO: o lance embutido disponível em R$ é o excedente
+   (crédito da variação - valor da moto), exibido no caminho.
    ================================================================
    Caminhos (versão final do PDF):
    BASE:   0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 |
@@ -886,9 +913,17 @@ function calcularRecomendacao(){
   var credito = oferta[5];
   var pctCliente = (lanceCliente / credito) * 100;
 
+  /* Bônus de lance embutido somado ao percentual do cliente */
   var leBonus = 0;
   if (tipo === "le") { leBonus = 30; }
+  else if (tipo === "linha400") { leBonus = 16.5; }
   var pctEfetivo = pctCliente + leBonus;
+
+  /* Lance embutido disponível em R$ = excedente do crédito sobre a moto */
+  var lanceEmbutidoDisponivel = 0;
+  if (tipo === "le" || tipo === "linha400") {
+    lanceEmbutidoDisponivel = credito - valorMotoDoModelo(modeloSelecionado);
+  }
 
   var rec = obterRecomendacao(tipo, pctEfetivo);
   var faixaTxt = "";
@@ -903,6 +938,7 @@ function calcularRecomendacao(){
     pctCliente: pctCliente,
     leBonus: leBonus,
     pctEfetivo: pctEfetivo,
+    lanceEmbutidoDisponivel: lanceEmbutidoDisponivel,
     faixa: faixaTxt,
     caminho: rec.caminho,
     copy: rec.copy,
@@ -932,15 +968,20 @@ function renderRecomendacao(){
   if (r.tipo === "le") {
     linhasLance =
       '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + ' (' + r.pctCliente.toFixed(1).replace(".", ",") + '%)</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Lance embutido +LE</span><span class="rec-valor rec-valor--destaque">+30%</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Percentual efetivo para recomendação</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
+      '<div class="rec-linha"><span class="rec-label">Lance embutido +LE (30%)</span><span class="rec-valor rec-valor--destaque">+' + formatarDinheiro(r.lanceEmbutidoDisponivel) + '</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Percentual efetivo do lance (já com +30%)</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
+  } else if (r.tipo === "linha400") {
+    linhasLance =
+      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + ' (' + r.pctCliente.toFixed(1).replace(".", ",") + '%)</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Lance embutido 120% (16,5%)</span><span class="rec-valor rec-valor--destaque">+' + formatarDinheiro(r.lanceEmbutidoDisponivel) + '</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Percentual efetivo do lance (já com +16,5%)</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
   } else {
     linhasLance =
       '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + '</span></div>' +
       '<div class="rec-linha"><span class="rec-label">Percentual sobre o crédito</span><span class="rec-valor">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
   }
 
-  var notaLinha400 = r.tipo === "linha400" ? '<div class="rec-nota">Crédito 120% (BAJ09) — bem compartilhado entre os créditos base BAJ03 (Dominar 400) e BAJ18 (NS400Z): o teto de recurso embutido é de 16,5% do valor do crédito.</div>' : "";
+  var notaLinha400 = r.tipo === "linha400" ? '<div class="rec-nota">Crédito 120% (BAJ09) — bem compartilhado entre os créditos base BAJ03 (Dominar 400) e BAJ18 (NS400Z): o teto de recurso embutido é de 16,5% do valor do crédito. O valor de +' + formatarDinheiro(r.lanceEmbutidoDisponivel) + ' é o excedente do crédito sobre o valor da moto, que o cliente pode usar como lance embutido.</div>' : "";
 
   var html = '<div class="rec-card">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
@@ -952,7 +993,7 @@ function renderRecomendacao(){
     linhasLance +
     '<div class="caminho">' + passos + '</div>' +
     '<p class="rec-copy">' + r.copy + '</p>' +
-    (r.tipo === "le" ? '<div class="rec-le"><strong>Como funciona o +LE:</strong> o crédito com lance embutido soma 30% ao lance que o cliente tem em mãos. O percentual efetivo é o que define a faixa e o caminho de contemplação acima.</div>' : '') +
+    (r.tipo === "le" ? '<div class="rec-le"><strong>Como funciona o +LE:</strong> o crédito com lance embutido soma 30% ao lance que o cliente tem em mãos. O valor de +' + formatarDinheiro(r.lanceEmbutidoDisponivel) + ' é o excedente do crédito sobre o valor da moto, que pode ser usado como lance. O percentual efetivo acima é o que define a faixa e o caminho de contemplação.</div>' : '') +
     (r.nota ? '<div class="rec-nota">' + r.nota + '</div>' : '') +
     notaLinha400 +
   '</div>' +
@@ -1009,8 +1050,11 @@ function renderResumo(){
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado", formatarDinheiro(lanceCliente)]);
     if (recomendacaoAtual.tipo === "le") {
-      linhas.push(["Lance embutido +LE", "+30%"]);
-      linhas.push(["Percentual efetivo", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+      linhas.push(["Lance embutido +LE (30%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
+      linhas.push(["Percentual efetivo (já com +30%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+    } else if (recomendacaoAtual.tipo === "linha400") {
+      linhas.push(["Lance embutido 120% (16,5%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
+      linhas.push(["Percentual efetivo (já com +16,5%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
     }
     linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
@@ -1122,8 +1166,11 @@ function montarCarta(){
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado pelo cliente", formatarDinheiro(lanceCliente)]);
     if (recomendacaoAtual.tipo === "le") {
-      linhas.push(["Lance embutido +LE", "+30%"]);
-      linhas.push(["Percentual efetivo", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+      linhas.push(["Lance embutido +LE (30%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
+      linhas.push(["Percentual efetivo (já com +30%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+    } else if (recomendacaoAtual.tipo === "linha400") {
+      linhas.push(["Lance embutido 120% (16,5%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
+      linhas.push(["Percentual efetivo (já com +16,5%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
     }
     linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
