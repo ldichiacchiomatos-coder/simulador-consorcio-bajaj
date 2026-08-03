@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador Consórcio Nacional Bajaj</title>
+  <meta name="description" content="Escolha sua moto Bajaj, personalize a cor e gere a proposta de consórcio em PDF.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="header__logo">
+      <div class="header__marca">
+        <span class="header__adm">administrado por</span>
+        <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="header__ancora">
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero__titulo">Escolha sua moto Bajaj e simule seu consórcio</h1>
+      <p class="hero__sub">A experiência de comprar uma moto, com a flexibilidade do consórcio.</p>
+    </div>
+  </section>
+
+  <main class="container simulador">
+
+    <section class="card" id="etapa-modelo">
+      <div class="card__titulo"><span class="badge">1</span>Selecione o modelo</div>
+      <div class="grid-modelos" id="listaModelos"></div>
+      <div class="nav">
+        <button class="btn btn--primario" id="btnAvancarModelo" disabled>Continuar</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-cor" hidden>
+      <div class="card__titulo"><span class="badge">2</span>Selecione a cor <span class="subtitulo" id="subtituloModelo"></span></div>
+      <div class="swatches" id="listaCores"></div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="1">Voltar</button>
+        <button class="btn btn--primario" id="btnAvancarCor" disabled>Continuar</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-visualizacao" hidden>
+      <div class="card__titulo"><span class="badge">3</span>Sua moto</div>
+      <div class="visualizacao">
+        <div class="moto"><img id="imgMoto" alt="Moto selecionada"></div>
+        <div class="ficha" id="fichaTecnica"></div>
+      </div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="2">Voltar</button>
+        <button class="btn btn--primario" id="btnAvancarVisualizacao">Continuar</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-grupo" hidden>
+      <div class="card__titulo"><span class="badge">4</span>Grupo e plano do consórcio</div>
+      <div class="grid-planos" id="listaPlanos"></div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="3">Voltar</button>
+        <button class="btn btn--primario" id="btnAvancarGrupo" disabled>Continuar</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-media" hidden>
+      <div class="card__titulo"><span class="badge">5</span>Estudo de assembleia</div>
+      <div class="media" id="cardMedia"></div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="4">Voltar</button>
+        <button class="btn btn--primario" id="btnAvancarMedia">Continuar</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-dados" hidden>
+      <div class="card__titulo"><span class="badge">6</span>Dados da proposta</div>
+      <div class="form">
+        <label for="nomeCliente">Nome do cliente</label>
+        <input type="text" id="nomeCliente" placeholder="Nome completo do cliente">
+        <label for="nomeVendedor">Nome do vendedor</label>
+        <input type="text" id="nomeVendedor" placeholder="Seu nome">
+        <label for="whatsVendedor">WhatsApp do vendedor</label>
+        <input type="tel" id="whatsVendedor" placeholder="(00) 00000-0000">
+      </div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="5">Voltar</button>
+        <button class="btn btn--primario" id="btnAvancarDados">Ver resumo</button>
+      </div>
+    </section>
+
+    <section class="card" id="etapa-resumo" hidden>
+      <div class="card__titulo"><span class="badge">7</span>Resumo da proposta</div>
+      <div class="resumo" id="cardResumo"></div>
+      <div class="nav">
+        <button class="btn btn--ghost" data-voltar="6">Voltar</button>
+        <button class="btn btn--cta" id="btnGerarPDF">Gerar PDF da proposta</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Carta de vendas: usada apenas para gerar o PDF -->
+  <div id="carta" class="carta" hidden>
+    <div class="carta__header">
+      <img src="assets/logos/logo-bajaj-vertical.png" alt="Consórcio Nacional Bajaj" class="carta__logo">
+      <div class="carta__marca">
+        <span class="carta__adm">administrado por</span>
+        <img src="assets/logos/logo-ancora-escuro.png" alt="Âncora Consórcios" class="carta__ancora">
+      </div>
+    </div>
+    <h2 class="carta__titulo">Proposta de Consórcio</h2>
+    <div class="carta__corpo">
+      <div class="carta__moto"><img id="cartaImgMoto" alt="Moto escolhida"></div>
+      <div class="carta__info">
+        <p class="carta__modelo" id="cartaModelo"></p>
+        <p class="carta__cor" id="cartaCor"></p>
+        <div id="cartaFicha"></div>
+      </div>
+    </div>
+    <div class="carta__tabela" id="cartaProposta"></div>
+    <div class="carta__rodape" id="cartaRodape"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="footer__logo">
+      <div class="footer__marca">
+        <span class="footer__adm">administrado por</span>
+        <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="footer__ancora">
+      </div>
+    </div>
+    <p class="footer__copy">Consórcio Nacional Bajaj · administrado por Âncora Consórcios</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
