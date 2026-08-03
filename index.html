@@ -1,145 +1,743 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador Consórcio Nacional Bajaj</title>
-  <meta name="description" content="Escolha sua moto Bajaj, personalize a cor e gere a proposta de consórcio em PDF.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Consórcio Nacional Bajaj</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#004A99;--azul-escuro:#002B5C;--azul-claro:#E8F1FB;--cta:#E4002B;--cta-hover:#C20024;--texto:#1F2937;--cinza:#6B7280;--borda:#E5E7EB;--fundo:#F5F7FA;--branco:#FFFFFF;--raio:14px;--sombra:0 4px 16px rgba(0,43,92,.08);--fonte:'Inter',system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fonte);color:var(--texto);background:var(--fundo);line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+.container{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+.header{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);padding:16px 0;box-shadow:0 2px 12px rgba(0,43,92,.25)}
+.header__inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header__logo{height:44px;width:auto}
+.header__marca{display:flex;align-items:center;gap:10px}
+.header__adm{color:rgba(255,255,255,.85);font-size:.8rem;font-weight:500}
+.header__ancora{height:32px;width:auto}
+.hero{background:var(--branco);padding:42px 0 34px;text-align:center;border-bottom:1px solid var(--borda)}
+.hero__titulo{font-size:1.7rem;font-weight:800;color:var(--azul-escuro);line-height:1.3}
+.hero__sub{color:var(--cinza);font-size:1rem;margin-top:8px}
+.simulador{padding:36px 20px 64px}
+.card{background:var(--branco);border:1px solid var(--borda);border-radius:var(--raio);box-shadow:var(--sombra);padding:28px;margin-bottom:24px}
+.card__titulo{font-size:1.2rem;font-weight:700;color:var(--azul-escuro);margin-bottom:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{background:var(--azul-claro);color:var(--azul);font-size:.75rem;font-weight:800;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
+.subtitulo{font-size:.85rem;font-weight:500;color:var(--cinza)}
+.grid-modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.modelo-card{border:2px solid var(--borda);border-radius:var(--raio);padding:20px 16px;text-align:center;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;background:var(--branco)}
+.modelo-card:hover{transform:translateY(-2px);box-shadow:var(--sombra)}
+.modelo-card.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
+.modelo-card__nome{font-weight:700;color:var(--azul-escuro)}
+.modelo-card__cores{font-size:.8rem;color:var(--cinza);margin-top:4px;text-transform:capitalize}
+.swatches{display:flex;flex-wrap:wrap;gap:14px}
+.cor-swatch{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 16px;border:2px solid var(--borda);border-radius:var(--raio);cursor:pointer;min-width:100px;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
+.cor-swatch:hover{box-shadow:var(--sombra)}
+.cor-swatch.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
+.cor-swatch__bola{width:36px;height:36px;border-radius:50%;border:2px solid var(--borda)}
+.cor-swatch__nome{font-size:.8rem;font-weight:600;text-transform:capitalize;color:var(--texto)}
+.visualizacao{display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:768px){.visualizacao{grid-template-columns:1.2fr 1fr;align-items:start}}
+.moto{background:var(--fundo);border:1px solid var(--borda);border-radius:var(--raio);min-height:300px;display:flex;align-items:center;justify-content:center;padding:20px}
+.moto img{max-height:320px;width:auto}
+.ficha{background:var(--fundo);border-radius:var(--raio);padding:20px}
+.ficha h3{font-size:.95rem;font-weight:700;color:var(--azul-escuro);margin-bottom:10px}
+.ficha__linha{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--borda);font-size:.88rem}
+.ficha__linha:last-child{border-bottom:none}
+.ficha__label{color:var(--cinza)}
+.ficha__valor{font-weight:600;text-align:right}
+.grid-planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.plano-card{border:2px solid var(--borda);border-radius:var(--raio);padding:20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
+.plano-card:hover{box-shadow:var(--sombra)}
+.plano-card.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
+.plano-card__titulo{font-weight:800;color:var(--azul-escuro);margin-bottom:12px}
+.plano-card__linha{display:flex;justify-content:space-between;font-size:.88rem;padding:4px 0;color:var(--cinza)}
+.plano-card__linha strong{color:var(--texto)}
+.plano-card__parcela{margin-top:12px;padding:10px 12px;background:var(--azul-claro);border-radius:10px;text-align:center;font-weight:800;color:var(--azul-escuro);font-size:1rem}
+.media{display:flex;justify-content:center}
+.media-card{background:var(--azul-claro);border-radius:var(--raio);padding:26px 36px;text-align:center;max-width:460px;width:100%}
+.media-card__label{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--azul)}
+.media-card__valor{font-size:2.1rem;font-weight:800;color:var(--azul-escuro);margin-top:6px}
+.media-card__info{font-size:.82rem;color:var(--cinza);margin-top:8px}
+.form{display:grid;gap:14px;max-width:480px}
+.form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro)}
+.form input{width:100%;padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:1rem;font-family:var(--fonte);transition:border-color .2s,box-shadow .2s}
+.form input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.12)}
+.resumo{background:var(--fundo);border-radius:var(--raio);padding:20px}
+.resumo__linha{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--borda);font-size:.92rem}
+.resumo__linha:last-child{border-bottom:none}
+.resumo__label{color:var(--cinza)}
+.resumo__valor{font-weight:700;color:var(--azul-escuro);text-align:right}
+.nav{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 26px;border:none;border-radius:12px;font-size:.95rem;font-weight:700;font-family:var(--fonte);cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn--primario{background:var(--azul);color:var(--branco)}
+.btn--primario:hover:not(:disabled){background:var(--azul-escuro);transform:translateY(-1px)}
+.btn--ghost{background:var(--fundo);color:var(--azul-escuro);border:1px solid var(--borda)}
+.btn--ghost:hover{background:var(--azul-claro)}
+.btn--cta{background:var(--cta);color:var(--branco);box-shadow:0 4px 14px rgba(228,0,43,.3)}
+.btn--cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
+.carta{background:var(--branco);color:var(--texto);padding:32px;max-width:720px;margin:0 auto;font-size:.9rem}
+.carta__header{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:3px solid var(--azul);padding-bottom:14px;margin-bottom:18px}
+.carta__logo{height:84px;width:auto}
+.carta__marca{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.carta__adm{font-size:.72rem;color:var(--cinza)}
+.carta__ancora{height:30px;width:auto}
+.carta__titulo{font-size:1.4rem;font-weight:800;color:var(--azul);margin-bottom:16px}
+.carta__corpo{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px}
+.carta__moto{flex:1 1 240px;background:var(--fundo);border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:190px;padding:14px}
+.carta__moto img{max-height:190px;width:auto}
+.carta__info{flex:1 1 320px}
+.carta__modelo{font-size:1.15rem;font-weight:800;color:var(--azul-escuro)}
+.carta__cor{color:var(--cinza);text-transform:capitalize;margin-bottom:10px}
+.carta__tabela{border:1px solid var(--borda);border-radius:10px;padding:16px;margin-bottom:16px}
+.carta__tabela h3{font-size:1rem;font-weight:700;color:var(--azul-escuro);margin-bottom:10px}
+.carta__rodape{border-top:1px solid var(--borda);padding-top:12px;font-size:.85rem;color:var(--cinza);display:grid;gap:4px}
+.footer{background:var(--azul-escuro);padding:26px 0 18px;margin-top:20px}
+.footer__inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.footer__logo{height:40px;width:auto}
+.footer__marca{display:flex;align-items:center;gap:10px}
+.footer__adm{color:rgba(255,255,255,.75);font-size:.78rem;font-weight:500}
+.footer__ancora{height:28px;width:auto}
+.footer__copy{text-align:center;color:rgba(255,255,255,.55);font-size:.8rem;margin-top:14px}
+@media(max-width:640px){.hero__titulo{font-size:1.3rem}.card{padding:20px}.header__inner,.footer__inner{flex-direction:column;align-items:flex-start}.header__marca,.footer__marca{width:100%;justify-content:flex-start}.btn{width:100%}.carta__corpo{flex-direction:column}}
+</style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="container header__inner">
-      <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="header__logo">
-      <div class="header__marca">
-        <span class="header__adm">administrado por</span>
-        <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="header__ancora">
-      </div>
+<header class="header">
+  <div class="container header__inner">
+    <img id="logoBajajHeader" alt="Consórcio Nacional Bajaj" class="header__logo">
+    <div class="header__marca">
+      <span class="header__adm">administrado por</span>
+      <img id="logoAncoraHeader" alt="Âncora Consórcios" class="header__ancora">
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="hero">
-    <div class="container">
-      <h1 class="hero__titulo">Escolha sua moto Bajaj e simule seu consórcio</h1>
-      <p class="hero__sub">A experiência de comprar uma moto, com a flexibilidade do consórcio.</p>
+<section class="hero">
+  <div class="container">
+    <h1 class="hero__titulo">Escolha sua moto Bajaj e simule seu consórcio</h1>
+    <p class="hero__sub">A experiência de comprar uma moto, com a flexibilidade do consórcio.</p>
+  </div>
+</section>
+
+<main class="container simulador">
+
+  <section class="card" id="etapa-1">
+    <div class="card__titulo"><span class="badge">1</span>Selecione o modelo</div>
+    <div class="grid-modelos" id="listaModelos"></div>
+    <div class="nav">
+      <button class="btn btn--primario" id="btnAvancarModelo" disabled>Continuar</button>
     </div>
   </section>
 
-  <main class="container simulador">
-
-    <section class="card" id="etapa-modelo">
-      <div class="card__titulo"><span class="badge">1</span>Selecione o modelo</div>
-      <div class="grid-modelos" id="listaModelos"></div>
-      <div class="nav">
-        <button class="btn btn--primario" id="btnAvancarModelo" disabled>Continuar</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-cor" hidden>
-      <div class="card__titulo"><span class="badge">2</span>Selecione a cor <span class="subtitulo" id="subtituloModelo"></span></div>
-      <div class="swatches" id="listaCores"></div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="1">Voltar</button>
-        <button class="btn btn--primario" id="btnAvancarCor" disabled>Continuar</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-visualizacao" hidden>
-      <div class="card__titulo"><span class="badge">3</span>Sua moto</div>
-      <div class="visualizacao">
-        <div class="moto"><img id="imgMoto" alt="Moto selecionada"></div>
-        <div class="ficha" id="fichaTecnica"></div>
-      </div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="2">Voltar</button>
-        <button class="btn btn--primario" id="btnAvancarVisualizacao">Continuar</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-grupo" hidden>
-      <div class="card__titulo"><span class="badge">4</span>Grupo e plano do consórcio</div>
-      <div class="grid-planos" id="listaPlanos"></div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="3">Voltar</button>
-        <button class="btn btn--primario" id="btnAvancarGrupo" disabled>Continuar</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-media" hidden>
-      <div class="card__titulo"><span class="badge">5</span>Estudo de assembleia</div>
-      <div class="media" id="cardMedia"></div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="4">Voltar</button>
-        <button class="btn btn--primario" id="btnAvancarMedia">Continuar</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-dados" hidden>
-      <div class="card__titulo"><span class="badge">6</span>Dados da proposta</div>
-      <div class="form">
-        <label for="nomeCliente">Nome do cliente</label>
-        <input type="text" id="nomeCliente" placeholder="Nome completo do cliente">
-        <label for="nomeVendedor">Nome do vendedor</label>
-        <input type="text" id="nomeVendedor" placeholder="Seu nome">
-        <label for="whatsVendedor">WhatsApp do vendedor</label>
-        <input type="tel" id="whatsVendedor" placeholder="(00) 00000-0000">
-      </div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="5">Voltar</button>
-        <button class="btn btn--primario" id="btnAvancarDados">Ver resumo</button>
-      </div>
-    </section>
-
-    <section class="card" id="etapa-resumo" hidden>
-      <div class="card__titulo"><span class="badge">7</span>Resumo da proposta</div>
-      <div class="resumo" id="cardResumo"></div>
-      <div class="nav">
-        <button class="btn btn--ghost" data-voltar="6">Voltar</button>
-        <button class="btn btn--cta" id="btnGerarPDF">Gerar PDF da proposta</button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Carta de vendas: usada apenas para gerar o PDF -->
-  <div id="carta" class="carta" hidden>
-    <div class="carta__header">
-      <img src="assets/logos/logo-bajaj-vertical.png" alt="Consórcio Nacional Bajaj" class="carta__logo">
-      <div class="carta__marca">
-        <span class="carta__adm">administrado por</span>
-        <img src="assets/logos/logo-ancora-escuro.png" alt="Âncora Consórcios" class="carta__ancora">
-      </div>
+  <section class="card" id="etapa-2" hidden>
+    <div class="card__titulo"><span class="badge">2</span>Selecione a cor <span class="subtitulo" id="subtituloModelo"></span></div>
+    <div class="swatches" id="listaCores"></div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="1">Voltar</button>
+      <button class="btn btn--primario" id="btnAvancarCor" disabled>Continuar</button>
     </div>
-    <h2 class="carta__titulo">Proposta de Consórcio</h2>
-    <div class="carta__corpo">
-      <div class="carta__moto"><img id="cartaImgMoto" alt="Moto escolhida"></div>
-      <div class="carta__info">
-        <p class="carta__modelo" id="cartaModelo"></p>
-        <p class="carta__cor" id="cartaCor"></p>
-        <div id="cartaFicha"></div>
-      </div>
+  </section>
+
+  <section class="card" id="etapa-3" hidden>
+    <div class="card__titulo"><span class="badge">3</span>Sua moto</div>
+    <div class="visualizacao">
+      <div class="moto"><img id="imgMoto" alt="Moto selecionada"></div>
+      <div class="ficha" id="fichaTecnica"></div>
     </div>
-    <div class="carta__tabela" id="cartaProposta"></div>
-    <div class="carta__rodape" id="cartaRodape"></div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="2">Voltar</button>
+      <button class="btn btn--primario" id="btnAvancarVisualizacao">Continuar</button>
+    </div>
+  </section>
+
+  <section class="card" id="etapa-4" hidden>
+    <div class="card__titulo"><span class="badge">4</span>Grupo e plano do consórcio</div>
+    <div class="grid-planos" id="listaPlanos"></div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="3">Voltar</button>
+      <button class="btn btn--primario" id="btnAvancarGrupo" disabled>Continuar</button>
+    </div>
+  </section>
+
+  <section class="card" id="etapa-5" hidden>
+    <div class="card__titulo"><span class="badge">5</span>Estudo de assembleia</div>
+    <div class="media" id="cardMedia"></div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="4">Voltar</button>
+      <button class="btn btn--primario" id="btnAvancarMedia">Continuar</button>
+    </div>
+  </section>
+
+  <section class="card" id="etapa-6" hidden>
+    <div class="card__titulo"><span class="badge">6</span>Dados da proposta</div>
+    <div class="form">
+      <label for="nomeCliente">Nome do cliente</label>
+      <input type="text" id="nomeCliente" placeholder="Nome completo do cliente">
+      <label for="nomeVendedor">Nome do vendedor</label>
+      <input type="text" id="nomeVendedor" placeholder="Seu nome">
+      <label for="whatsVendedor">WhatsApp do vendedor</label>
+      <input type="tel" id="whatsVendedor" placeholder="(00) 00000-0000">
+    </div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="5">Voltar</button>
+      <button class="btn btn--primario" id="btnAvancarDados">Ver resumo</button>
+    </div>
+  </section>
+
+  <section class="card" id="etapa-7" hidden>
+    <div class="card__titulo"><span class="badge">7</span>Resumo da proposta</div>
+    <div class="resumo" id="cardResumo"></div>
+    <div class="nav">
+      <button class="btn btn--ghost" data-voltar="6">Voltar</button>
+      <button class="btn btn--cta" id="btnGerarPDF">Gerar PDF da proposta</button>
+    </div>
+  </section>
+
+</main>
+
+<div id="carta" class="carta" hidden>
+  <div class="carta__header">
+    <img id="cartaLogoBajaj" alt="Consórcio Nacional Bajaj" class="carta__logo">
+    <div class="carta__marca">
+      <span class="carta__adm">administrado por</span>
+      <img id="cartaLogoAncora" alt="Âncora Consórcios" class="carta__ancora">
+    </div>
   </div>
-
-  <footer class="footer">
-    <div class="container footer__inner">
-      <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="footer__logo">
-      <div class="footer__marca">
-        <span class="footer__adm">administrado por</span>
-        <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="footer__ancora">
-      </div>
+  <h2 class="carta__titulo">Proposta de Consórcio</h2>
+  <div class="carta__corpo">
+    <div class="carta__moto"><img id="cartaImgMoto" alt="Moto escolhida"></div>
+    <div class="carta__info">
+      <p class="carta__modelo" id="cartaModelo"></p>
+      <p class="carta__cor" id="cartaCor"></p>
+      <div id="cartaFicha"></div>
     </div>
-    <p class="footer__copy">Consórcio Nacional Bajaj · administrado por Âncora Consórcios</p>
-  </footer>
+  </div>
+  <div class="carta__tabela" id="cartaProposta"></div>
+  <div class="carta__rodape" id="cartaRodape"></div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="script.js"></script>
+<footer class="footer">
+  <div class="container footer__inner">
+    <img id="logoBajajFooter" alt="Consórcio Nacional Bajaj" class="footer__logo">
+    <div class="footer__marca">
+      <span class="footer__adm">administrado por</span>
+      <img id="logoAncoraFooter" alt="Âncora Consórcios" class="footer__ancora">
+    </div>
+  </div>
+  <p class="footer__copy">Consórcio Nacional Bajaj · administrado por Âncora Consórcios</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ============================================================
+   SIMULADOR CONSÓRCIO NACIONAL BAJAJ - versao unico arquivo
+   Imagens das motos: assets/{modelo}/{cor}.{ext}
+   webp: pulsar-n150, dominar-ns400z | png: demais
+   Logos: resolucao automatica entre variacoes de nome
+   ============================================================ */
+var CONFIG = {
+  urlTabelas: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=2089215310&single=true&output=csv",
+  urlAtual: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=1973077175&single=true&output=csv"
+};
+
+var MODELOS = {
+  "pulsar-n150": {
+    nome: "Pulsar N150", cores: ["branca", "preta", "vermelha"], ext: "webp",
+    ficha: {
+      "Cilindrada": "149,68 cc", "Potência": "14 CV @ 8.500 RPM", "Torque": "1,38 kgf.m @ 6.000 RPM",
+      "Tanque": "14 litros", "Peso": "145 kg", "Freios": "Disco ABS diant. / tambor tras."
+    }
+  },
+  "dominar-ns160": {
+    nome: "Dominar NS160", cores: ["branca", "cinza", "preta", "vermelha"], ext: "png",
+    ficha: {
+      "Cilindrada": "160,3 cc", "Potência": "17 CV @ 9.000 RPM", "Torque": "1,488 kgf.m @ 7.250 RPM",
+      "Tanque": "12 litros", "Peso": "152 kg", "Freios": "Disco ABS duplo canal"
+    }
+  },
+  "dominar-ns200": {
+    nome: "Dominar NS200", cores: ["branca", "cinza", "preta", "vermelha"], ext: "png",
+    ficha: {
+      "Cilindrada": "199,5 cc", "Potência": "24 CV @ 9.750 RPM", "Torque": "1,896 kgf.m @ 8.000 RPM",
+      "Tanque": "12 litros", "Peso": "158 kg", "Freios": "Disco ABS duplo canal"
+    }
+  },
+  "dominar-250": {
+    nome: "Dominar 250", cores: ["preta", "vermelha"], ext: "png",
+    ficha: {
+      "Cilindrada": "248,77 cc", "Potência": "27 CV @ 8.400 RPM", "Torque": "2,39 kgf.m @ 6.500 RPM",
+      "Tanque": "13 litros", "Peso": "180 kg", "Freios": "Disco ABS duplo canal"
+    }
+  },
+  "dominar-400": {
+    nome: "Dominar 400", cores: ["azul", "branca", "preta", "verde", "vermelha"], ext: "png",
+    ficha: {
+      "Cilindrada": "373,27 cc", "Potência": "40 CV @ 8.800 RPM", "Torque": "3,569 kgf.m @ 6.500 RPM",
+      "Tanque": "13 litros", "Peso": "192 kg", "Freios": "Disco ABS"
+    }
+  },
+  "dominar-ns400z": {
+    nome: "Dominar NS400Z", cores: ["branca", "preta", "vermelha"], ext: "webp",
+    ficha: {
+      "Cilindrada": "373,27 cc", "Potência": "40 CV @ 8.500 RPM", "Torque": "3,57 kgf.m @ 7.000 RPM",
+      "Tanque": "12 litros", "Peso": "174 kg", "Freios": "Disco ABS + controle de tração"
+    }
+  }
+};
+
+var TABELAS_RAW = [
+  ["dominar-ns160", 6001, "44x Normal", "", "BAJ12", 19500, 543.62],
+  ["dominar-ns200", 6001, "44x Normal", "", "BAJ14", 22500, 627.27],
+  ["dominar-250", 6001, "44x Normal", "", "BAJ07", 23400, 652.33],
+  ["pulsar-n150", 6001, "44x Normal", "+LE", "BAJ17", 23571.43, 657.13],
+  ["dominar-400", 6001, "44x Normal", "", "BAJ03", 26990, 752.43],
+  ["dominar-ns400z", 6001, "44x Normal", "", "BAJ18", 26990, 752.43],
+  ["dominar-ns160", 6001, "44x Normal", "+LE", "BAJ13", 27857.14, 776.60],
+  ["dominar-ns200", 6001, "44x Normal", "+LE", "BAJ15", 32142.86, 896.08],
+  ["dominar-400", 6001, "44x Normal", "120%", "BAJ09", 32388, 902.90],
+  ["dominar-ns160", 6001, "44x 70%", "", "BAJ12", 19500, 410.64],
+  ["dominar-ns200", 6001, "44x 70%", "", "BAJ14", 22500, 473.81],
+  ["dominar-250", 6001, "44x 70%", "", "BAJ07", 23400, 492.77],
+  ["pulsar-n150", 6001, "44x 70%", "+LE", "BAJ17", 23571.43, 496.40],
+  ["dominar-400", 6001, "44x 70%", "", "BAJ03", 26990, 568.37],
+  ["dominar-ns400z", 6001, "44x 70%", "", "BAJ18", 26990, 568.37],
+  ["dominar-ns160", 6001, "44x 70%", "+LE", "BAJ13", 27857.14, 586.64],
+  ["dominar-ns200", 6001, "44x 70%", "+LE", "BAJ15", 32142.86, 676.90],
+  ["dominar-400", 6001, "44x 70%", "120%", "BAJ09", 32388, 682.04],
+  ["dominar-ns160", 6000, "68x Normal", "", "BAJ12", 19500, 360.49],
+  ["dominar-ns200", 6000, "68x Normal", "", "BAJ14", 22500, 416.00],
+  ["dominar-250", 6000, "68x Normal", "", "BAJ07", 23400, 432.58],
+  ["pulsar-n150", 6000, "68x Normal", "+LE", "BAJ17", 23571.43, 435.79],
+  ["dominar-400", 6000, "68x Normal", "", "BAJ03", 26990, 498.93],
+  ["dominar-ns400z", 6000, "68x Normal", "", "BAJ18", 26990, 498.93],
+  ["dominar-ns160", 6000, "68x Normal", "+LE", "BAJ13", 27857.14, 515.03],
+  ["dominar-ns200", 6000, "68x Normal", "+LE", "BAJ15", 32142.86, 594.19],
+  ["dominar-400", 6000, "68x Normal", "120%", "BAJ09", 32388, 598.78],
+  ["dominar-250", 6000, "68x Normal", "+LE", "BAJ08", 33428.57, 618.00],
+  ["dominar-ns160", 6000, "68x 70%", "", "BAJ12", 19500, 274.48],
+  ["dominar-ns200", 6000, "68x 70%", "", "BAJ14", 22500, 316.72],
+  ["dominar-250", 6000, "68x 70%", "", "BAJ07", 23400, 329.36],
+  ["pulsar-n150", 6000, "68x 70%", "+LE", "BAJ17", 23571.43, 331.77],
+  ["dominar-400", 6000, "68x 70%", "", "BAJ03", 26990, 379.87],
+  ["dominar-ns400z", 6000, "68x 70%", "", "BAJ18", 26990, 379.87],
+  ["dominar-ns160", 6000, "68x 70%", "+LE", "BAJ13", 27857.14, 392.08],
+  ["dominar-ns200", 6000, "68x 70%", "+LE", "BAJ15", 32142.86, 452.42],
+  ["dominar-400", 6000, "68x 70%", "120%", "BAJ09", 32388, 455.88],
+  ["dominar-250", 6000, "68x 70%", "+LE", "BAJ08", 33428.57, 470.50]
+];
+
+var GRUPOS_INFO = {
+  6000: { parcelas: 68, taxaAdm: "18%", vencimento: "10" },
+  6001: { parcelas: 44, taxaAdm: "17%", vencimento: "10" }
+};
+var MEDIAS = { 6000: 70.44, 6001: 62.51 };
+var proximaAssembleia = "14/08/2026";
+var fundoReserva = "2%";
+
+var CORES_VISUAIS = {
+  branca: "#F5F5F5", cinza: "#9CA3AF", preta: "#1F2937",
+  vermelha: "#DC2626", azul: "#2563EB", verde: "#16A34A"
+};
+
+var LOGO_CANDIDATOS = {
+  bajajHeader: ["assets/logos/logo-bajaj-horizontal.png", "assets/logos/bajaj-horizontal.png", "assets/logos/logo-bajaj.png"],
+  ancoraHeader: ["assets/logos/logo-ancora-branco.png", "assets/logos/ancora-branco.png"],
+  bajajPdf: ["assets/logos/logo-bajaj-vertical.png", "assets/logos/bajaj-vertical.png", "assets/logos/logo-bajaj-horizontal.png", "assets/logos/bajaj-horizontal.png", "assets/logos/logo-bajaj.png"],
+  ancoraPdf: ["assets/logos/logo-ancora-escuro.png", "assets/logos/ancora-escuro.png", "assets/logos/logo-ancora-branco.png", "assets/logos/ancora-branco.png"]
+};
+
+var tabelas = TABELAS_RAW.slice();
+var modeloSelecionado = null;
+var corSelecionada = null;
+var planoSelecionado = null;
+
+function $(id) { return document.getElementById(id); }
+
+function formatarDinheiro(v) {
+  var n = typeof v === "number" ? v : parseFloat(v);
+  if (isNaN(n)) return "—";
+  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function montarFichaHTML(ficha) {
+  var html = "";
+  for (var k in ficha) {
+    if (ficha.hasOwnProperty(k)) {
+      html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
+    }
+  }
+  return html;
+}
+
+function testeImagem(src) {
+  return new Promise(function (resolve) {
+    var img = new Image();
+    img.onload = function () { resolve(true); };
+    img.onerror = function () { resolve(false); };
+    img.src = src;
+  });
+}
+
+function resolverLogo(el, candidatos) {
+  var tentar = function (i) {
+    if (i >= candidatos.length) return;
+    var img = new Image();
+    img.onload = function () { el.src = candidatos[i]; };
+    img.onerror = function () { tentar(i + 1); };
+    img.src = candidatos[i];
+  };
+  tentar(0);
+}
+
+function carregarImagem(el, pasta, cor) {
+  var info = MODELOS[pasta];
+  var exts = [info.ext, info.ext === "webp" ? "png" : "webp"];
+  var i = 0;
+  var tentar = function () {
+    if (i >= exts.length) { resolverLogo(el, LOGO_CANDIDATOS.bajajHeader); return; }
+    el.src = "assets/" + pasta + "/" + cor + "." + exts[i++];
+  };
+  el.onerror = tentar;
+  tentar();
+}
+
+function encontrarOferta(modelo, grupo, plano) {
+  for (var i = 0; i < tabelas.length; i++) {
+    var t = tabelas[i];
+    if (t[0] === modelo && t[1] === grupo && t[2] === plano && t[3] === "") return t;
+  }
+  for (var j = 0; j < tabelas.length; j++) {
+    var t2 = tabelas[j];
+    if (t2[0] === modelo && t2[1] === grupo && t2[2] === plano) return t2;
+  }
+  return null;
+}
+
+function renderModelos() {
+  var container = $("listaModelos");
+  if (!container) return;
+  var html = "";
+  for (var id in MODELOS) {
+    if (MODELOS.hasOwnProperty(id)) {
+      var m = MODELOS[id];
+      html += '<div class="modelo-card" data-modelo="' + id + '">' +
+        '<p class="modelo-card__nome">' + m.nome + '</p>' +
+        '<p class="modelo-card__cores">' + m.cores.join(" · ") + '</p>' +
+        '</div>';
+    }
+  }
+  container.innerHTML = html;
+  container.querySelectorAll(".modelo-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      container.querySelectorAll(".modelo-card").forEach(function (c) { c.classList.remove("selecionado"); });
+      card.classList.add("selecionado");
+      modeloSelecionado = card.dataset.modelo;
+      corSelecionada = null;
+      planoSelecionado = null;
+      $("btnAvancarModelo").disabled = false;
+    });
+  });
+}
+
+function renderCores() {
+  if (!modeloSelecionado) return;
+  var m = MODELOS[modeloSelecionado];
+  $("subtituloModelo").textContent = m.nome;
+  var container = $("listaCores");
+  var html = "";
+  m.cores.forEach(function (cor) {
+    var hex = CORES_VISUAIS[cor] || "#CCCCCC";
+    var estilo = cor === "branca"
+      ? "background:linear-gradient(135deg," + hex + " 60%,#d1d5db);"
+      : "background:" + hex + ";";
+    html += '<div class="cor-swatch" data-cor="' + cor + '">' +
+      '<span class="cor-swatch__bola" style="' + estilo + '"></span>' +
+      '<span class="cor-swatch__nome">' + cor + '</span>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".cor-swatch").forEach(function (sw) {
+    sw.addEventListener("click", function () {
+      container.querySelectorAll(".cor-swatch").forEach(function (s) { s.classList.remove("selecionado"); });
+      sw.classList.add("selecionado");
+      corSelecionada = sw.dataset.cor;
+      $("btnAvancarCor").disabled = false;
+    });
+  });
+}
+
+function renderVisualizacao() {
+  var m = MODELOS[modeloSelecionado];
+  carregarImagem($("imgMoto"), modeloSelecionado, corSelecionada);
+  $("imgMoto").alt = m.nome + " " + corSelecionada;
+  $("fichaTecnica").innerHTML = "<h3>Ficha técnica — " + m.nome + "</h3>" + montarFichaHTML(m.ficha);
+}
+
+function renderPlanos() {
+  var combos = [
+    { grupo: 6001, plano: "44x Normal" },
+    { grupo: 6001, plano: "44x 70%" },
+    { grupo: 6000, plano: "68x Normal" },
+    { grupo: 6000, plano: "68x 70%" }
+  ];
+  var container = $("listaPlanos");
+  var html = "";
+  combos.forEach(function (c) {
+    var info = GRUPOS_INFO[c.grupo];
+    var oferta = encontrarOferta(modeloSelecionado, c.grupo, c.plano);
+    if (!oferta) return;
+    var rotulo = oferta[3] ? " (" + oferta[3] + ")" : "";
+    html += '<div class="plano-card" data-grupo="' + c.grupo + '" data-plano="' + c.plano + '">' +
+      '<p class="plano-card__titulo">Grupo ' + c.grupo + ' · ' + c.plano + rotulo + '</p>' +
+      '<div class="plano-card__linha"><span>Parcelas</span><strong>' + info.parcelas + 'x</strong></div>' +
+      '<div class="plano-card__linha"><span>Taxa de administração</span><strong>' + info.taxaAdm + '</strong></div>' +
+      '<div class="plano-card__linha"><span>Vencimento</span><strong>dia ' + info.vencimento + '</strong></div>' +
+      '<div class="plano-card__parcela">Parcela: ' + formatarDinheiro(oferta[6]) + '</div>' +
+      '</div>';
+  });
+  container.innerHTML = html;
+  container.querySelectorAll(".plano-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      container.querySelectorAll(".plano-card").forEach(function (c) { c.classList.remove("selecionado"); });
+      card.classList.add("selecionado");
+      planoSelecionado = { grupo: parseInt(card.dataset.grupo, 10), plano: card.dataset.plano };
+      $("btnAvancarGrupo").disabled = false;
+    });
+  });
+}
+
+function renderMedia() {
+  var grupo = planoSelecionado.grupo;
+  var media = MEDIAS[grupo];
+  var info = GRUPOS_INFO[grupo];
+  $("cardMedia").innerHTML =
+    '<div class="media-card">' +
+      '<p class="media-card__label">Média do menor lance contemplado · Grupo ' + grupo + '</p>' +
+      '<p class="media-card__valor">' + media.toLocaleString("pt-BR") + '%</p>' +
+      '<p class="media-card__info">Taxa de administração ' + info.taxaAdm + ' · Fundo de reserva ' + fundoReserva + ' · Próxima assembleia ' + proximaAssembleia + '</p>' +
+    '</div>';
+}
+
+function renderResumo() {
+  var m = MODELOS[modeloSelecionado];
+  var info = GRUPOS_INFO[planoSelecionado.grupo];
+  var oferta = encontrarOferta(modeloSelecionado, planoSelecionado.grupo, planoSelecionado.plano);
+  var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
+  var nomeCliente = $("nomeCliente").value.trim() || "—";
+  var variacao = oferta[3] ? " (" + oferta[3] + ")" : "";
+  var linhas = [
+    ["Modelo", m.nome + variacao],
+    ["Cor", cor],
+    ["Cliente", nomeCliente],
+    ["Grupo", String(planoSelecionado.grupo)],
+    ["Plano", planoSelecionado.plano],
+    ["Parcelas", info.parcelas + "x"],
+    ["Taxa de administração", info.taxaAdm],
+    ["Valor do crédito", formatarDinheiro(oferta[5])],
+    ["Parcela atual", formatarDinheiro(oferta[6])],
+    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + "%"],
+    ["Próxima assembleia", proximaAssembleia]
+  ];
+  var html = "";
+  linhas.forEach(function (l) {
+    html += '<div class="resumo__linha"><span class="resumo__label">' + l[0] + '</span><span class="resumo__valor">' + l[1] + '</span></div>';
+  });
+  $("cardResumo").innerHTML = html;
+}
+
+function irParaEtapa(n) {
+  for (var i = 1; i <= 7; i++) {
+    var el = $("etapa-" + i);
+    if (el) el.hidden = i !== n;
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function bindNavegacao() {
+  $("btnAvancarModelo").addEventListener("click", function () { renderCores(); irParaEtapa(2); });
+  $("btnAvancarCor").addEventListener("click", function () { renderVisualizacao(); irParaEtapa(3); });
+  $("btnAvancarVisualizacao").addEventListener("click", function () { renderPlanos(); irParaEtapa(4); });
+  $("btnAvancarGrupo").addEventListener("click", function () { renderMedia(); irParaEtapa(5); });
+  $("btnAvancarMedia").addEventListener("click", function () { irParaEtapa(6); });
+  $("btnAvancarDados").addEventListener("click", function () {
+    if (!$("nomeCliente").value.trim()) {
+      alert("Preencha o nome do cliente para continuar.");
+      return;
+    }
+    renderResumo();
+    irParaEtapa(7);
+  });
+  document.querySelectorAll("[data-voltar]").forEach(function (btn) {
+    btn.addEventListener("click", function () { irParaEtapa(parseInt(btn.dataset.voltar, 10)); });
+  });
+}
+
+function montarCarta() {
+  var m = MODELOS[modeloSelecionado];
+  var info = GRUPOS_INFO[planoSelecionado.grupo];
+  var oferta = encontrarOferta(modeloSelecionado, planoSelecionado.grupo, planoSelecionado.plano);
+  var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
+  var nomeCliente = $("nomeCliente").value.trim() || "—";
+  var nomeVendedor = $("nomeVendedor").value.trim() || "—";
+  var whats = $("whatsVendedor").value.trim() || "—";
+  var hoje = new Date().toLocaleDateString("pt-BR");
+  var variacao = oferta[3] ? " (" + oferta[3] + ")" : "";
+
+  var imgMoto = $("imgMoto");
+  var srcFinal = imgMoto.currentSrc || imgMoto.src;
+  $("cartaImgMoto").src = srcFinal;
+  $("cartaImgMoto").alt = m.nome + " " + cor;
+  $("cartaModelo").textContent = m.nome + variacao;
+  $("cartaCor").textContent = "Cor: " + cor;
+  $("cartaFicha").innerHTML = '<div class="ficha">' + montarFichaHTML(m.ficha) + '</div>';
+
+  $("cartaProposta").innerHTML =
+    "<h3>Detalhes da proposta</h3>" +
+    '<div class="ficha__linha"><span class="ficha__label">Cliente</span><span class="ficha__valor">' + nomeCliente + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Vendedor</span><span class="ficha__valor">' + nomeVendedor + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">WhatsApp</span><span class="ficha__valor">' + whats + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Grupo</span><span class="ficha__valor">' + planoSelecionado.grupo + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Plano</span><span class="ficha__valor">' + planoSelecionado.plano + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Número de parcelas</span><span class="ficha__valor">' + info.parcelas + 'x</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Taxa de administração</span><span class="ficha__valor">' + info.taxaAdm + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Fundo de reserva</span><span class="ficha__valor">' + fundoReserva + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Vencimento da parcela</span><span class="ficha__valor">dia ' + info.vencimento + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Valor do crédito</span><span class="ficha__valor">' + formatarDinheiro(oferta[5]) + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Valor da parcela</span><span class="ficha__valor">' + formatarDinheiro(oferta[6]) + '</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Média do menor lance contemplado</span><span class="ficha__valor">' + MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + '%</span></div>' +
+    '<div class="ficha__linha"><span class="ficha__label">Próxima assembleia</span><span class="ficha__valor">' + proximaAssembleia + '</span></div>';
+
+  $("cartaRodape").innerHTML =
+    "<p>Proposta gerada em " + hoje + "</p>" +
+    "<p>Consórcio Nacional Bajaj · administrado por Âncora Consórcios</p>";
+}
+
+function gerarPDF() {
+  montarCarta();
+  var carta = $("carta");
+  carta.hidden = false;
+  var tentou = false;
+  var finalizar = function () { carta.hidden = true; };
+  try {
+    if (typeof html2canvas === "undefined" || typeof window.jspdf === "undefined") {
+      throw new Error("bibliotecas nao carregaram");
+    }
+    html2canvas(carta, { scale: 2, useCORS: true, backgroundColor: "#FFFFFF" }).then(function (canvas) {
+      var imgData = canvas.toDataURL("image/png");
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+      var pageWidth = 210;
+      var pageHeight = 297;
+      var imgHeight = (canvas.height * pageWidth) / canvas.width;
+      var altura = 0;
+      var primeira = true;
+      while (altura < imgHeight) {
+        if (!primeira) pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, primeira ? 0 : -altura, pageWidth, imgHeight);
+        altura += pageHeight;
+        primeira = false;
+      }
+      pdf.save("Proposta-Consorcio-Bajaj-" + ($("nomeCliente").value.trim() || "Cliente") + ".pdf");
+      finalizar();
+    }).catch(function () {
+      if (!tentou) { tentou = true; window.print(); }
+      finalizar();
+    });
+  } catch (e) {
+    if (!tentou) { tentou = true; window.print(); }
+    finalizar();
+  }
+}
+
+function parseCSV(texto) {
+  var linhas = [];
+  var linha = [];
+  var campo = "";
+  var dentroQuotes = false;
+  for (var i = 0; i < texto.length; i++) {
+    var c = texto[i];
+    if (dentroQuotes) {
+      if (c === '"') {
+        if (texto[i + 1] === '"') { campo += '"'; i++; }
+        else { dentroQuotes = false; }
+      } else { campo += c; }
+    } else {
+      if (c === '"') { dentroQuotes = true; }
+      else if (c === ",") { linha.push(campo); campo = ""; }
+      else if (c === "\n") { linha.push(campo); linhas.push(linha); linha = []; campo = ""; }
+      else { campo += c; }
+    }
+  }
+  if (campo !== "" || linha.length > 0) { linha.push(campo); linhas.push(linha); }
+  return linhas;
+}
+
+function limparNumero(s) {
+  return parseFloat(String(s).replace(/[R$\s.]/g, "").replace(",", "."));
+}
+
+function carregarDadosPlanilha() {
+  fetch(CONFIG.urlAtual).then(function (resp) { return resp.text(); }).then(function (texto) {
+    parseCSV(texto).forEach(function (l) {
+      var k = l[0], v = l[1];
+      if (k && v && k !== "Chave") {
+        k = k.trim(); v = v.trim();
+        if (k === "media_menor_lance_6000") MEDIAS[6000] = limparNumero(v);
+        if (k === "media_menor_lance_6001") MEDIAS[6001] = limparNumero(v);
+        if (k === "proxima_assembleia") proximaAssembleia = v;
+        if (k === "fundo_reserva") fundoReserva = v;
+      }
+    });
+  }).catch(function () {});
+
+  fetch(CONFIG.urlTabelas).then(function (resp) { return resp.text(); }).then(function (texto) {
+    var linhas = parseCSV(texto);
+    var novas = [];
+    var mapaModelo = {
+      "dominarns160": "dominar-ns160",
+      "dominarns200": "dominar-ns200",
+      "dominar250": "dominar-250",
+      "pulsarn150le": "pulsar-n150",
+      "pulsarn150": "pulsar-n150",
+      "dominar400": "dominar-400",
+      "ns400z": "dominar-ns400z",
+      "dominar250le": "dominar-250"
+    };
+    for (var i = 1; i < linhas.length; i++) {
+      var nome = linhas[i][0], codigo = linhas[i][1], grupo = linhas[i][2],
+          plano = linhas[i][3], credito = linhas[i][4], parcela = linhas[i][5];
+      if (!nome || !codigo || !grupo) continue;
+      var chave = String(nome).toLowerCase().replace(/[^a-z0-9]/g, "").replace(/\+?le/gi, "").replace(/120%/g, "");
+      var modelo = mapaModelo[chave];
+      if (!modelo) continue;
+      var variacao = /\+ ?le/i.test(nome) ? "+LE" : /120%/.test(nome) ? "120%" : "";
+      novas.push([modelo, parseInt(grupo, 10), plano.trim(), variacao, codigo.trim(), limparNumero(credito), limparNumero(parcela)]);
+    }
+    if (novas.length >= 38) tabelas = novas;
+  }).catch(function () {});
+}
+
+function init() {
+  resolverLogo($("logoBajajHeader"), LOGO_CANDIDATOS.bajajHeader);
+  resolverLogo($("logoAncoraHeader"), LOGO_CANDIDATOS.ancoraHeader);
+  resolverLogo($("logoBajajFooter"), LOGO_CANDIDATOS.bajajHeader);
+  resolverLogo($("logoAncoraFooter"), LOGO_CANDIDATOS.ancoraHeader);
+  resolverLogo($("cartaLogoBajaj"), LOGO_CANDIDATOS.bajajPdf);
+  resolverLogo($("cartaLogoAncora"), LOGO_CANDIDATOS.ancoraPdf);
+  renderModelos();
+  bindNavegacao();
+  $("btnGerarPDF").addEventListener("click", gerarPDF);
+  carregarDadosPlanilha();
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
 </body>
 </html>
