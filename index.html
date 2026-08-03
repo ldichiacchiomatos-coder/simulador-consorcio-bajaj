@@ -43,6 +43,7 @@ img{max-width:100%;display:block}
 .modelo-card__img img{max-height:100px;width:auto}
 .modelo-card__nome{font-weight:700;color:var(--azul-escuro)}
 .modelo-card__cores{font-size:.78rem;color:var(--cinza);margin-top:2px;text-transform:capitalize}
+.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--cinza);font-size:.78rem;border:2px dashed var(--borda);border-radius:10px;padding:10px;text-align:center}
 
 .swatches{display:flex;flex-wrap:wrap;gap:14px}
 .cor-swatch{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 16px;border:2px solid var(--borda);border-radius:var(--raio);cursor:pointer;min-width:100px;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
@@ -71,36 +72,39 @@ img{max-width:100%;display:block}
 .plano-card__linha strong{color:var(--texto)}
 .plano-card__parcela{margin-top:12px;padding:10px 12px;background:var(--azul-claro);border-radius:10px;text-align:center;font-weight:800;color:var(--azul-escuro);font-size:1rem}
 
-.lance-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;max-width:560px;margin-bottom:20px}
+.lance-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;max-width:600px;margin-bottom:16px}
 .lance-form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro);display:block;margin-bottom:6px}
 .lance-form input{width:100%;padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:1rem;font-family:var(--fonte)}
 .lance-form input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.12)}
 .lance-field{flex:1 1 240px}
+.lance-aviso{font-size:.85rem;color:var(--cinza);margin-bottom:16px;max-width:600px}
 
-.recomendacao{display:grid;gap:20px}
+.recomendacao{display:grid;gap:16px}
 .rec-card{background:var(--fundo);border:1px solid var(--borda);border-radius:var(--raio);padding:22px}
 .rec-card h3{font-size:1rem;font-weight:700;color:var(--azul-escuro);margin-bottom:14px}
-.rec-linha{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--borda);font-size:.9rem}
+.rec-linha{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--borda);font-size:.9rem}
 .rec-linha:last-child{border-bottom:none}
 .rec-label{color:var(--cinza)}
 .rec-valor{font-weight:700;text-align:right}
 .faixa-badge{display:inline-block;background:var(--azul);color:#fff;font-size:.78rem;font-weight:800;padding:4px 12px;border-radius:999px}
-.caminho{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.caminho{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
 .caminho__passo{background:var(--branco);border:2px solid var(--azul);color:var(--azul);font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px}
 .caminho__passo.destaque{background:var(--azul);color:#fff}
 .caminho__seta{color:var(--cinza);font-weight:800}
-.rec-copy{font-size:.95rem;line-height:1.7;color:var(--texto);margin-top:12px}
-.rec-nota{font-size:.85rem;color:var(--azul);background:var(--azul-claro);border-radius:10px;padding:12px 14px;margin-top:12px}
-.mega-card{margin-top:16px;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:var(--raio);padding:18px 20px}
+.rec-copy{font-size:.92rem;line-height:1.7;color:var(--texto)}
+.rec-nota{font-size:.84rem;color:var(--azul);background:var(--azul-claro);border-radius:10px;padding:10px 14px;margin-top:10px}
+.mega-card{margin-top:4px;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:var(--raio);padding:16px 20px}
 .mega-card strong{display:block;font-size:.95rem;margin-bottom:4px}
-.mega-card p{font-size:.88rem;color:rgba(255,255,255,.9)}
-.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--cinza);font-size:.8rem;border:2px dashed var(--borda);border-radius:10px;padding:10px;text-align:center}
+.mega-card p{font-size:.85rem;color:rgba(255,255,255,.92)}
+.regras{font-size:.8rem;color:var(--cinza);background:var(--branco);border:1px solid var(--borda);border-radius:var(--raio);padding:14px 16px;margin-top:4px}
+.regras strong{color:var(--azul-escuro)}
 
 .media{display:flex;justify-content:center}
-.media-card{background:var(--azul-claro);border-radius:var(--raio);padding:26px 36px;text-align:center;max-width:480px;width:100%}
+.media-card{background:var(--azul-claro);border-radius:var(--raio);padding:26px 36px;text-align:center;max-width:520px;width:100%}
 .media-card__label{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--azul)}
 .media-card__valor{font-size:2.1rem;font-weight:800;color:var(--azul-escuro);margin-top:6px}
 .media-card__info{font-size:.82rem;color:var(--cinza);margin-top:8px}
+.media-card__mega{font-size:.82rem;color:var(--azul);font-weight:600;margin-top:10px;background:#fff;border-radius:10px;padding:10px 14px}
 
 .form{display:grid;gap:14px;max-width:480px}
 .form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro)}
@@ -123,22 +127,34 @@ img{max-width:100%;display:block}
 .btn--cta{background:var(--cta);color:var(--branco);box-shadow:0 4px 14px rgba(228,0,43,.3)}
 .btn--cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
 
-.carta{background:var(--branco);color:var(--texto);padding:32px;max-width:720px;margin:0 auto;font-size:.9rem}
-.carta__header{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:3px solid var(--azul);padding-bottom:14px;margin-bottom:18px}
-.carta__logo{height:84px;width:auto}
-.carta__marca{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.carta__adm{font-size:.72rem;color:var(--cinza)}
-.carta__ancora{height:30px;width:auto}
-.carta__titulo{font-size:1.4rem;font-weight:800;color:var(--azul);margin-bottom:16px}
-.carta__corpo{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:18px}
-.carta__moto{flex:1 1 240px;background:var(--fundo);border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:190px;padding:14px}
-.carta__moto img{max-height:190px;width:auto}
-.carta__info{flex:1 1 320px}
-.carta__modelo{font-size:1.15rem;font-weight:800;color:var(--azul-escuro)}
-.carta__cor{color:var(--cinza);text-transform:capitalize;margin-bottom:10px}
-.carta__tabela{border:1px solid var(--borda);border-radius:10px;padding:16px;margin-bottom:16px}
-.carta__tabela h3{font-size:1rem;font-weight:700;color:var(--azul-escuro);margin-bottom:10px}
-.carta__rodape{border-top:1px solid var(--borda);padding-top:12px;font-size:.8rem;color:var(--cinza);display:grid;gap:4px}
+/* Carta (PDF) - layout compacto e visual */
+.carta{background:var(--branco);color:var(--texto);width:660px;padding:22px 26px;font-size:12px}
+.carta__header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--azul);padding-bottom:10px;margin-bottom:14px}
+.carta__logo{height:58px;width:auto}
+.carta__marca{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.carta__adm{font-size:9.5px;color:var(--cinza)}
+.carta__ancora{height:20px;width:auto}
+.carta__titulo{font-size:20px;font-weight:800;color:var(--azul);margin-bottom:12px}
+.carta__corpo{display:grid;grid-template-columns:1fr 1.15fr;gap:14px;margin-bottom:12px}
+.carta__moto{background:var(--fundo);border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:165px;padding:10px}
+.carta__moto img{max-height:155px;width:auto}
+.carta__modelo{font-size:15px;font-weight:800;color:var(--azul-escuro)}
+.carta__cor{font-size:11px;color:var(--cinza);text-transform:capitalize;margin-bottom:8px}
+.ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px}
+.ficha-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--borda);padding:3px 0;font-size:10px}
+.ficha-grid .flabel{color:var(--cinza)}
+.ficha-grid .fvalor{font-weight:700}
+.carta__destaque{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.carta__destaque .d-item{flex:1}
+.carta__destaque .d-rotulo{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;opacity:.85}
+.carta__destaque .d-valor{font-size:19px;font-weight:800;margin-top:2px}
+.carta__destaque .d-valor--menor{font-size:15px}
+.detalhes-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;margin-bottom:10px}
+.detalhes-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--borda);padding:3px 0;font-size:10px}
+.detalhes-grid .flabel{color:var(--cinza)}
+.detalhes-grid .fvalor{font-weight:700;text-align:right}
+.carta__rodape{border-top:1px solid var(--borda);padding-top:8px;font-size:8.5px;color:var(--cinza);line-height:1.5}
+.carta__rodape .tit{font-size:9.5px;font-weight:700;color:var(--azul-escuro);margin-bottom:3px}
 
 .footer{background:var(--azul-escuro);padding:26px 0 18px;margin-top:20px}
 .footer__inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
@@ -154,7 +170,7 @@ img{max-width:100%;display:block}
   .header__inner,.footer__inner{flex-direction:column;align-items:flex-start}
   .header__marca,.footer__marca{width:100%;justify-content:flex-start}
   .btn{width:100%}
-  .carta__corpo{flex-direction:column}
+  .carta{width:620px}
 }
 </style>
 </head>
@@ -162,10 +178,10 @@ img{max-width:100%;display:block}
 
 <header class="header">
   <div class="container header__inner">
-    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="header__logo">
+    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="header__logo" onerror="this.style.display='none'">
     <div class="header__marca">
       <span class="header__adm">administrado por</span>
-      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="header__ancora">
+      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="header__ancora" onerror="this.style.display='none'">
     </div>
   </div>
 </header>
@@ -219,9 +235,10 @@ img{max-width:100%;display:block}
 
   <section class="card" id="etapa-recomendacao" hidden>
     <div class="card__titulo"><span class="badge">5</span>Recomendação de lance e caminho de contemplação</div>
+    <p class="lance-aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da oferta escolhida e recomenda o caminho de contemplação ideal.</p>
     <div class="lance-form">
       <div class="lance-field">
-        <label for="valorLance">Quanto o cliente pretende dar de lance? (R$)</label>
+        <label for="valorLance">Valor do lance disponível do cliente (R$)</label>
         <input type="text" id="valorLance" inputmode="numeric" placeholder="Ex.: 8.000">
       </div>
       <button class="btn btn--primario" id="btnCalcularLance">Ver recomendação</button>
@@ -279,23 +296,24 @@ img{max-width:100%;display:block}
   </div>
   <h2 class="carta__titulo">Proposta de Consórcio</h2>
   <div class="carta__corpo">
-    <div class="carta__moto"><img id="cartaImgMoto" alt="Moto escolhida"></div>
+    <div class="carta__moto" id="cartaMotoBox"><img id="cartaImgMoto" alt="Moto escolhida"></div>
     <div class="carta__info">
       <p class="carta__modelo" id="cartaModelo"></p>
       <p class="carta__cor" id="cartaCor"></p>
-      <div id="cartaFicha"></div>
+      <div class="ficha-grid" id="cartaFicha"></div>
     </div>
   </div>
-  <div class="carta__tabela" id="cartaProposta"></div>
+  <div class="carta__destaque" id="cartaDestaque"></div>
+  <div class="detalhes-grid" id="cartaDetalhes"></div>
   <div class="carta__rodape" id="cartaRodape"></div>
 </div>
 
 <footer class="footer">
   <div class="container footer__inner">
-    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="footer__logo">
+    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="footer__logo" onerror="this.style.display='none'">
     <div class="footer__marca">
       <span class="footer__adm">administrado por</span>
-      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="footer__ancora">
+      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="footer__ancora" onerror="this.style.display='none'">
     </div>
   </div>
   <p class="footer__copy">Consórcio Nacional Bajaj · administrado por Âncora Consórcios · Lei 11.795/2008</p>
@@ -304,7 +322,7 @@ img{max-width:100%;display:block}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-/* ============ CONFIG: LINKS DA PLANILHA (com anti-cache) ============ */
+/* ============ CONFIG: PLANILHA (com anti-cache) ============ */
 var CONFIG = {
   urlTabelas: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=2089215310&single=true&output=csv",
   urlAtual: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=1973077175&single=true&output=csv"
@@ -368,17 +386,12 @@ var TABELAS_RAW = [
   ["dominar-250",6000,"68x 70%","+LE","BAJ08",33428.57,470.50]
 ];
 
-/* ============ GRUPOS, MEDIAS, ASSEMBLEIA ============ */
+/* ============ GRUPOS, MEDIAS (somente menor lance - decisao do projeto) ============ */
 var GRUPOS_INFO = {
   6000: { parcelas: 68, taxaAdm: "18%", vencimento: "10" },
   6001: { parcelas: 44, taxaAdm: "17%", vencimento: "10" }
 };
-/* Decisao do projeto: exibir a media do MENOR lance contemplado.
-   As chaves de maior/media estao disponiveis na planilha caso queira exibir as 3. */
-var MEDIAS = {
-  6000: { menor: 70.44, maior: 72.08, medio: 71.51 },
-  6001: { menor: 62.51, maior: 67.23, medio: 66.85 }
-};
+var MEDIAS = { 6000: 70.44, 6001: 62.51 };
 var proximaAssembleia = "14/08/2026";
 var proximaMegaAssembleia = "Setembro/2026";
 var fundoReserva = "2%";
@@ -395,6 +408,7 @@ var corSelecionada = null;
 var planoSelecionado = null;
 var lanceCliente = null;
 var recomendacaoAtual = null;
+var imagemMotoAtual = null;
 
 function $(id){ return document.getElementById(id); }
 
@@ -405,32 +419,30 @@ function formatarDinheiro(v){
   return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-function montarFichaHTML(ficha){
-  var html = "";
-  for (var k in ficha) {
-    html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
+/* Pastas candidatas: cobre a grafia correta e a variante "dominario" encontrada no print */
+function pastasCandidatas(modeloId){
+  var m = MODELOS[modeloId];
+  var lista = [m.pasta];
+  if (m.pasta.indexOf("dominar") === 0) {
+    lista.push("dominario" + m.pasta.slice(7));
   }
-  return html;
+  return lista;
 }
 
-/* Imagem: tenta multiplos padroes de nome/extensao e cai num placeholder */
-function limparFallback(el){
-  var wrap = el.parentElement;
-  if (wrap) {
-    var fb = wrap.querySelector(".img-fallback");
-    if (fb) fb.remove();
-    wrap.classList.remove("sem-imagem");
+/* Imagem: busca .png E .webp (e .jpg), em ambas grafias de pasta, com placeholder final */
+function carregarImagem(el, modeloId, cor, label){
+  var pastas = pastasCandidatas(modeloId);
+  var m = MODELOS[modeloId];
+  var nomes = [cor, m.pasta + "-" + cor, m.pasta + "_" + cor, modeloId + "-" + cor];
+  var ext = ["png","webp","jpg"];
+  var padroes = [];
+  for (var p = 0; p < pastas.length; p++) {
+    for (var n = 0; n < nomes.length; n++) {
+      for (var e = 0; e < ext.length; e++) {
+        padroes.push("assets/" + pastas[p] + "/" + nomes[n] + "." + ext[e]);
+      }
+    }
   }
-}
-function carregarImagem(el, pasta, cor, label){
-  var padroes = [
-    "assets/" + pasta + "/" + cor + ".png",
-    "assets/" + pasta + "/" + cor + ".webp",
-    "assets/" + pasta + "/" + cor + ".jpg",
-    "assets/" + pasta + "/" + pasta + "-" + cor + ".png",
-    "assets/" + pasta + "/" + pasta + "-" + cor + ".webp",
-    "assets/" + pasta + "/" + pasta + "_" + cor + ".png"
-  ];
   var i = 0;
   function tentar(){
     if (i >= padroes.length) {
@@ -444,7 +456,15 @@ function carregarImagem(el, pasta, cor, label){
       }
       return;
     }
-    el.onload = function(){ el.style.display = ""; limparFallback(el); };
+    el.onload = function(){
+      el.style.display = "";
+      imagemMotoAtual = el.currentSrc || el.src;
+      var wrap = el.parentElement;
+      if (wrap) {
+        var fb2 = wrap.querySelector(".img-fallback");
+        if (fb2) fb2.remove();
+      }
+    };
     el.onerror = function(){ i++; tentar(); };
     el.src = padroes[i];
     i++;
@@ -462,6 +482,14 @@ function encontrarOferta(modelo, grupo, plano){
     if (tabelas[k][0] === modelo && tabelas[k][1] === grupo && tabelas[k][2] === plano) return tabelas[k];
   }
   return null;
+}
+
+function montarFichaHTML(ficha){
+  var html = "";
+  for (var k in ficha) {
+    html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
+  }
+  return html;
 }
 
 /* ============ PARSER CSV ============ */
@@ -493,7 +521,7 @@ function normalizarNome(s){
   return String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
-/* ============ CARREGAR DADOS DA PLANILHA (com anti-cache e re-render) ============ */
+/* ============ CARREGAR DADOS DA PLANILHA ============ */
 async function carregarDadosPlanilha(){
   var t = new Date().getTime();
   try {
@@ -504,12 +532,8 @@ async function carregarDadosPlanilha(){
       var k = l[0], v = l[1];
       if (k && v && k !== "Chave") dados[k.trim()] = v.trim();
     });
-    if (dados.media_menor_lance_6000) MEDIAS[6000].menor = limparNumero(dados.media_menor_lance_6000);
-    if (dados.media_menor_lance_6001) MEDIAS[6001].menor = limparNumero(dados.media_menor_lance_6001);
-    if (dados.media_maior_lance_6000) MEDIAS[6000].maior = limparNumero(dados.media_maior_lance_6000);
-    if (dados.media_maior_lance_6001) MEDIAS[6001].maior = limparNumero(dados.media_maior_lance_6001);
-    if (dados.media_lance_medio_6000) MEDIAS[6000].medio = limparNumero(dados.media_lance_medio_6000);
-    if (dados.media_lance_medio_6001) MEDIAS[6001].medio = limparNumero(dados.media_lance_medio_6001);
+    if (dados.media_menor_lance_6000) MEDIAS[6000] = limparNumero(dados.media_menor_lance_6000);
+    if (dados.media_menor_lance_6001) MEDIAS[6001] = limparNumero(dados.media_menor_lance_6001);
     if (dados.proxima_assembleia) proximaAssembleia = dados.proxima_assembleia;
     if (dados.proxima_mega_assembleia) proximaMegaAssembleia = dados.proxima_mega_assembleia;
     if (dados.fundo_reserva) fundoReserva = dados.fundo_reserva;
@@ -523,7 +547,7 @@ async function carregarDadosPlanilha(){
     var mapaModelo = {
       "dominarns160":"dominar-ns160","dominarns200":"dominar-ns200","dominar250":"dominar-250",
       "pulsarn150le":"pulsar-n150","pulsarn150":"pulsar-n150","dominar400":"dominar-400",
-      "ns400z":"dominar-ns400z","dominar250le":"dominar-250"
+      "ns400z":"dominar-ns400z","dominar250le":"dominar-250","dominar400120":"dominar-400"
     };
     for (var i = 1; i < linhas2.length; i++) {
       var l2 = linhas2[i];
@@ -543,8 +567,8 @@ async function carregarDadosPlanilha(){
     if (novas.length >= 38) tabelas = novas;
   } catch (e) { /* usa tabelas locais */ }
 
-  /* re-renderiza etapas ja abertas com os dados atualizados */
   if (planoSelecionado) { renderPlanos(); }
+  if (planoSelecionado && lanceCliente !== null) { renderRecomendacao(); }
 }
 
 /* ============ ETAPA 1: MODELOS ============ */
@@ -563,12 +587,13 @@ function renderModelos(){
   var cards = container.querySelectorAll(".modelo-card");
   for (var i = 0; i < cards.length; i++) {
     (function(card){
+      var modeloId = card.dataset.modelo;
       var img = card.querySelector("img");
-      carregarImagem(img, MODELOS[card.dataset.modelo].pasta, MODELOS[card.dataset.modelo].cores[0], "Foto do " + MODELOS[card.dataset.modelo].nome);
+      carregarImagem(img, modeloId, MODELOS[modeloId].cores[0], "Foto do " + MODELOS[modeloId].nome);
       card.addEventListener("click", function(){
         for (var c2 = 0; c2 < cards.length; c2++) cards[c2].classList.remove("selecionado");
         card.classList.add("selecionado");
-        modeloSelecionado = card.dataset.modelo;
+        modeloSelecionado = modeloId;
         corSelecionada = null;
         planoSelecionado = null;
         lanceCliente = null;
@@ -611,7 +636,7 @@ function renderCores(){
 /* ============ ETAPA 3: VISUALIZACAO ============ */
 function renderVisualizacao(){
   var m = MODELOS[modeloSelecionado];
-  carregarImagem($("imgMoto"), m.pasta, corSelecionada, "Foto da " + m.nome);
+  carregarImagem($("imgMoto"), modeloSelecionado, corSelecionada, "Foto da " + m.nome);
   $("imgMoto").alt = m.nome + " " + corSelecionada;
   $("fichaTecnica").innerHTML = "<h3>Ficha técnica — " + m.nome + "</h3>" + montarFichaHTML(m.ficha);
 }
@@ -635,9 +660,9 @@ function renderPlanos(){
     var tag = c.grupo === 6001 ? "Quita mais rápido." : "Parcelas mais leves, você dilui o valor em mais tempo.";
     html += '<div class="plano-card" data-grupo="' + c.grupo + '" data-plano="' + c.plano + '">' +
       '<p class="plano-card__titulo">Grupo ' + c.grupo + ' · ' + c.plano + rotulo + '</p>' +
+      '<div class="plano-card__linha"><span>Crédito</span><strong>' + formatarDinheiro(oferta[5]) + '</strong></div>' +
       '<div class="plano-card__linha"><span>Parcelas</span><strong>' + info.parcelas + 'x</strong></div>' +
       '<div class="plano-card__linha"><span>Taxa de administração</span><strong>' + info.taxaAdm + '</strong></div>' +
-      '<div class="plano-card__linha"><span>Vencimento</span><strong>dia ' + info.vencimento + '</strong></div>' +
       '<div class="plano-card__linha"><span>Diferencial</span><strong style="color:var(--azul)">' + tag + '</strong></div>' +
       '<div class="plano-card__parcela">Parcela: ' + formatarDinheiro(oferta[6]) + '</div></div>';
   }
@@ -657,29 +682,27 @@ function renderPlanos(){
   }
 }
 
-/* ============ MOTOR DE RECOMENDACAO (Seção 9 do projeto) ============
-   Regras de lance (definidas e aprovadas):
-   - Lance Fixo 30%: todos ofertam 30%; desempate pela Loteria Federal.
-   - Lance Limitado: 1% a 60%; sem recurso embutido; desempate pela Loteria Federal.
-   - Lance Livre: 1% a 99%; ate 30% embutido; desempate pelo maior percentual.
-   - 2º Lance Fixo: exclusivo plano investidor - NAO exibido a clientes. */
+/* ============ MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final) ============
+   BASE:   0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 | 50-54% +LanceLimitado | 55%+ +LanceLivre
+   +LE:    0-49% Sorteio+LanceFixo30 | 50%+ +LanceLivre
+   LINHA400 (BAJ09): 0-15% Sorteio | 16-30% +LanceFixo30 (sugestão 120%) | 31-49% Sorteio+LanceFixo30 | 50-55% +LanceLimitado | 55%+ +LanceLivre
+   Mega assembleia: chamada fixa em todas (6ª, 12ª, 18ª, 24ª - primeira em setembro/2026) */
+var REGRAS_LANCE = [
+  "Lance Fixo 30%: todos ofertam 30% do crédito; desempate pela proximidade do número da Loteria Federal; aceita recurso embutido.",
+  "Lance Limitado: de 1% a 60% do crédito; não aceita recurso embutido; desempate pela Loteria Federal.",
+  "Lance Livre: de 1% a 99% do crédito; até 30% do valor pode ser pago com recurso embutido; desempate pelo maior percentual ofertado."
+];
 
-var REGRAS_LANCE = {
-  "Lance Fixo 30%": "Todos os participantes ofertam 30% do crédito. Desempate pela proximidade do número da Loteria Federal. Aceita até 30% do valor com recurso embutido.",
-  "Lance Limitado": "De 1% a 60% do crédito. Não aceita recurso embutido. Desempate pela proximidade do número da Loteria Federal.",
-  "Lance Livre": "De 1% a 99% do crédito. Até 30% do valor pode ser pago com recurso embutido (crédito). Desempate pelo maior percentual ofertado."
-};
-
-/* Caminhos de contemplacao por tipo de credito e faixa de lance (Versão Final) */
 function obterRecomendacao(tipo, pct){
   var faixas;
   if (tipo === "base") {
     faixas = [
       { max: 29.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Com esse valor de lance, o caminho mais adequado é participar do sorteio e do Lance Fixo de 30%. Se o cliente não tiver capital de lance, avalie o crédito com Lance Embutido (+LE) — ele permite participar sem desembolso imediato.",
-        nota: "Sem capital de lance? O crédito +LE cobre o lance embutido sem desembolso imediato." },
+        copy: "Com esse lance, o caminho recomendado é participar do sorteio e do Lance Fixo de 30%. Se o cliente não tiver capital de lance, o crédito +LE permite participar com recurso embutido, sem desembolso imediato.",
+        nota: "Sem capital de lance? O crédito +LE (lance embutido) cobre o lance sem desembolso imediato." },
       { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Seu lance cobre mais de 30% do crédito. Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva para assembleias futuras." },
+        copy: "Seu lance cobre mais de 30% do crédito. Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva para as próximas assembleias. Se o lance alcançar 60% do crédito, já é possível potencializar com o Lance Livre.",
+        nota: "A partir de 60% do crédito, o cliente pode potencializar com o Lance Livre." },
       { max: 54.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado"],
         copy: "Além do sorteio e do Lance Fixo de 30%, o cliente já pode disputar o Lance Limitado (até 60% do crédito) — boa relação entre valor ofertado e chance de contemplação." },
       { max: 100, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"],
@@ -688,7 +711,7 @@ function obterRecomendacao(tipo, pct){
   } else if (tipo === "le") {
     faixas = [
       { max: 29.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "O crédito com Lance Embutido já cobre o Lance Fixo de 30% sem desembolso adicional. Participe do sorteio e do Lance Fixo." },
+        copy: "O crédito com Lance Embutido cobre parte do lance sem desembolso imediato. Participe do sorteio e do Lance Fixo de 30%." },
       { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
         copy: "Participe do sorteio e do Lance Fixo de 30%, com o crédito +LE cobrindo parte do lance." },
       { max: 54.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Livre"],
@@ -700,10 +723,10 @@ function obterRecomendacao(tipo, pct){
     faixas = [
       { max: 15.99, caminho: ["Sorteio"],
         copy: "Com esse percentual, a estratégia recomendada é participar do sorteio e aguardar o acúmulo de crédito para as próximas assembleias.",
-        nota: "Regra interna da linha 400: abaixo de 16%, só sorteio." },
+        nota: "Regra interna da linha 400: abaixo de 16% do crédito, o caminho é o sorteio." },
       { max: 30.99, caminho: ["Sorteio", "Lance Fixo 30%"],
         copy: "Participe do sorteio e do Lance Fixo de 30%. Para potencializar o lance, avalie o crédito 120% (BAJ09) — mais crédito significa mais poder de lance embutido.",
-        nota: "Sugestão da linha 400: crédito 120% (BAJ09) para potencializar o lance." },
+        nota: "Sugestão da linha 400: o crédito 120% (BAJ09) potencializa o lance." },
       { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
         copy: "Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva." },
       { max: 55.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado"],
@@ -749,7 +772,7 @@ function renderRecomendacao(){
   if (!planoSelecionado) return;
   var container = $("resultadoRecomendacao");
   if (lanceCliente === null) {
-    container.innerHTML = '<div class="rec-card"><h3>Recomendação de lance</h3><p style="color:var(--cinza)">Informe o valor do lance disponível do cliente para calcular o caminho de contemplação ideal. Se ainda não definiram o lance, você pode continuar.</p></div>';
+    container.innerHTML = '<div class="rec-card"><h3>Caminho de contemplação</h3><p style="color:var(--cinza)">Informe o valor do lance que o cliente pretende ofertar e clique em "Ver recomendação" para calcular o caminho ideal. Você também pode continuar sem calcular.</p></div>';
     return;
   }
   var r = calcularRecomendacao();
@@ -774,7 +797,8 @@ function renderRecomendacao(){
     '<p class="rec-copy">' + r.copy + '</p>' +
     (r.nota ? '<div class="rec-nota">' + r.nota + '</div>' : '') +
   '</div>' +
-  '<div class="mega-card"><strong>Mega assembleia</strong><p>O grupo realiza mega assembleias nas assembleias 6ª, 12ª, 18ª e 24ª — maior volume de contemplações. Próxima mega assembleia: ' + proximaMegaAssembleia + '.</p></div>';
+  '<div class="mega-card"><strong>Mega assembleia</strong><p>O grupo realiza mega assembleias nas assembleias 6ª, 12ª, 18ª e 24ª — maior volume de contemplações. Próxima mega assembleia: ' + proximaMegaAssembleia + '.</p></div>' +
+  '<div class="regras"><strong>Como funciona cada lance:</strong><br>' + REGRAS_LANCE.join("<br>") + '</div>';
 
   container.innerHTML = html;
 }
@@ -786,16 +810,17 @@ function lerValorLance(){
   return isNaN(n) || n <= 0 ? null : n;
 }
 
-/* ============ ETAPA 6: MEDIA ============ */
+/* ============ ETAPA 6: MEDIA DO MENOR LANCE ============ */
 function renderMedia(){
   var grupo = planoSelecionado.grupo;
-  var media = MEDIAS[grupo].menor;
+  var media = MEDIAS[grupo];
   var info = GRUPOS_INFO[grupo];
   $("cardMedia").innerHTML =
     '<div class="media-card">' +
       '<p class="media-card__label">Média do menor lance contemplado · Grupo ' + grupo + '</p>' +
       '<p class="media-card__valor">' + media.toLocaleString("pt-BR") + '%</p>' +
       '<p class="media-card__info">Taxa de administração ' + info.taxaAdm + ' · Fundo de reserva ' + fundoReserva + ' · Próxima assembleia ' + proximaAssembleia + '</p>' +
+      '<p class="media-card__mega">Mega assembleia: assembleias 6ª, 12ª, 18ª e 24ª · Próxima: ' + proximaMegaAssembleia + '</p>' +
     '</div>';
 }
 
@@ -818,12 +843,12 @@ function renderResumo(){
     ["Taxa de administração", info.taxaAdm],
     ["Valor do crédito", formatarDinheiro(oferta[5])],
     ["Parcela atual", formatarDinheiro(oferta[6])],
-    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].menor.toLocaleString("pt-BR") + "%"],
+    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + "%"],
     ["Próxima assembleia", proximaAssembleia]
   ];
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado", formatarDinheiro(lanceCliente)]);
-    linhas.push(["Recomendação", recomendacaoAtual.caminho.join(" → ")]);
+    linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
   var html = "";
   for (var i = 0; i < linhas.length; i++) {
@@ -889,46 +914,64 @@ function montarCarta(){
   var hoje = new Date().toLocaleDateString("pt-BR");
   var variacao = oferta && oferta[3] ? " (" + oferta[3] + ")" : "";
 
-  var imgMoto = $("imgMoto");
-  var srcFinal = imgMoto.currentSrc || imgMoto.src;
-  $("cartaImgMoto").src = srcFinal;
-  $("cartaImgMoto").alt = m.nome + " " + cor;
+  /* imagem da moto (a mesma que carregou na tela) */
+  var box = $("cartaMotoBox");
+  box.innerHTML = "";
+  if (imagemMotoAtual) {
+    var img = document.createElement("img");
+    img.src = imagemMotoAtual;
+    img.alt = m.nome + " " + cor;
+    box.appendChild(img);
+  } else {
+    var fb = document.createElement("div");
+    fb.className = "img-fallback";
+    fb.textContent = "Imagem da moto indisponível";
+    box.appendChild(fb);
+  }
+
   $("cartaModelo").textContent = m.nome + variacao;
   $("cartaCor").textContent = "Cor: " + cor;
-  $("cartaFicha").innerHTML = '<div class="ficha">' + montarFichaHTML(m.ficha) + '</div>';
+
+  var fichaHtml = "";
+  for (var k in m.ficha) {
+    fichaHtml += '<div><span class="flabel">' + k + '</span><span class="fvalor">' + m.ficha[k] + '</span></div>';
+  }
+  $("cartaFicha").innerHTML = fichaHtml;
+
+  $("cartaDestaque").innerHTML =
+    '<div class="d-item"><div class="d-rotulo">Valor da parcela</div><div class="d-valor">' + formatarDinheiro(oferta[6]) + '</div></div>' +
+    '<div class="d-item"><div class="d-rotulo">Valor do crédito</div><div class="d-valor d-valor--menor">' + formatarDinheiro(oferta[5]) + '</div></div>' +
+    '<div class="d-item"><div class="d-rotulo">Grupo ' + planoSelecionado.grupo + '</div><div class="d-valor d-valor--menor">' + planoSelecionado.plano + '</div></div>';
 
   var linhas = [
     ["Cliente", nomeCliente],
     ["Vendedor", nomeVendedor],
     ["WhatsApp", whats],
-    ["Grupo", String(planoSelecionado.grupo)],
     ["Plano", planoSelecionado.plano],
     ["Número de parcelas", info.parcelas + "x"],
     ["Taxa de administração", info.taxaAdm],
     ["Fundo de reserva", fundoReserva],
     ["Vencimento da parcela", "dia " + info.vencimento],
-    ["Valor do crédito", formatarDinheiro(oferta[5])],
-    ["Valor da parcela", formatarDinheiro(oferta[6])],
-    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].menor.toLocaleString("pt-BR") + "%"],
+    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + "%"],
     ["Próxima assembleia", proximaAssembleia]
   ];
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado pelo cliente", formatarDinheiro(lanceCliente)]);
-    linhas.push(["Recomendação de lance", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
+    linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
-  var html = '<h3>Detalhes da proposta</h3>';
+  var detHtml = "";
   for (var i = 0; i < linhas.length; i++) {
-    html += '<div class="ficha__linha"><span class="ficha__label">' + linhas[i][0] + '</span><span class="ficha__valor">' + linhas[i][1] + '</span></div>';
+    detHtml += '<div><span class="flabel">' + linhas[i][0] + '</span><span class="fvalor">' + linhas[i][1] + '</span></div>';
   }
-  $("cartaProposta").innerHTML = html;
+  $("cartaDetalhes").innerHTML = detHtml;
 
   $("cartaRodape").innerHTML =
-    '<p>Proposta gerada em ' + hoje + ' · ' + nomeVendedor + '</p>' +
+    '<p class="tit">Proposta gerada em ' + hoje + ' · Vendedor: ' + nomeVendedor + ' · WhatsApp: ' + whats + '</p>' +
     '<p>Consórcio Nacional Bajaj · administrado por Âncora Consórcios · Lei 11.795/2008</p>' +
     '<p>Valores de crédito e parcela vigentes na data de emissão, sujeitos a atualização em assembleia. Recomendação de lance baseada na média do menor lance contemplado do grupo.</p>';
 }
 
-/* ============ GERAR PDF ============ */
+/* ============ GERAR PDF (maximo 2 paginas, com redimensionamento) ============ */
 async function gerarPDF(){
   montarCarta();
   var carta = $("carta");
@@ -937,19 +980,33 @@ async function gerarPDF(){
     if (typeof html2canvas === "undefined" || typeof window.jspdf === "undefined") {
       throw new Error("Bibliotecas de PDF não carregaram");
     }
-    var canvas = await html2canvas(carta, { scale: 2, useCORS: true, backgroundColor: "#FFFFFF" });
-    var imgData = canvas.toDataURL("image/png");
+    var canvas = await html2canvas(carta, { scale: 2, useCORS: true, backgroundColor: "#FFFFFF", logging: false });
+
     var JSPDF = window.jspdf.jsPDF;
     var pdf = new JSPDF({ orientation: "p", unit: "mm", format: "a4" });
-    var pageWidth = 210;
-    var pageHeight = 297;
-    var imgHeight = (canvas.height * pageWidth) / canvas.width;
+    var pw = 210, ph = 297;
+    var imgHeightMm = (canvas.height * pw) / canvas.width;
+    var maxH = ph * 2;
+
+    /* se o conteúdo passar de 2 páginas, reduz para caber exatamente em 2 */
+    if (imgHeightMm > maxH) {
+      var fator = maxH / imgHeightMm;
+      var nw = Math.round(canvas.width * fator);
+      var nh = Math.round(canvas.height * fator);
+      var nc = document.createElement("canvas");
+      nc.width = nw; nc.height = nh;
+      nc.getContext("2d").drawImage(canvas, 0, 0, nw, nh);
+      canvas = nc;
+      imgHeightMm = maxH;
+    }
+
+    var imgData = canvas.toDataURL("image/png");
     var altura = 0;
     var primeira = true;
-    while (altura < imgHeight) {
+    while (altura < imgHeightMm) {
       if (!primeira) pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, primeira ? 0 : -altura, pageWidth, imgHeight);
-      altura += pageHeight;
+      pdf.addImage(imgData, "PNG", 0, -altura, pw, imgHeightMm);
+      altura += ph;
       primeira = false;
     }
     pdf.save("Proposta-Consorcio-Bajaj-" + ($("nomeCliente").value.trim() || "Cliente") + ".pdf");
