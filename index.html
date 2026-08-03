@@ -4,393 +4,298 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simulador Consórcio Nacional Bajaj</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 :root{
-  --azul:#004A99; --azul-escuro:#002B5C; --azul-claro:#E8F1FB;
-  --cta:#E4002B; --cta-hover:#C20024; --texto:#1F2937;
-  --cinza:#6B7280; --borda:#E5E7EB; --fundo:#F5F7FA;
-  --branco:#FFFFFF; --raio:14px; --sombra:0 4px 16px rgba(0,43,92,.08);
-  --fonte:'Inter',system-ui,-apple-system,sans-serif;
+  --azul:#004A99;
+  --azul-escuro:#002B5C;
+  --azul-claro:#E8F1FB;
+  --cta:#E4002B;
+  --cta-hover:#C20024;
+  --texto:#1F2937;
+  --cinza:#6B7280;
+  --borda:#E5E7EB;
+  --fundo:#F5F7FA;
+  --branco:#FFFFFF;
+  --sucesso:#16A34A;
+  --raio:14px;
+  --sombra:0 4px 16px rgba(0,43,92,0.08);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:var(--fonte);color:var(--texto);background:var(--fundo);line-height:1.6;-webkit-font-smoothing:antialiased}
-img{max-width:100%;display:block}
-.container{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
-
-.header{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);padding:16px 0;box-shadow:0 2px 12px rgba(0,43,92,.25)}
-.header__inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.header__logo{height:44px;width:auto}
-.header__marca{display:flex;align-items:center;gap:10px}
-.header__adm{color:rgba(255,255,255,.85);font-size:.8rem;font-weight:500}
-.header__ancora{height:32px;width:auto}
-
-.hero{background:var(--branco);padding:42px 0 34px;text-align:center;border-bottom:1px solid var(--borda)}
-.hero__titulo{font-size:1.7rem;font-weight:800;color:var(--azul-escuro);line-height:1.3}
-.hero__sub{color:var(--cinza);font-size:1rem;margin-top:8px}
-
-.simulador{padding:36px 20px 64px}
-.card{background:var(--branco);border:1px solid var(--borda);border-radius:var(--raio);box-shadow:var(--sombra);padding:28px;margin-bottom:24px}
-.card__titulo{font-size:1.2rem;font-weight:700;color:var(--azul-escuro);margin-bottom:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.badge{background:var(--azul-claro);color:var(--azul);font-size:.75rem;font-weight:800;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
-.subtitulo{font-size:.85rem;font-weight:500;color:var(--cinza)}
-.aviso{font-size:.85rem;color:var(--cinza);margin-bottom:16px;max-width:640px}
-
-.grid-modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
-.modelo-card{border:2px solid var(--borda);border-radius:var(--raio);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;background:var(--branco)}
-.modelo-card:hover{transform:translateY(-2px);box-shadow:var(--sombra)}
-.modelo-card.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
-.modelo-card__img{height:110px;display:flex;align-items:center;justify-content:center;background:var(--fundo);border-radius:10px;margin-bottom:10px;overflow:hidden;position:relative}
-.modelo-card__img img{max-height:100px;width:auto}
-.modelo-card__nome{font-weight:700;color:var(--azul-escuro)}
-.modelo-card__cores{font-size:.78rem;color:var(--cinza);margin-top:2px;text-transform:capitalize}
-.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--cinza);font-size:.78rem;border:2px dashed var(--borda);border-radius:10px;padding:10px;text-align:center}
-
-.swatches{display:flex;flex-wrap:wrap;gap:14px}
-.cor-swatch{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 16px;border:2px solid var(--borda);border-radius:var(--raio);cursor:pointer;min-width:100px;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
-.cor-swatch:hover{box-shadow:var(--sombra)}
-.cor-swatch.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
-.cor-swatch__bola{width:36px;height:36px;border-radius:50%;border:2px solid var(--borda)}
-.cor-swatch__nome{font-size:.8rem;font-weight:600;text-transform:capitalize}
-
-.visualizacao{display:grid;grid-template-columns:1fr;gap:24px}
-@media(min-width:768px){.visualizacao{grid-template-columns:1.2fr 1fr;align-items:start}}
-.moto{background:var(--fundo);border:1px solid var(--borda);border-radius:var(--raio);min-height:300px;display:flex;align-items:center;justify-content:center;padding:20px}
-.moto img{max-height:320px;width:auto}
-.ficha{background:var(--fundo);border-radius:var(--raio);padding:20px}
-.ficha h3{font-size:.95rem;font-weight:700;color:var(--azul-escuro);margin-bottom:10px}
-.ficha__linha{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed var(--borda);font-size:.88rem}
-.ficha__linha:last-child{border-bottom:none}
-.ficha__label{color:var(--cinza)}
-.ficha__valor{font-weight:600;text-align:right}
-
-.grid-planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
-.plano-card{border:2px solid var(--borda);border-radius:var(--raio);padding:20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
-.plano-card:hover{box-shadow:var(--sombra)}
-.plano-card.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
-.plano-card__titulo{font-weight:800;color:var(--azul-escuro);margin-bottom:12px}
-.plano-card__linha{display:flex;justify-content:space-between;font-size:.88rem;padding:4px 0;color:var(--cinza)}
-.plano-card__linha strong{color:var(--texto)}
-.plano-card__parcela{margin-top:12px;padding:10px 12px;background:var(--azul-claro);border-radius:10px;text-align:center;font-weight:800;color:var(--azul-escuro);font-size:1rem}
-.var-seletor{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.var-pill{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 10px;border:2px solid var(--borda);border-radius:10px;background:var(--branco);cursor:pointer;transition:border-color .2s,box-shadow .2s;font-family:var(--fonte);text-align:center}
-.var-pill:hover{border-color:var(--azul)}
-.var-pill.ativa{border-color:var(--azul);background:var(--azul-claro);box-shadow:0 0 0 2px rgba(0,74,153,.12)}
-.var-pill__nome{font-size:.82rem;font-weight:800;color:var(--azul-escuro)}
-.var-pill__sub{font-size:.7rem;color:var(--cinza);line-height:1.2}
-
-.lance-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;max-width:600px;margin-bottom:16px}
-.lance-form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro);display:block;margin-bottom:6px}
-.lance-form input{width:100%;padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:1rem;font-family:var(--fonte)}
-.lance-form input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.12)}
-.lance-field{flex:1 1 240px}
-
-.recomendacao{display:grid;gap:16px}
-.rec-card{background:var(--fundo);border:1px solid var(--borda);border-radius:var(--raio);padding:22px}
-.rec-card h3{font-size:1rem;font-weight:700;color:var(--azul-escuro);margin-bottom:14px}
-.rec-linha{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--borda);font-size:.9rem}
-.rec-linha:last-child{border-bottom:none}
-.rec-label{color:var(--cinza)}
-.rec-valor{font-weight:700;text-align:right}
-.rec-valor--destaque{color:var(--azul);font-weight:800}
-.faixa-badge{display:inline-block;background:var(--azul);color:#fff;font-size:.78rem;font-weight:800;padding:4px 12px;border-radius:999px}
-.caminho{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
-.caminho__passo{background:var(--branco);border:2px solid var(--azul);color:var(--azul);font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px}
-.caminho__passo.destaque{background:var(--azul);color:#fff}
-.caminho__seta{color:var(--cinza);font-weight:800}
-.rec-copy{font-size:.92rem;line-height:1.7;color:var(--texto)}
-.rec-nota{font-size:.84rem;color:var(--azul);background:var(--azul-claro);border-radius:10px;padding:10px 14px;margin-top:10px}
-.rec-le{font-size:.84rem;color:#7A4E00;background:#FFF4DE;border-radius:10px;padding:10px 14px;margin-top:10px}
-.mega-card{margin-top:4px;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:var(--raio);padding:16px 20px}
-.mega-card strong{display:block;font-size:.95rem;margin-bottom:4px}
-.mega-card p{font-size:.85rem;color:rgba(255,255,255,.92)}
-.regras{font-size:.8rem;color:var(--cinza);background:var(--branco);border:1px solid var(--borda);border-radius:var(--raio);padding:14px 16px;margin-top:4px}
-.regras strong{color:var(--azul-escuro)}
-
-.media{display:flex;justify-content:center}
-.media-card{background:var(--azul-claro);border-radius:var(--raio);padding:26px 36px;text-align:center;max-width:520px;width:100%}
-.media-card__label{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--azul)}
-.media-card__valor{font-size:2.1rem;font-weight:800;color:var(--azul-escuro);margin-top:6px}
-.media-card__info{font-size:.82rem;color:var(--cinza);margin-top:8px}
-.media-card__mega{font-size:.82rem;color:var(--azul);font-weight:600;margin-top:10px;background:#fff;border-radius:10px;padding:10px 14px}
-
-.form{display:grid;gap:14px;max-width:480px}
-.form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro)}
-.form input{width:100%;padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:1rem;font-family:var(--fonte);transition:border-color .2s,box-shadow .2s}
-.form input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.12)}
-
-.resumo{background:var(--fundo);border-radius:var(--raio);padding:20px}
-.resumo__linha{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--borda);font-size:.92rem}
-.resumo__linha:last-child{border-bottom:none}
-.resumo__label{color:var(--cinza)}
-.resumo__valor{font-weight:700;color:var(--azul-escuro);text-align:right}
-
-.nav{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 26px;border:none;border-radius:12px;font-size:.95rem;font-weight:700;font-family:var(--fonte);cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.btn--primario{background:var(--azul);color:var(--branco)}
-.btn--primario:hover:not(:disabled){background:var(--azul-escuro);transform:translateY(-1px)}
-.btn--ghost{background:var(--fundo);color:var(--azul-escuro);border:1px solid var(--borda)}
-.btn--ghost:hover{background:var(--azul-claro)}
-.btn--cta{background:var(--cta);color:var(--branco);box-shadow:0 4px 14px rgba(228,0,43,.3)}
-.btn--cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
-
-.carta{background:var(--branco);color:var(--texto);width:660px;padding:22px 26px;font-size:12px}
-.carta__header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--azul);padding-bottom:10px;margin-bottom:14px}
-.carta__logo{height:58px;width:auto}
-.carta__marca{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
-.carta__adm{font-size:9.5px;color:var(--cinza)}
-.carta__ancora{height:20px;width:auto}
-.carta__titulo{font-size:20px;font-weight:800;color:var(--azul);margin-bottom:12px}
-.carta__corpo{display:grid;grid-template-columns:1fr 1.15fr;gap:14px;margin-bottom:12px}
-.carta__moto{background:var(--fundo);border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:165px;padding:10px}
-.carta__moto img{max-height:155px;width:auto}
-.carta__modelo{font-size:15px;font-weight:800;color:var(--azul-escuro)}
-.carta__cor{font-size:11px;color:var(--cinza);text-transform:capitalize;margin-bottom:8px}
-.ficha-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 12px}
-.ficha-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--borda);padding:3px 0;font-size:10px}
-.ficha-grid .flabel{color:var(--cinza)}
-.ficha-grid .fvalor{font-weight:700}
-.carta__destaque{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
-.carta__destaque .d-item{flex:1}
-.carta__destaque .d-rotulo{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;opacity:.85}
-.carta__destaque .d-valor{font-size:19px;font-weight:800;margin-top:2px}
-.carta__destaque .d-valor--menor{font-size:15px}
-.detalhes-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;margin-bottom:10px}
-.detalhes-grid div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--borda);padding:3px 0;font-size:10px}
-.detalhes-grid .flabel{color:var(--cinza)}
-.detalhes-grid .fvalor{font-weight:700;text-align:right}
-.carta__rodape{border-top:1px solid var(--borda);padding-top:8px;font-size:8.5px;color:var(--cinza);line-height:1.5}
-.carta__rodape .tit{font-size:9.5px;font-weight:700;color:var(--azul-escuro);margin-bottom:3px}
-
-.footer{background:var(--azul-escuro);padding:26px 0 18px;margin-top:20px}
-.footer__inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
-.footer__logo{height:40px;width:auto}
-.footer__marca{display:flex;align-items:center;gap:10px}
-.footer__adm{color:rgba(255,255,255,.75);font-size:.78rem;font-weight:500}
-.footer__ancora{height:28px;width:auto}
-.footer__copy{text-align:center;color:rgba(255,255,255,.55);font-size:.8rem;margin-top:14px}
-
-@media(max-width:640px){
-  .hero__titulo{font-size:1.3rem}
-  .card{padding:20px}
-  .header__inner,.footer__inner{flex-direction:column;align-items:flex-start}
-  .header__marca,.footer__marca{width:100%;justify-content:flex-start}
-  .btn{width:100%}
-  .carta{width:620px}
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--fundo);color:var(--texto);line-height:1.6}
+h1,h2,h3,h4{font-family:'Montserrat',sans-serif}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+header{background:var(--azul);padding:14px 0;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.header-content{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header-left{display:flex;align-items:center;gap:16px}
+.logo-bajaj{height:42px;width:auto}
+.brand-divider{width:1px;height:34px;background:rgba(255,255,255,.3)}
+.logo-ancora{height:26px;width:auto}
+.header-right{color:#fff;font-size:13px;text-align:right;line-height:1.4}
+.hero{text-align:center;padding:40px 0 8px}
+.hero h1{font-size:clamp(22px,3.4vw,34px);color:var(--azul-escuro)}
+.hero p{color:var(--cinza);margin-top:6px}
+.progress{display:flex;gap:6px;justify-content:center;margin:26px 0 6px;flex-wrap:wrap}
+.p-step{width:10px;height:10px;border-radius:50%;background:#D6DEE8}
+.p-step.ativo{background:var(--cta)}
+.wizard-step{display:none;background:var(--branco);border-radius:var(--raio);box-shadow:var(--sombra);padding:28px;margin:18px 0 40px}
+.wizard-step.visivel{display:block}
+.wizard-step h2{color:var(--azul-escuro);font-size:20px;margin-bottom:4px}
+.wizard-step .sub{color:var(--cinza);font-size:14px;margin-bottom:22px}
+/* ---------- ETAPA 1: GRID DE MOTOS (2 linhas x 3 colunas) ---------- */
+.modelos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.modelo-card{border:2px solid var(--borda);border-radius:var(--raio);padding:18px;cursor:pointer;transition:.2s;text-align:center;background:#fff}
+.modelo-card:hover{border-color:var(--azul);transform:translateY(-2px);box-shadow:var(--sombra)}
+.modelo-card.selecionado{border-color:var(--cta);background:var(--azul-claro)}
+.modelo-card img{max-width:100%;height:130px;object-fit:contain;margin-bottom:10px}
+.modelo-card .nome{font-weight:700;color:var(--azul-escuro)}
+.modelo-card .preco{font-size:14px;color:var(--cinza)}
+.modelo-card .cores-mini{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.modelo-card .cor-mini{width:16px;height:16px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #ddd}
+/* ---------- ETAPA 2: CORES ---------- */
+.swatches{display:flex;gap:14px;flex-wrap:wrap}
+.swatch{width:44px;height:44px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.15s}
+.swatch.selecionada{border-color:var(--cta);transform:scale(1.12)}
+/* ---------- ETAPA 3: VISUALIZAÇÃO ---------- */
+.visualizacao{display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:start}
+.moto-grande{background:var(--fundo);border-radius:var(--raio);padding:26px;text-align:center;min-height:280px;display:flex;align-items:center;justify-content:center}
+.moto-grande img{max-width:100%;max-height:320px;object-fit:contain}
+.ficha{width:100%;border-collapse:collapse;font-size:14px}
+.ficha th,.ficha td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--borda)}
+.ficha th{background:var(--azul-claro);color:var(--azul-escuro)}
+/* ---------- ETAPA 4: GRUPO/PLANO + VARIAÇÃO ---------- */
+.planos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.plano-card{border:2px solid var(--borda);border-radius:var(--raio);padding:16px 18px;cursor:pointer;transition:.2s}
+.plano-card:hover{border-color:var(--azul)}
+.plano-card.selecionado{border-color:var(--cta);background:var(--azul-claro)}
+.plano-card .p-titulo{font-weight:700;color:var(--azul-escuro)}
+.plano-card .p-meta{font-size:13px;color:var(--cinza);margin:4px 0}
+.plano-card .p-parcela{font-size:20px;font-weight:700;color:var(--cta);font-variant-numeric:tabular-nums}
+.plano-card .p-indisponivel{color:var(--cinza);font-size:13px}
+.variacao-box{margin-top:22px;border-top:1px solid var(--borda);padding-top:18px}
+.variacao-box h3{font-size:15px;color:var(--azul-escuro);margin-bottom:12px}
+.variacao-pills{display:flex;gap:10px;flex-wrap:wrap}
+.variacao-pill{border:2px solid var(--borda);border-radius:30px;padding:9px 16px;cursor:pointer;font-size:14px;font-weight:600;background:#fff;transition:.15s}
+.variacao-pill:hover{border-color:var(--azul)}
+.variacao-pill.selecionada{border-color:var(--cta);background:var(--cta);color:#fff}
+/* ---------- ETAPA 5: RECOMENDAÇÃO / CAMINHO ---------- */
+.lance-input{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.lance-input input{flex:1;min-width:220px;padding:13px 14px;border:1px solid var(--borda);border-radius:8px;font-size:16px;font-family:inherit}
+.btn{display:inline-block;padding:13px 24px;border:none;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;transition:.2s;font-family:inherit}
+.btn-cta{background:var(--cta);color:#fff}
+.btn-cta:hover{background:var(--cta-hover)}
+.btn-azul{background:var(--azul);color:#fff}
+.btn-azul:hover{background:var(--azul-escuro)}
+.btn-ghost{background:transparent;color:var(--azul);border:2px solid var(--azul)}
+.btn-ghost:hover{background:var(--azul-claro)}
+.lance-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.lance-card{border:2px solid var(--borda);border-radius:var(--raio);padding:20px}
+.lance-card.destaque{border-color:var(--azul);background:var(--azul-claro)}
+.lance-card h4{color:var(--azul-escuro);margin-bottom:12px;font-size:16px}
+.linha-lance{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px dashed var(--borda)}
+.linha-lance strong{font-variant-numeric:tabular-nums}
+.linha-lance.total{font-size:17px;font-weight:800;color:var(--cta);border-bottom:none;padding-top:10px}
+.badge-media{display:inline-block;margin-top:10px;padding:6px 12px;border-radius:30px;font-size:13px;font-weight:700}
+.badge-acima{background:#DCFCE7;color:#166534}
+.badge-abaixo{background:#FEE2E2;color:#991B1B}
+.caminho-box{margin-top:18px;background:var(--fundo);border-radius:10px;padding:16px 18px}
+.caminho-box .c-titulo{font-weight:800;color:var(--azul-escuro)}
+.caminho-box .c-texto{font-size:14px;color:var(--texto);margin-top:4px}
+.sugestao-box{margin-top:14px;border-left:4px solid var(--sucesso);background:#F0FDF4;padding:14px 16px;border-radius:0 10px 10px 0}
+.sugestao-box h4{color:#166534;font-size:15px;margin-bottom:8px}
+.sugestao-box .btn{margin-top:12px}
+/* ---------- ETAPA 6 ---------- */
+.media-card{background:var(--azul-escuro);color:#fff;border-radius:var(--raio);padding:24px;text-align:center;max-width:420px;margin:0 auto}
+.media-card .m-rotulo{font-size:13px;opacity:.85}
+.media-card .m-valor{font-size:34px;font-weight:800;color:#00D1FF;margin-top:6px}
+.media-card .m-extra{font-size:13px;opacity:.85;margin-top:10px}
+/* ---------- ETAPA 7 ---------- */
+.form-grid{display:grid;grid-template-columns:1fr;gap:14px;max-width:560px}
+.form-grid label{font-size:14px;font-weight:600;color:var(--azul-escuro)}
+.form-grid input{padding:13px 14px;border:1px solid var(--borda);border-radius:8px;font-size:16px;font-family:inherit}
+/* ---------- ETAPA 8 ---------- */
+.resumo-tabela{width:100%;border-collapse:collapse;font-size:15px;max-width:640px}
+.resumo-tabela tr{border-bottom:1px solid var(--borda)}
+.resumo-tabela td{padding:10px 12px}
+.resumo-tabela td:first-child{color:var(--cinza);width:45%}
+.resumo-tabela td:last-child{font-weight:700;text-align:right}
+.resumo-lance{background:var(--azul-claro);border-radius:10px;padding:14px 18px;max-width:640px;margin-top:18px}
+/* ---------- NAVEGAÇÃO ---------- */
+.nav-row{display:flex;justify-content:space-between;gap:12px;margin-top:26px;flex-wrap:wrap}
+/* ---------- FOOTER ---------- */
+footer{background:#1E293B;color:#9CA3AF;padding:26px 0;text-align:center;font-size:13px}
+.footer-content{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+footer img{height:20px;opacity:.6}
+/* ---------- CARTA PDF ---------- */
+#carta{position:absolute;left:-9999px;top:0;width:794px;background:#fff;color:#111;padding:40px;font-family:'Inter',sans-serif;font-size:13px;line-height:1.5}
+#carta .c-header{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--azul);padding-bottom:14px;margin-bottom:18px}
+#carta .c-header img{height:38px}
+#carta h1{font-size:22px;color:var(--azul-escuro);margin-bottom:6px}
+#carta h2{font-size:16px;color:var(--azul);margin:18px 0 8px}
+#carta table{width:100%;border-collapse:collapse;font-size:13px}
+#carta table td,#carta table th{border:1px solid #D6DEE8;padding:8px 10px;text-align:left}
+#carta table th{background:var(--azul-claro);color:var(--azul-escuro)}
+#carta .bloco-azul{background:var(--azul-escuro);color:#fff;border-radius:10px;padding:16px 20px;margin-top:16px}
+#carta .bloco-azul strong{color:#00D1FF}
+#carta .c-rodape{margin-top:26px;font-size:11px;color:var(--cinza);text-align:center;border-top:1px solid var(--borda);padding-top:12px}
+@media (max-width:900px){.modelos-grid{grid-template-columns:repeat(2,1fr)}.lance-cards{grid-template-columns:1fr}.visualizacao{grid-template-columns:1fr}}
+@media (max-width:600px){.modelos-grid{grid-template-columns:1fr}.planos-grid{grid-template-columns:1fr}.wizard-step{padding:20px}}
 </style>
 </head>
 <body>
-
-<header class="header">
-  <div class="container header__inner">
-    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="header__logo" onerror="this.style.display='none'">
-    <div class="header__marca">
-      <span class="header__adm">administrado por</span>
-      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="header__ancora" onerror="this.style.display='none'">
+<header>
+  <div class="container header-content">
+    <div class="header-left">
+      <img src="assets/logos/logo-bajaj-horizontal.png" alt="Bajaj" class="logo-bajaj">
+      <div class="brand-divider"></div>
+      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora" class="logo-ancora">
     </div>
+    <div class="header-right">Consórcio Nacional Bajaj<br>administrado por Âncora Consórcios</div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="container">
-    <h1 class="hero__titulo">Escolha sua moto Bajaj e simule seu consórcio</h1>
-    <p class="hero__sub">A experiência de comprar uma moto, com a flexibilidade do consórcio.</p>
+<div class="container">
+  <div class="hero">
+    <h1>Escolha sua moto Bajaj e simule seu consórcio</h1>
+    <p>A experiência de comprar uma moto, com a flexibilidade do consórcio.</p>
   </div>
-</section>
+  <div class="progress" id="progress"></div>
 
-<main class="container simulador">
-
-  <section class="card" id="etapa-modelo">
-    <div class="card__titulo"><span class="badge">1</span>Selecione o modelo</div>
-    <div class="grid-modelos" id="listaModelos"></div>
-    <div class="nav">
-      <button class="btn btn--primario" id="btnAvancarModelo" disabled>Continuar</button>
-    </div>
+  <!-- ETAPA 1: MODELOS -->
+  <section class="wizard-step" id="etapa1">
+    <h2>1. Escolha o modelo</h2>
+    <p class="sub">Selecione a moto desejada. Os créditos +LE e 120% aparecem nas próximas etapas quando existirem.</p>
+    <div class="modelos-grid" id="grid-modelos"></div>
   </section>
 
-  <section class="card" id="etapa-cor" hidden>
-    <div class="card__titulo"><span class="badge">2</span>Selecione a cor <span class="subtitulo" id="subtituloModelo"></span></div>
-    <div class="swatches" id="listaCores"></div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="1">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarCor" disabled>Continuar</button>
-    </div>
+  <!-- ETAPA 2: CORES -->
+  <section class="wizard-step" id="etapa2">
+    <h2>2. Escolha a cor</h2>
+    <p class="sub" id="cor-sub"></p>
+    <div class="swatches" id="swatches"></div>
   </section>
 
-  <section class="card" id="etapa-visualizacao" hidden>
-    <div class="card__titulo"><span class="badge">3</span>Sua moto</div>
+  <!-- ETAPA 3: VISUALIZAÇÃO -->
+  <section class="wizard-step" id="etapa3">
+    <h2>3. Sua moto</h2>
+    <p class="sub">Confira a moto escolhida e sua ficha técnica.</p>
     <div class="visualizacao">
-      <div class="moto"><img id="imgMoto" alt="Moto selecionada"></div>
-      <div class="ficha" id="fichaTecnica"></div>
-    </div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="2">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarVisualizacao">Continuar</button>
+      <div class="moto-grande"><img id="moto-grande-img" src="" alt="Moto selecionada"></div>
+      <table class="ficha" id="ficha"></table>
     </div>
   </section>
 
-  <section class="card" id="etapa-grupo" hidden>
-    <div class="card__titulo"><span class="badge">4</span>Grupo, plano e variação de crédito</div>
-    <p class="aviso">Escolha o grupo e o plano. Quando o modelo tiver mais de uma variação de crédito (base, +LE com lance embutido ou 120% — BAJ09), ela aparece dentro do card — basta tocar na opção desejada.</p>
-    <div class="grid-planos" id="listaPlanos"></div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="3">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarGrupo" disabled>Continuar</button>
+  <!-- ETAPA 4: GRUPO, PLANO E VARIAÇÃO DE CRÉDITO -->
+  <section class="wizard-step" id="etapa4">
+    <h2>4. Grupo, plano e crédito</h2>
+    <p class="sub">Escolha o grupo e o plano. Quando existir, o crédito com lance embutido (+LE ou 120%) aparece automaticamente.</p>
+    <div class="planos-grid" id="grid-planos"></div>
+    <div class="variacao-box" id="variacao-box" style="display:none">
+      <h3>Variação de crédito</h3>
+      <div class="variacao-pills" id="variacao-pills"></div>
+      <p class="sub" id="variacao-desc" style="margin-top:12px"></p>
     </div>
   </section>
 
-  <section class="card" id="etapa-recomendacao" hidden>
-    <div class="card__titulo"><span class="badge">5</span>Recomendação de lance e caminho de contemplação</div>
-    <p class="aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da variação escolhida e recomenda o caminho de contemplação ideal. No crédito +LE e no crédito 120% (BAJ09), o percentual efetivo já vem somado ao lance embutido do próprio crédito (+30% e +16,5%, respectivamente), e o valor em reais disponível como lance embutido é exibido.</p>
-    <div class="lance-form">
-      <div class="lance-field">
-        <label for="valorLance">Valor do lance disponível do cliente (R$)</label>
-        <input type="text" id="valorLance" inputmode="numeric" placeholder="Ex.: 8.000">
-      </div>
-      <button class="btn btn--primario" id="btnCalcularLance">Ver recomendação</button>
+  <!-- ETAPA 5: RECOMENDAÇÃO DE LANCE -->
+  <section class="wizard-step" id="etapa5">
+    <h2>5. Caminho da contemplação</h2>
+    <p class="sub">Informe quanto o cliente pode dar de lance em dinheiro. O simulador soma o lance embutido disponível no crédito e mostra o valor total do lance.</p>
+    <div class="lance-input">
+      <input type="number" id="input-lance" min="0" step="100" placeholder="Lance em dinheiro (R$), ex.: 3.000">
+      <button class="btn btn-cta" id="btn-recomendar">Calcular caminho</button>
     </div>
-    <div class="recomendacao" id="resultadoRecomendacao"></div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="4">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarRecomendacao">Continuar</button>
+    <div id="resultado-recomendacao"></div>
+  </section>
+
+  <!-- ETAPA 6: MÉDIA -->
+  <section class="wizard-step" id="etapa6">
+    <h2>6. Estudo de assembleia</h2>
+    <p class="sub">Referência de mercado do grupo selecionado.</p>
+    <div class="media-card" id="media-card"></div>
+  </section>
+
+  <!-- ETAPA 7: DADOS -->
+  <section class="wizard-step" id="etapa7">
+    <h2>7. Dados da proposta</h2>
+    <p class="sub">Preencha para gerar a carta de vendas em PDF.</p>
+    <div class="form-grid">
+      <label>Nome do cliente<input type="text" id="cliente-nome" placeholder="Nome completo do cliente"></label>
+      <label>Nome do vendedor<input type="text" id="vendedor-nome" placeholder="Nome do vendedor"></label>
+      <label>WhatsApp do vendedor<input type="text" id="vendedor-whats" placeholder="(00) 00000-0000"></label>
     </div>
   </section>
 
-  <section class="card" id="etapa-media" hidden>
-    <div class="card__titulo"><span class="badge">6</span>Estudo de assembleia</div>
-    <div class="media" id="cardMedia"></div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="5">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarMedia">Continuar</button>
+  <!-- ETAPA 8: RESUMO -->
+  <section class="wizard-step" id="etapa8">
+    <h2>8. Resumo da proposta</h2>
+    <p class="sub">Confira e gere o PDF da carta de vendas.</p>
+    <table class="resumo-tabela" id="resumo"></table>
+    <div class="resumo-lance" id="resumo-lance"></div>
+    <div class="nav-row" style="justify-content:center">
+      <button class="btn btn-cta" id="btn-pdf">Baixar proposta em PDF</button>
     </div>
   </section>
-
-  <section class="card" id="etapa-dados" hidden>
-    <div class="card__titulo"><span class="badge">7</span>Dados da proposta</div>
-    <div class="form">
-      <label for="nomeCliente">Nome do cliente</label>
-      <input type="text" id="nomeCliente" placeholder="Nome completo do cliente">
-      <label for="nomeVendedor">Nome do vendedor</label>
-      <input type="text" id="nomeVendedor" placeholder="Seu nome">
-      <label for="whatsVendedor">WhatsApp do vendedor</label>
-      <input type="tel" id="whatsVendedor" placeholder="(00) 00000-0000">
-    </div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="6">Voltar</button>
-      <button class="btn btn--primario" id="btnAvancarDados">Ver resumo</button>
-    </div>
-  </section>
-
-  <section class="card" id="etapa-resumo" hidden>
-    <div class="card__titulo"><span class="badge">8</span>Resumo da proposta</div>
-    <div class="resumo" id="cardResumo"></div>
-    <div class="nav">
-      <button class="btn btn--ghost" data-voltar="7">Voltar</button>
-      <button class="btn btn--cta" id="btnGerarPDF">Gerar PDF da proposta</button>
-    </div>
-  </section>
-
-</main>
-
-<div id="carta" class="carta" hidden>
-  <div class="carta__header">
-    <img src="assets/logos/logo-bajaj-vertical.png" alt="Consórcio Nacional Bajaj" class="carta__logo" onerror="this.onerror=null;this.src='assets/logos/logo-bajaj-horizontal.png';">
-    <div class="carta__marca">
-      <span class="carta__adm">administrado por</span>
-      <img src="assets/logos/logo-ancora-escuro.png" alt="Âncora Consórcios" class="carta__ancora" onerror="this.onerror=null;this.src='assets/logos/logo-ancora-branco.png';">
-    </div>
-  </div>
-  <h2 class="carta__titulo">Proposta de Consórcio</h2>
-  <div class="carta__corpo">
-    <div class="carta__moto" id="cartaMotoBox"><img id="cartaImgMoto" alt="Moto escolhida"></div>
-    <div class="carta__info">
-      <p class="carta__modelo" id="cartaModelo"></p>
-      <p class="carta__cor" id="cartaCor"></p>
-      <div class="ficha-grid" id="cartaFicha"></div>
-    </div>
-  </div>
-  <div class="carta__destaque" id="cartaDestaque"></div>
-  <div class="detalhes-grid" id="cartaDetalhes"></div>
-  <div class="carta__rodape" id="cartaRodape"></div>
 </div>
 
-<footer class="footer">
-  <div class="container footer__inner">
-    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Consórcio Nacional Bajaj" class="footer__logo" onerror="this.style.display='none'">
-    <div class="footer__marca">
-      <span class="footer__adm">administrado por</span>
-      <img src="assets/logos/logo-ancora-branco.png" alt="Âncora Consórcios" class="footer__ancora" onerror="this.style.display='none'">
-    </div>
+<footer>
+  <div class="container footer-content">
+    <img src="assets/logos/logo-bajaj-horizontal.png" alt="Bajaj">
+    <span>Consórcio Nacional Bajaj · administrado por Âncora Consórcios</span>
+    <img src="assets/logos/logo-ancora-branco.png" alt="Âncora">
   </div>
-  <p class="footer__copy">Consórcio Nacional Bajaj · administrado por Âncora Consórcios · Lei 11.795/2008</p>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- CARTA PDF (fora da tela) -->
+<div id="carta"></div>
+
 <script>
-/* ================================================================
-   SIMULADOR CONSÓRCIO NACIONAL BAJAJ
-   ================================================================
-   >>> REGRA DE BENS COMPARTILHADOS (BAJ09) <<<
-   O bem BAJ09 (crédito 120%, R$ 32.388) pode ser usado TANTO com o
-   crédito base BAJ03 (Dominar 400) QUANTO com o BAJ18 (NS400Z).
-   Por isso a NS400Z também oferece o seletor base <-> 120%.
-   >>> EXTENSÃO DAS IMAGENS POR MODELO <<<
-   pulsar-n150 e dominar-ns400z usam .webp — os demais usam .png.
-   >>> LANCE EMBUTIDO (decisão da versão travada) <<<
-   No caminho de contemplação, o percentual efetivo do lance já vem
-   somado ao lance embutido do crédito contratado (+LE soma 30 pontos;
-   BAJ09/120% soma 16,5 pontos) e o valor em R$ disponível como lance
-   embutido é exibido (excedente: crédito - valor da moto).
-   ================================================================ */
-var EXTENSOES = {
-  "pulsar-n150":    "webp",
-  "dominar-ns160":  "png",
-  "dominar-ns200":  "png",
-  "dominar-250":    "png",
-  "dominar-400":    "png",
-  "dominar-ns400z": "webp"
-};
-
-/* ============ CONFIG: PLANILHA (com anti-cache) ============ */
-var CONFIG = {
+/* ================= CONFIG ================= */
+const CONFIG = {
   urlTabelas: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=2089215310&single=true&output=csv",
-  urlAtual: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=1973077175&single=true&output=csv"
+  urlAtual: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=1973077175&single=true&output=csv",
+  proximaAssembleia: "14/08/2026",
+  proximaMega: "Setembro/2026",
+  fundoReserva: "2%",
+  vencimento: "10"
 };
 
-/* ============ MODELOS ============ */
-var MODELOS = {
-  "pulsar-n150": { nome: "Pulsar N150", pasta: "pulsar-n150", cores: ["branca","vermelha","preta"], ficha: {
-    "Cilindrada":"149,68 cc","Potência":"14 CV @ 8.500 RPM","Torque":"1,38 kgf.m @ 6.000 RPM","Tanque":"14 litros","Peso":"145 kg","Freios":"Disco ABS diant. / tambor tras." } },
-  "dominar-ns160": { nome: "Dominar NS160", pasta: "dominar-ns160", cores: ["branca","cinza","vermelha","preta"], ficha: {
-    "Cilindrada":"160,3 cc","Potência":"17 CV @ 9.000 RPM","Torque":"1,488 kgf.m @ 7.250 RPM","Tanque":"12 litros","Peso":"152 kg","Freios":"Disco ABS duplo canal" } },
-  "dominar-ns200": { nome: "Dominar NS200", pasta: "dominar-ns200", cores: ["branca","cinza","preta","vermelha"], ficha: {
-    "Cilindrada":"199,5 cc","Potência":"24 CV @ 9.750 RPM","Torque":"1,896 kgf.m @ 8.000 RPM","Tanque":"12 litros","Peso":"158 kg","Freios":"Disco ABS duplo canal" } },
-  "dominar-250": { nome: "Dominar 250", pasta: "dominar-250", cores: ["preta","vermelha"], ficha: {
-    "Cilindrada":"248,77 cc","Potência":"27 CV @ 8.400 RPM","Torque":"2,39 kgf.m @ 6.500 RPM","Tanque":"13 litros","Peso":"180 kg","Freios":"Disco ABS duplo canal" } },
-  "dominar-400": { nome: "Dominar 400", pasta: "dominar-400", cores: ["azul","branca","preta","verde","vermelha"], ficha: {
-    "Cilindrada":"373,27 cc","Potência":"40 CV @ 8.800 RPM","Torque":"3,569 kgf.m @ 6.500 RPM","Tanque":"13 litros","Peso":"192 kg","Freios":"Disco ABS" } },
-  "dominar-ns400z": { nome: "Dominar NS400Z", pasta: "dominar-ns400z", cores: ["preta","vermelha","branca"], ficha: {
-    "Cilindrada":"373,27 cc","Potência":"40 CV @ 8.500 RPM","Torque":"3,57 kgf.m @ 7.000 RPM","Tanque":"12 litros","Peso":"174 kg","Freios":"Disco ABS + controle de tração" } }
+/* ================= MODELOS (imagens .webp p/ pulsar-n150 e dominar-ns400z) ================= */
+const EXTENSOES = { "pulsar-n150":"webp", "dominar-ns400z":"webp" };
+
+const MODELOS = {
+  "pulsar-n150": {
+    nome:"Pulsar N150", preco:16500, cores:["branca","vermelha","preta"],
+    ficha:{ "Cilindrada":"149,68 cc", "Potência":"14 CV", "Torque":"1,38 kgf.m", "Tanque":"12 litros", "Peso":"145 kg", "Freios":"ABS (disco dianteiro)" }
+  },
+  "dominar-ns160": {
+    nome:"Dominar NS 160", preco:19500, cores:["branca","cinza","preta","vermelha"],
+    ficha:{ "Cilindrada":"160,27 cc", "Potência":"17,3 CV", "Torque":"1,49 kgf.m", "Tanque":"12 litros", "Peso":"151 kg", "Freios":"ABS (duplo canal)" }
+  },
+  "dominar-ns200": {
+    nome:"Dominar NS 200", preco:22500, cores:["branca","cinza","preta","vermelha"],
+    ficha:{ "Cilindrada":"199,5 cc", "Potência":"24,5 CV", "Torque":"1,91 kgf.m", "Tanque":"12 litros", "Peso":"158 kg", "Freios":"ABS (duplo canal)" }
+  },
+  "dominar-250": {
+    nome:"Dominar 250", preco:23400, cores:["preta","vermelha"],
+    ficha:{ "Cilindrada":"249,07 cc", "Potência":"27 CV", "Torque":"2,4 kgf.m", "Tanque":"14 litros", "Peso":"168 kg", "Freios":"ABS (duplo canal)" }
+  },
+  "dominar-400": {
+    nome:"Dominar 400", preco:26990, cores:["azul","branca","preta","verde","vermelha"],
+    ficha:{ "Cilindrada":"373,27 cc", "Potência":"40 CV", "Torque":"3,57 kgf.m", "Tanque":"13 litros", "Peso":"192 kg", "Freios":"ABS (duplo canal)" }
+  },
+  "dominar-ns400z": {
+    nome:"NS400Z", preco:26990, cores:["preta","vermelha","branca"],
+    ficha:{ "Cilindrada":"373,27 cc", "Potência":"40 CV", "Torque":"3,57 kgf.m", "Tanque":"13 litros", "Peso":"185 kg", "Freios":"ABS (duplo canal)" }
+  }
 };
 
-/* Valor de tabela da moto (preço oficial da linha) — usado para calcular
-   o lance embutido disponível = crédito da variação - valor da moto. */
-var VALORES_MOTO = {
-  "pulsar-n150": 16500,
-  "dominar-ns160": 19500,
-  "dominar-ns200": 22500,
-  "dominar-250": 23400,
-  "dominar-400": 26990,
-  "dominar-ns400z": 26990
-};
-
-/* ============ TABELAS (fallback local identico a planilha) ============
-   [modelo, grupo, plano, variacao, codigo, credito, parcela]
-   38 linhas oficiais + 4 linhas BAJ09 replicadas para NS400Z (bem compartilhado) */
-var TABELAS_RAW = [
+/* ================= TABELAS (fallback — 38 linhas oficiais) ================= */
+/* [pasta, grupo, plano, variacao, codigo, credito, parcela] */
+let TABELAS_RAW = [
   ["dominar-ns160",6001,"44x Normal","","BAJ12",19500,543.62],
   ["dominar-ns200",6001,"44x Normal","","BAJ14",22500,627.27],
   ["dominar-250",6001,"44x Normal","","BAJ07",23400,652.33],
@@ -400,7 +305,6 @@ var TABELAS_RAW = [
   ["dominar-ns160",6001,"44x Normal","+LE","BAJ13",27857.14,776.60],
   ["dominar-ns200",6001,"44x Normal","+LE","BAJ15",32142.86,896.08],
   ["dominar-400",6001,"44x Normal","120%","BAJ09",32388,902.90],
-  ["dominar-ns400z",6001,"44x Normal","120%","BAJ09",32388,902.90],
   ["dominar-ns160",6001,"44x 70%","","BAJ12",19500,410.64],
   ["dominar-ns200",6001,"44x 70%","","BAJ14",22500,473.81],
   ["dominar-250",6001,"44x 70%","","BAJ07",23400,492.77],
@@ -410,7 +314,6 @@ var TABELAS_RAW = [
   ["dominar-ns160",6001,"44x 70%","+LE","BAJ13",27857.14,586.64],
   ["dominar-ns200",6001,"44x 70%","+LE","BAJ15",32142.86,676.90],
   ["dominar-400",6001,"44x 70%","120%","BAJ09",32388,682.04],
-  ["dominar-ns400z",6001,"44x 70%","120%","BAJ09",32388,682.04],
   ["dominar-ns160",6000,"68x Normal","","BAJ12",19500,360.49],
   ["dominar-ns200",6000,"68x Normal","","BAJ14",22500,416.00],
   ["dominar-250",6000,"68x Normal","","BAJ07",23400,432.58],
@@ -420,7 +323,6 @@ var TABELAS_RAW = [
   ["dominar-ns160",6000,"68x Normal","+LE","BAJ13",27857.14,515.03],
   ["dominar-ns200",6000,"68x Normal","+LE","BAJ15",32142.86,594.19],
   ["dominar-400",6000,"68x Normal","120%","BAJ09",32388,598.78],
-  ["dominar-ns400z",6000,"68x Normal","120%","BAJ09",32388,598.78],
   ["dominar-250",6000,"68x Normal","+LE","BAJ08",33428.57,618.00],
   ["dominar-ns160",6000,"68x 70%","","BAJ12",19500,274.48],
   ["dominar-ns200",6000,"68x 70%","","BAJ14",22500,316.72],
@@ -431,814 +333,551 @@ var TABELAS_RAW = [
   ["dominar-ns160",6000,"68x 70%","+LE","BAJ13",27857.14,392.08],
   ["dominar-ns200",6000,"68x 70%","+LE","BAJ15",32142.86,452.42],
   ["dominar-400",6000,"68x 70%","120%","BAJ09",32388,455.88],
-  ["dominar-ns400z",6000,"68x 70%","120%","BAJ09",32388,455.88],
   ["dominar-250",6000,"68x 70%","+LE","BAJ08",33428.57,470.50]
 ];
 
-/* ============ GRUPOS, MEDIAS (somente menor lance - decisao do projeto) ============ */
-var GRUPOS_INFO = {
-  6000: { parcelas: 68, taxaAdm: "18%", vencimento: "10" },
-  6001: { parcelas: 44, taxaAdm: "17%", vencimento: "10" }
+/* ================= GRUPOS / MÉDIAS ================= */
+const GRUPOS_INFO = {
+  6000:{ parcelas:68, taxaAdm:"18%", rotulo:"68x" },
+  6001:{ parcelas:44, taxaAdm:"17%", rotulo:"44x" }
 };
-var MEDIAS = { 6000: 70.44, 6001: 62.51 };
-var proximaAssembleia = "14/08/2026";
-var proximaMegaAssembleia = "Setembro/2026";
-var fundoReserva = "2%";
+const MEDIAS = { 6000:70.44, 6001:62.51 };
 
-var CORES_VISUAIS = {
-  branca: "#F5F5F5", cinza: "#9CA3AF", preta: "#1F2937",
-  vermelha: "#DC2626", azul: "#2563EB", verde: "#16A34A"
+/* ================= VARIAÇÃO DE CRÉDITO ================= */
+/* BAJ09 (120% Dominar 400) aplica-se ao Dominar 400 (BAJ03) E ao NS400Z (BAJ18) */
+const VARIACOES_POR_MODELO = {
+  "pulsar-n150":["+LE"],
+  "dominar-ns160":["","+LE"],
+  "dominar-ns200":["","+LE"],
+  "dominar-250":["","+LE"],
+  "dominar-400":["","120%"],
+  "dominar-ns400z":["","120%"]
+};
+const ROTULO_VARIACAO = {
+  "":"Crédito Normal",
+  "+LE":"Crédito +LE (Lance Embutido)",
+  "120%":"Crédito 120% (BAJ09)"
+};
+const DESCRICAO_VARIACAO = {
+  "":"Crédito no valor do bem. Sem lance embutido.",
+  "+LE":"Crédito ampliado para usar até 30% do crédito como lance embutido e ainda sobrar o valor da moto.",
+  "120%":"Crédito de 120% do valor da linha 400 (R$ 32.388,00 · BAJ09). Libera lance embutido de até 16,5% do crédito. Aplicável ao Dominar 400 (BAJ03) e ao NS400Z (BAJ18)."
+};
+/* Limite oficial de lance embutido, em % do crédito */
+const LIMITE_EMBUTIDO_PCT = { "":0, "+LE":30, "120%":16.5 };
+
+/* ================= CORES ================= */
+const CORES_VISUAIS = {
+  branca:"#F5F5F5", cinza:"#9CA3AF", preta:"#1F2937",
+  vermelha:"#DC2626", azul:"#2563EB", verde:"#16A34A"
 };
 
-/* ============ ESTADO ============ */
-var tabelas = TABELAS_RAW.slice();
-var modeloSelecionado = null;
-var corSelecionada = null;
-var planoSelecionado = null;
-var lanceCliente = null;
-var recomendacaoAtual = null;
-var imagemMotoAtual = null;
+/* ================= ESTADO ================= */
+const ESTADO = {
+  modelo:null, cor:null, grupo:null, plano:null, variacao:"",
+  oferta:null, recomendacao:null
+};
+let ETAPA_ATUAL = 1;
+const ETAPAS = ["etapa1","etapa2","etapa3","etapa4","etapa5","etapa6","etapa7","etapa8"];
 
-function $(id){ return document.getElementById(id); }
-
-/* ============ HELPERS ============ */
-function formatarDinheiro(v){
-  var n = typeof v === "number" ? v : parseFloat(v);
-  if (isNaN(n)) return "—";
-  return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+/* ================= HELPERS ================= */
+function fmtDinheiro(v){
+  return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 }
-
-function variacaoRotulo(v){
-  if (v === "+LE") return { nome: "Crédito +LE", sub: "lance embutido +30%" };
-  if (v === "120%") return { nome: "Crédito 120%", sub: "BAJ09 · recurso embutido máx. 16,5%" };
-  return { nome: "Crédito base", sub: "" };
+function fmtPct(v){
+  return v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%";
 }
-
-/* Valor da moto: prefere o crédito da variação base na tabela (que acompanha
-   a planilha); se o modelo não tiver variação base (Pulsar N150 só existe +LE),
-   usa o preço oficial registrado em VALORES_MOTO. */
-function valorMotoDoModelo(modeloId){
-  for (var i = 0; i < tabelas.length; i++) {
-    if (tabelas[i][0] === modeloId && tabelas[i][3] === "") return tabelas[i][5];
-  }
-  return VALORES_MOTO[modeloId] || 0;
+function caminhoImagem(modelo,cor){
+  const ext = EXTENSOES[modelo] || "png";
+  return "assets/"+modelo+"/"+cor+"."+ext;
 }
+function corPadrao(modelo){ return MODELOS[modelo].cores[0]; }
 
-/* Ofertas de um modelo+grupo+plano, ordenadas: base, +LE, 120% */
-function encontrarOfertas(modelo, grupo, plano){
-  var res = [], ordem = { "": 0, "+LE": 1, "120%": 2 };
-  for (var i = 0; i < tabelas.length; i++) {
-    if (tabelas[i][0] === modelo && tabelas[i][1] === grupo && tabelas[i][2] === plano) res.push(tabelas[i]);
-  }
-  res.sort(function(a,b){ return (ordem[a[3]] || 0) - (ordem[b[3]] || 0); });
-  return res;
-}
-
-function encontrarOferta(modelo, grupo, plano){
-  var o = encontrarOfertas(modelo, grupo, plano);
-  return o.length ? o[0] : null;
-}
-
-function montarPlano(grupo, plano, variacao, codigo){
-  for (var i = 0; i < tabelas.length; i++) {
-    if (tabelas[i][0] === modeloSelecionado && tabelas[i][1] === grupo && tabelas[i][2] === plano && tabelas[i][4] === codigo) {
-      return { grupo: grupo, plano: plano, oferta: tabelas[i] };
-    }
-  }
-  return { grupo: grupo, plano: plano, oferta: encontrarOferta(modeloSelecionado, grupo, plano) };
-}
-
-function montarFichaHTML(ficha){
-  var html = "";
-  for (var k in ficha) {
-    html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
-  }
-  return html;
-}
-
-/* Imagem: tenta a extensao do mapa EXTENSOES primeiro e faz fallback automatico */
-function carregarImagem(el, modeloId, cor, label){
-  var m = MODELOS[modeloId];
-  var pasta = m.pasta;
-  var extPrincipal = EXTENSOES[modeloId] || "png";
-  var outrasExt = extPrincipal === "webp" ? ["png","jpg"] : ["webp","jpg"];
-  var padroes = [];
-  padroes.push("assets/" + pasta + "/" + cor + "." + extPrincipal);
-  padroes.push("assets/" + pasta + "/" + cor + "." + outrasExt[0]);
-  padroes.push("assets/" + pasta + "/" + cor + "." + outrasExt[1]);
-  padroes.push("assets/" + pasta + "/" + pasta + "-" + cor + "." + extPrincipal);
-  padroes.push("assets/" + pasta + "/" + pasta + "-" + cor + "." + outrasExt[0]);
-  padroes.push("assets/" + pasta + "/" + pasta + "_" + cor + "." + extPrincipal);
-  padroes.push("assets/" + pasta + "/" + pasta + "_" + cor + "." + outrasExt[0]);
-
-  var i = 0;
-  function tentar(){
-    if (i >= padroes.length) {
-      el.style.display = "none";
-      var wrap = el.parentElement;
-      if (wrap && !wrap.querySelector(".img-fallback")) {
-        var fb = document.createElement("div");
-        fb.className = "img-fallback";
-        fb.textContent = label || "Imagem indisponível";
-        wrap.appendChild(fb);
-      }
-      return;
-    }
-    el.onload = function(){
-      el.style.display = "";
-      imagemMotoAtual = el.currentSrc || el.src;
-      var wrap = el.parentElement;
-      if (wrap) {
-        var fb2 = wrap.querySelector(".img-fallback");
-        if (fb2) fb2.remove();
-      }
-    };
-    el.onerror = function(){ i++; tentar(); };
-    el.src = padroes[i];
-    i++;
-  }
-  tentar();
-}
-
-/* ============ PARSER CSV ============ */
+/* ================= PARSER CSV (robusto p/ valores com vírgula entre aspas) ================= */
 function parseCSV(texto){
-  var linhas = [], linha = [], campo = "", dentroQuotes = false;
-  for (var i = 0; i < texto.length; i++) {
-    var c = texto[i];
-    if (dentroQuotes) {
-      if (c === '"') {
-        if (texto[i+1] === '"') { campo += '"'; i++; }
-        else { dentroQuotes = false; }
-      } else { campo += c; }
-    } else {
-      if (c === '"') { dentroQuotes = true; }
-      else if (c === ",") { linha.push(campo); campo = ""; }
-      else if (c === "\n") { linha.push(campo); linhas.push(linha); linha = []; campo = ""; }
-      else { campo += c; }
-    }
+  const linhas=[]; let atual="", dentro=false, campo="";
+  for(let i=0;i<texto.length;i++){
+    const c=texto[i];
+    if(c==='"'&&dentro&&texto[i+1]==='"'){campo+='"';i++;continue;}
+    if(c==='"'){dentro=!dentro;continue;}
+    if(c===','&&!dentro){linhas.push(campo);campo="";continue;}
+    if((c==='\n'||c==='\r')&&!dentro){linhas.push(campo);campo="";
+      if(linhas.some(x=>x.trim()!=="")){atual=atual.concat(linhas);linhas.length=0;}
+      continue;}
+    campo+=c;
   }
-  if (campo !== "" || linha.length > 0) { linha.push(campo); linhas.push(linha); }
-  return linhas;
+  if(campo.trim()!==""){linhas.push(campo);}
+  if(linhas.length){atual=atual.concat(linhas);}
+  const out=[]; let row=[];
+  for(const v of atual){row.push(v);if(row.length===6){out.push(row);row=[];}}
+  return out;
+}
+function numBR(s){
+  if(typeof s==="number")return s;
+  return parseFloat(String(s).replace(/[R$\s]/g,"").replace(/\./g,"").replace(",","."))||0;
 }
 
-function limparNumero(s){
-  return parseFloat(String(s).replace(/[R$\s.]/g, "").replace(",", "."));
+/* Mapa nome da planilha -> pasta do simulador */
+const MAPA_MODELO = {
+  "Dominar NS 160":"dominar-ns160",
+  "Dominar NS 200":"dominar-ns200",
+  "Dominar 250":"dominar-250",
+  "Pulsar N150 + LE":"pulsar-n150",
+  "Dominar 400":"dominar-400",
+  "NS400Z":"dominar-ns400z",
+  "Dominar NS160 +LE":"dominar-ns160",
+  "Dominar NS200 +LE":"dominar-ns200",
+  "Dominar 400 120%":"dominar-400",
+  "Dominar 250 + LE":"dominar-250"
+};
+function variacaoPorNome(nome){
+  if(nome.indexOf("120%")>=0)return "120%";
+  if(nome.indexOf("+LE")>=0||nome.indexOf("+ LE")>=0)return "+LE";
+  return "";
 }
 
-function normalizarNome(s){
-  return String(s).toLowerCase().replace(/[^a-z0-9]/g, "");
-}
-
-/* ============ CARREGAR DADOS DA PLANILHA ============ */
+/* ================= CARREGAR DADOS DA PLANILHA ================= */
 async function carregarDadosPlanilha(){
-  var t = new Date().getTime();
-  try {
-    var resp = await fetch(CONFIG.urlAtual + "&_=" + t);
-    if (!resp.ok) throw new Error("falha");
-    var dados = {};
-    parseCSV(await resp.text()).forEach(function(l){
-      var k = l[0], v = l[1];
-      if (k && v && k !== "Chave") dados[k.trim()] = v.trim();
-    });
-    if (dados.media_menor_lance_6000) MEDIAS[6000] = limparNumero(dados.media_menor_lance_6000);
-    if (dados.media_menor_lance_6001) MEDIAS[6001] = limparNumero(dados.media_menor_lance_6001);
-    if (dados.proxima_assembleia) proximaAssembleia = dados.proxima_assembleia;
-    if (dados.proxima_mega_assembleia) proximaMegaAssembleia = dados.proxima_mega_assembleia;
-    if (dados.fundo_reserva) fundoReserva = dados.fundo_reserva;
-  } catch (e) { /* usa dados locais */ }
-
-  try {
-    var resp2 = await fetch(CONFIG.urlTabelas + "&_=" + t);
-    if (!resp2.ok) throw new Error("falha");
-    var linhas2 = parseCSV(await resp2.text());
-    var novas = [];
-    var mapaModelo = {
-      "dominarns160":"dominar-ns160","dominarns200":"dominar-ns200","dominar250":"dominar-250",
-      "pulsarn150le":"pulsar-n150","pulsarn150":"pulsar-n150","dominar400":"dominar-400",
-      "ns400z":"dominar-ns400z","dominarns400z":"dominar-ns400z","dominar250le":"dominar-250",
-      "dominar400120":"dominar-400","120dominar400":"dominar-400","120dominarns400z":"dominar-ns400z"
-    };
-    for (var i = 1; i < linhas2.length; i++) {
-      var l2 = linhas2[i];
-      var nome = l2[0], codigo = l2[1], grupo = l2[2], plano = l2[3], credito = l2[4], parcela = l2[5];
-      if (!nome || !codigo || !grupo) continue;
-      var chave = normalizarNome(nome.replace(/\+ ?le/gi, "").replace(/120%/g, ""));
-      var modelo = mapaModelo[chave];
-      if (!modelo) {
-        for (var mid in MODELOS) {
-          if (chave.indexOf(normalizarNome(MODELOS[mid].nome)) >= 0 || normalizarNome(MODELOS[mid].nome).indexOf(chave) >= 0) { modelo = mid; break; }
-        }
-      }
-      if (!modelo) continue;
-      var variacao = /\+ ?le/i.test(nome) ? "+LE" : (nome.indexOf("120%") >= 0 ? "120%" : "");
-      novas.push([modelo, parseInt(grupo,10), String(plano).trim(), variacao, String(codigo).trim(), limparNumero(credito), limparNumero(parcela)]);
+  try{
+    const res=await fetch(CONFIG.urlTabelas);
+    if(!res.ok)throw new Error("http");
+    const txt=await res.text();
+    const linhas=parseCSV(txt);
+    const novas=[];
+    for(const l of linhas){
+      const nome=l[0], grupo=parseInt(l[2],10), plano=l[3];
+      const pasta=MAPA_MODELO[nome];
+      if(!pasta||!grupo||!plano)continue;
+      novas.push([pasta,grupo,plano,variacaoPorNome(nome),l[1].trim(),numBR(l[4]),numBR(l[5])]);
     }
-
-    /* REGRA BAJ09 (bem compartilhado): se a planilha nao trouxer NS400Z 120%,
-       replica as linhas BAJ09 do Dominar 400 para a NS400Z — mesmo credito,
-       mesmas parcelas, mesmo codigo. Nenhum credito novo e criado. */
-    var temNs400z120 = novas.some(function(l){ return l[0] === "dominar-ns400z" && l[3] === "120%"; });
-    if (!temNs400z120) {
-      var baj09 = [];
-      for (var r9 = 0; r9 < novas.length; r9++) {
-        if (novas[r9][4] === "BAJ09") baj09.push(novas[r9].slice());
+    if(novas.length>=30){ TABELAS_RAW=novas; }
+    try{
+      const r2=await fetch(CONFIG.urlAtual);
+      if(r2.ok){
+        const t2=await r2.text();
+        const l2=parseCSV(t2);
+        const mapa={};
+        for(const row of l2){ if(row.length>=2){ mapa[String(row[0]).trim().toLowerCase()]=row[1]; } }
+        const m6=numBR(mapa["media_menor_lance_6000"]||mapa["media_menor_lance_6000%"]);
+        const m1=numBR(mapa["media_menor_lance_6001"]||mapa["media_menor_lance_6001%"]);
+        if(m6>0)MEDIAS[6000]=m6;
+        if(m1>0)MEDIAS[6001]=m1;
       }
-      for (var r10 = 0; r10 < baj09.length; r10++) {
-        baj09[r10][0] = "dominar-ns400z";
-        novas.push(baj09[r10]);
-      }
-    }
-    if (novas.length >= 38) tabelas = novas;
-  } catch (e) { /* usa tabelas locais */ }
-
-  if (planoSelecionado) {
-    var antigo = planoSelecionado;
-    renderPlanos();
-    var cardsSel = document.querySelectorAll(".plano-card");
-    for (var s = 0; s < cardsSel.length; s++) {
-      var cd = cardsSel[s];
-      if (cd.dataset.grupo === String(antigo.grupo) && cd.dataset.plano === antigo.plano) {
-        var pills = cd.querySelectorAll(".var-pill");
-        var alvo = null;
-        for (var pv = 0; pv < pills.length; pv++) {
-          if (pills[pv].dataset.codigo === antigo.oferta[4]) alvo = pills[pv];
-        }
-        if (alvo) {
-          for (var pv2 = 0; pv2 < pills.length; pv2++) pills[pv2].classList.remove("ativa");
-          alvo.classList.add("ativa");
-          cd.querySelector(".v-credito").textContent = formatarDinheiro(parseFloat(alvo.dataset.credito));
-          cd.querySelector(".v-parcela").textContent = formatarDinheiro(parseFloat(alvo.dataset.parcela));
-          planoSelecionado = montarPlano(antigo.grupo, antigo.plano, alvo.dataset.variacao, alvo.dataset.codigo);
-        } else {
-          planoSelecionado = montarPlano(antigo.grupo, antigo.plano, "", antigo.oferta[4]);
-        }
-        cd.classList.add("selecionado");
-        $("btnAvancarGrupo").disabled = false;
-        break;
-      }
-    }
-    if (lanceCliente !== null) renderRecomendacao();
-  }
+    }catch(e){}
+  }catch(e){ /* usa fallback local */ }
 }
 
-/* ============ ETAPA 1: MODELOS ============ */
+/* ================= OFERTA ================= */
+function encontrarOferta(modelo,grupo,plano,variacao){
+  let rows=TABELAS_RAW.filter(r=>r[0]===modelo&&r[1]===grupo&&r[2]===plano&&r[3]===variacao);
+  /* BAJ09 aplicável ao NS400Z (BAJ18): usa a linha oficial do Dominar 400 120% */
+  if(rows.length===0&&modelo==="dominar-ns400z"&&variacao==="120%"){
+    rows=TABELAS_RAW.filter(r=>r[0]==="dominar-400"&&r[1]===grupo&&r[2]===plano&&r[3]==="120%");
+  }
+  if(!rows.length)return null;
+  const r=rows[0];
+  return { modelo,grupo,plano,variacao,codigo:r[4],credito:r[5],parcela:r[6] };
+}
+function variacoesDisponiveis(modelo,grupo,plano){
+  const ladder=VARIACOES_POR_MODELO[modelo]||[""];
+  const out=[];
+  ladder.forEach(v=>{
+    let ok=false;
+    if(modelo==="dominar-ns400z"&&v==="120%")ok=true; /* BAJ09 existe nos dois grupos */
+    else ok=TABELAS_RAW.some(r=>r[0]===modelo&&r[1]===grupo&&r[2]===plano&&r[3]===v);
+    if(ok)out.push(v);
+  });
+  return out;
+}
+
+/* ================= MOTOR DE RECOMENDAÇÃO ================= */
+function calcularLance(oferta,lanceDinheiro){
+  const precoBase=MODELOS[oferta.modelo].preco;
+  const gordura=Math.max(0,oferta.credito-precoBase);
+  const limiteEmbutido=(LIMITE_EMBUTIDO_PCT[oferta.variacao]/100)*oferta.credito;
+  const embutido=Math.min(gordura,limiteEmbutido);
+  const total=lanceDinheiro+embutido;
+  const pct=oferta.credito>0?(total/oferta.credito)*100:0;
+  return { precoBase,gordura,limiteEmbutido,embutido,lanceDinheiro,total,pct };
+}
+function caminhoRecomendado(pct,media){
+  if(pct>=media){
+    return { titulo:"Lance Livre",
+      texto:"O percentual efetivo está acima da média do grupo ("+fmtPct(media)+"). O lance livre é competitivo e o desempate se dá pelo maior percentual oferecido." };
+  }
+  if(pct>=55){
+    return { titulo:"Lance Fixo 30% + Lance Limitado",
+      texto:"Faixa alta: use o Lance Fixo 30% como base garantida (pagável com o lance embutido) e complemente com Lance Limitado (até 60% do crédito) quando quiser acelerar a contemplação." };
+  }
+  if(pct>=30){
+    return { titulo:"Lance Fixo 30% + Lance Livre",
+      texto:"Faixa intermediária: o Lance Fixo 30% garante participação previsível; o Lance Livre entra quando o cliente puder subir o percentual em direção à média do grupo ("+fmtPct(media)+")." };
+  }
+  return { titulo:"Sorteio + Lance Fixo 30% (compra planejada)",
+    texto:"Abaixo da faixa competitiva: a estratégia é concorrer aos sorteios mensais e usar o Lance Fixo 30% nas assembleias, pagável integralmente com o lance embutido do crédito." };
+}
+/* Sugestão: migrar do crédito atual para o próximo crédito maior do mesmo modelo */
+function sugestaoMigracao(oferta,lanceDinheiro){
+  const ladder=VARIACOES_POR_MODELO[oferta.modelo]||[];
+  const idx=ladder.indexOf(oferta.variacao);
+  if(idx<0||idx>=ladder.length-1)return null;
+  const alvo=ladder[idx+1];
+  if(!variacoesDisponiveis(oferta.modelo,oferta.grupo,oferta.plano).includes(alvo))return null;
+  const ofertaAlvo=encontrarOferta(oferta.modelo,oferta.grupo,oferta.plano,alvo);
+  if(!ofertaAlvo)return null;
+  return { alvo,ofertaAlvo,atual:calcularLance(oferta,lanceDinheiro),novo:calcularLance(ofertaAlvo,lanceDinheiro) };
+}
+
+/* ================= NAVEGAÇÃO ================= */
+function irPara(etapa){
+  ETAPA_ATUAL=etapa;
+  ETAPAS.forEach((id,i)=>{
+    document.getElementById(id).classList.toggle("visivel",i+1===etapa);
+  });
+  document.getElementById("progress").innerHTML=ETAPAS.map((id,i)=>
+    '<div class="p-step'+(i+1===etapa?" ativo":"")+'"></div>'
+  ).join("");
+  document.getElementById(ETAPAS[etapa-1]).scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ================= RENDER: ETAPA 1 — MODELOS (2 linhas x 3 colunas) ================= */
 function renderModelos(){
-  var container = $("listaModelos");
-  var html = "";
-  for (var id in MODELOS) {
-    var m = MODELOS[id];
-    html += '<div class="modelo-card" data-modelo="' + id + '">' +
-      '<div class="modelo-card__img"><img data-src="assets/' + m.pasta + '/' + m.cores[0] + '.' + (EXTENSOES[id] || "png") + '" alt="' + m.nome + '"></div>' +
-      '<p class="modelo-card__nome">' + m.nome + '</p>' +
-      '<p class="modelo-card__cores">' + m.cores.join(" · ") + '</p></div>';
-  }
-  container.innerHTML = html;
-
-  var cards = container.querySelectorAll(".modelo-card");
-  for (var i = 0; i < cards.length; i++) {
-    (function(card){
-      var modeloId = card.dataset.modelo;
-      var img = card.querySelector("img");
-      carregarImagem(img, modeloId, MODELOS[modeloId].cores[0], "Foto do " + MODELOS[modeloId].nome);
-      card.addEventListener("click", function(){
-        for (var c2 = 0; c2 < cards.length; c2++) cards[c2].classList.remove("selecionado");
-        card.classList.add("selecionado");
-        modeloSelecionado = modeloId;
-        corSelecionada = null;
-        planoSelecionado = null;
-        lanceCliente = null;
-        recomendacaoAtual = null;
-        $("btnAvancarModelo").disabled = false;
-      });
-    })(cards[i]);
-  }
+  const grid=document.getElementById("grid-modelos");
+  grid.innerHTML=Object.keys(MODELOS).map(slug=>{
+    const m=MODELOS[slug];
+    const sel=ESTADO.modelo===slug?" selecionado":"";
+    const dots=m.cores.map(c=>'<span class="cor-mini" style="background:'+CORES_VISUAIS[c]+'"></span>').join("");
+    return '<div class="modelo-card'+sel+'" data-modelo="'+slug+'">'+
+      '<img src="'+caminhoImagem(slug,corPadrao(slug))+'" alt="'+m.nome+'" loading="lazy">'+
+      '<div class="nome">'+m.nome+'</div>'+
+      '<div class="preco">a partir de '+fmtDinheiro(m.preco)+'</div>'+
+      '<div class="cores-mini">'+dots+'</div>'+
+    '</div>';
+  }).join("");
+  grid.querySelectorAll(".modelo-card").forEach(card=>{
+    card.addEventListener("click",()=>{
+      ESTADO.modelo=card.dataset.modelo;
+      ESTADO.cor=corPadrao(ESTADO.modelo);
+      renderModelos();
+      renderCores();
+      renderVisualizacao();
+      renderPlanos();
+      irPara(2);
+    });
+  });
 }
 
-/* ============ ETAPA 2: CORES ============ */
+/* ================= RENDER: ETAPA 2 — CORES ================= */
 function renderCores(){
-  if (!modeloSelecionado) return;
-  var m = MODELOS[modeloSelecionado];
-  $("subtituloModelo").textContent = m.nome;
-  var container = $("listaCores");
-  var html = "";
-  for (var i = 0; i < m.cores.length; i++) {
-    var cor = m.cores[i];
-    var hex = CORES_VISUAIS[cor] || "#CCCCCC";
-    var estilo = cor === "branca" ? "background:linear-gradient(135deg," + hex + " 60%,#d1d5db);" : "background:" + hex + ";";
-    html += '<div class="cor-swatch" data-cor="' + cor + '">' +
-      '<span class="cor-swatch__bola" style="' + estilo + '"></span>' +
-      '<span class="cor-swatch__nome">' + cor + '</span></div>';
-  }
-  container.innerHTML = html;
-  var swatches = container.querySelectorAll(".cor-swatch");
-  for (var j = 0; j < swatches.length; j++) {
-    (function(sw){
-      sw.addEventListener("click", function(){
-        for (var s2 = 0; s2 < swatches.length; s2++) swatches[s2].classList.remove("selecionado");
-        sw.classList.add("selecionado");
-        corSelecionada = sw.dataset.cor;
-        $("btnAvancarCor").disabled = false;
-      });
-    })(swatches[j]);
-  }
+  const m=MODELOS[ESTADO.modelo];
+  document.getElementById("cor-sub").textContent=m.nome+" — escolha a cor preferida do cliente.";
+  const box=document.getElementById("swatches");
+  box.innerHTML=m.cores.map(c=>
+    '<div class="swatch'+(ESTADO.cor===c?" selecionada":"")+'" data-cor="'+c+'" style="background:'+CORES_VISUAIS[c]+'" title="'+c+'"></div>'
+  ).join("");
+  box.querySelectorAll(".swatch").forEach(s=>{
+    s.addEventListener("click",()=>{
+      ESTADO.cor=s.dataset.cor;
+      renderCores();
+      renderVisualizacao();
+      irPara(3);
+    });
+  });
 }
 
-/* ============ ETAPA 3: VISUALIZACAO ============ */
+/* ================= RENDER: ETAPA 3 — VISUALIZAÇÃO ================= */
 function renderVisualizacao(){
-  var m = MODELOS[modeloSelecionado];
-  carregarImagem($("imgMoto"), modeloSelecionado, corSelecionada, "Foto da " + m.nome);
-  $("imgMoto").alt = m.nome + " " + corSelecionada;
-  $("fichaTecnica").innerHTML = "<h3>Ficha técnica — " + m.nome + "</h3>" + montarFichaHTML(m.ficha);
+  const m=MODELOS[ESTADO.modelo];
+  const img=document.getElementById("moto-grande-img");
+  img.src=caminhoImagem(ESTADO.modelo,ESTADO.cor);
+  img.alt=m.nome+" cor "+ESTADO.cor;
+  document.getElementById("ficha").innerHTML=
+    "<tr><th colspan='2'>"+m.nome+" · cor "+ESTADO.cor+"</th></tr>"+
+    Object.keys(m.ficha).map(k=>"<tr><td>"+k+"</td><td>"+m.ficha[k]+"</td></tr>").join("");
 }
 
-/* ============ ETAPA 4: GRUPO + PLANO + VARIACAO DE CREDITO ============ */
+/* ================= RENDER: ETAPA 4 — GRUPO/PLANO + VARIAÇÃO ================= */
 function renderPlanos(){
-  var combos = [
-    { grupo: 6001, plano: "44x Normal" },
-    { grupo: 6001, plano: "44x 70%" },
-    { grupo: 6000, plano: "68x Normal" },
-    { grupo: 6000, plano: "68x 70%" }
-  ];
-  var container = $("listaPlanos");
-  var html = "";
-  for (var i = 0; i < combos.length; i++) {
-    var c = combos[i];
-    var info = GRUPOS_INFO[c.grupo];
-    var ofertas = encontrarOfertas(modeloSelecionado, c.grupo, c.plano);
-    if (!ofertas.length) continue;
-    var tag = c.grupo === 6001 ? "Quita mais rápido." : "Parcelas mais leves, você dilui o valor em mais tempo.";
-
-    var seletorHtml = "";
-    if (ofertas.length > 1) {
-      seletorHtml = '<div class="var-seletor">';
-      for (var v = 0; v < ofertas.length; v++) {
-        var o = ofertas[v];
-        var rot = variacaoRotulo(o[3]);
-        seletorHtml += '<button class="var-pill' + (v === 0 ? " ativa" : "") + '" data-variacao="' + o[3] + '" data-codigo="' + o[4] + '" data-credito="' + o[5] + '" data-parcela="' + o[6] + '">' +
-          '<span class="var-pill__nome">' + rot.nome + '</span>' +
-          (rot.sub ? '<span class="var-pill__sub">' + rot.sub + '</span>' : '') +
-          '</button>';
-      }
-      seletorHtml += '</div>';
-    }
-
-    var o0 = ofertas[0];
-    var rot0 = variacaoRotulo(o0[3]);
-    var tituloExtra = (ofertas.length === 1 && o0[3]) ? " · " + rot0.nome : "";
-
-    html += '<div class="plano-card" data-grupo="' + c.grupo + '" data-plano="' + c.plano + '" data-codigo="' + o0[4] + '" data-variacao="' + o0[3] + '">' +
-      '<p class="plano-card__titulo">Grupo ' + c.grupo + ' · ' + c.plano + tituloExtra + '</p>' +
-      seletorHtml +
-      '<div class="plano-card__linha"><span>Crédito</span><strong class="v-credito">' + formatarDinheiro(o0[5]) + '</strong></div>' +
-      '<div class="plano-card__linha"><span>Parcelas</span><strong>' + info.parcelas + 'x</strong></div>' +
-      '<div class="plano-card__linha"><span>Taxa de administração</span><strong>' + info.taxaAdm + '</strong></div>' +
-      '<div class="plano-card__linha"><span>Diferencial</span><strong style="color:var(--azul)">' + tag + '</strong></div>' +
-      '<div class="plano-card__parcela">Parcela: <span class="v-parcela">' + formatarDinheiro(o0[6]) + '</span></div></div>';
-  }
-  container.innerHTML = html;
-
-  var cards = container.querySelectorAll(".plano-card");
-  for (var j = 0; j < cards.length; j++) {
-    (function(card){
-      var pills = card.querySelectorAll(".var-pill");
-      for (var p = 0; p < pills.length; p++) {
-        (function(pill){
-          pill.addEventListener("click", function(ev){
-            ev.preventDefault();
-            ev.stopPropagation();
-            for (var p2 = 0; p2 < pills.length; p2++) pills[p2].classList.remove("ativa");
-            pill.classList.add("ativa");
-            card.querySelector(".v-credito").textContent = formatarDinheiro(parseFloat(pill.dataset.credito));
-            card.querySelector(".v-parcela").textContent = formatarDinheiro(parseFloat(pill.dataset.parcela));
-            card.dataset.variacao = pill.dataset.variacao;
-            card.dataset.codigo = pill.dataset.codigo;
-            if (card.classList.contains("selecionado")) {
-              planoSelecionado = montarPlano(parseInt(card.dataset.grupo,10), card.dataset.plano, pill.dataset.variacao, pill.dataset.codigo);
-              lanceCliente = null;
-              recomendacaoAtual = null;
-            }
-          });
-        })(pills[p]);
-      }
-      card.addEventListener("click", function(){
-        for (var c2 = 0; c2 < cards.length; c2++) cards[c2].classList.remove("selecionado");
-        card.classList.add("selecionado");
-        planoSelecionado = montarPlano(parseInt(card.dataset.grupo,10), card.dataset.plano, card.dataset.variacao, card.dataset.codigo);
-        lanceCliente = null;
-        recomendacaoAtual = null;
-        $("btnAvancarGrupo").disabled = false;
-      });
-    })(cards[j]);
-  }
+  const m=MODELOS[ESTADO.modelo];
+  const combos=[["6001","44x Normal"],["6001","44x 70%"],["6000","68x Normal"],["6000","68x 70%"]];
+  const grid=document.getElementById("grid-planos");
+  grid.innerHTML=combos.map(c=>{
+    const grupo=parseInt(c[0],10),plano=c[1];
+    const of=encontrarOferta(ESTADO.modelo,grupo,plano,ESTADO.variacao);
+    const g=GRUPOS_INFO[grupo];
+    const sel=(ESTADO.grupo===grupo&&ESTADO.plano===plano)?" selecionado":"";
+    return '<div class="plano-card'+sel+'" data-grupo="'+grupo+'" data-plano="'+plano+'">'+
+      '<div class="p-titulo">Grupo '+grupo+' · '+g.rotulo+' '+plano.split(" ")[1]+'</div>'+
+      '<div class="p-meta">'+g.parcelas+' parcelas · Taxa de administração '+g.taxaAdm+' · Vencimento dia '+CONFIG.vencimento+'</div>'+
+      (of?'<div class="p-parcela">'+fmtDinheiro(of.parcela)+'/mês</div>':'<div class="p-indisponivel">Variação indisponível neste grupo</div>')+
+    '</div>';
+  }).join("");
+  grid.querySelectorAll(".plano-card").forEach(card=>{
+    card.addEventListener("click",()=>{
+      ESTADO.grupo=parseInt(card.dataset.grupo,10);
+      ESTADO.plano=card.dataset.plano;
+      /* garante que a variação atual existe no novo grupo/plano */
+      const dispo=variacoesDisponiveis(ESTADO.modelo,ESTADO.grupo,ESTADO.plano);
+      if(!dispo.includes(ESTADO.variacao))ESTADO.variacao=dispo[0];
+      ESTADO.oferta=encontrarOferta(ESTADO.modelo,ESTADO.grupo,ESTADO.plano,ESTADO.variacao);
+      ESTADO.recomendacao=null;
+      renderPlanos();
+      renderVariacao();
+      renderRecomendacao();
+      renderMedia();
+      irPara(5);
+    });
+  });
+  renderVariacao();
 }
-
-/* ================================================================
-   MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final travada)
-   ================================================================
-   REGRA +LE: percentual efetivo SEMPRE considera o lance do cliente
-   +30 pontos de lance embutido coberto pelo próprio crédito.
-   REGRA BAJ09 (linha 400): percentual efetivo considera o lance do
-   cliente +16,5 pontos de recurso embutido (teto documentado).
-   VALOR MONETÁRIO: o lance embutido disponível em R$ é o excedente
-   (crédito da variação - valor da moto), exibido no caminho.
-   ================================================================
-   Caminhos (versão final do PDF):
-   BASE:   0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 |
-           50-54% +LanceLimitado | 55%+ +LanceLimitado+LanceLivre
-   +LE:    0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 |
-           50-54% +LanceLivre | 55%+ +LanceLivre
-   BAJ09 (120%): 0-15% Sorteio | 16-30% +LanceFixo30 | 31-49% Sorteio+LanceFixo30 |
-             50-55% +LanceLimitado | 55%+ +LanceLimitado+LanceLivre
-   Mega assembleia: chamada fixa em todas (6ª, 12ª, 18ª, 24ª). */
-
-var REGRAS_LANCE = [
-  "Lance Fixo 30%: todos ofertam 30% do crédito; desempate pela proximidade do número da Loteria Federal; aceita recurso embutido.",
-  "Lance Limitado: de 1% a 60% do crédito; não aceita recurso embutido; desempate pela Loteria Federal.",
-  "Lance Livre: de 1% a 99% do crédito; até 30% do valor pode ser pago com recurso embutido; desempate pelo maior percentual ofertado."
-];
-
-function obterRecomendacao(tipo, pct){
-  var faixas;
-  if (tipo === "base") {
-    faixas = [
-      { max: 29.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Com esse lance, o caminho recomendado é participar do sorteio e do Lance Fixo de 30%. Se o cliente não tiver capital de lance, o crédito +LE permite participar com recurso embutido, sem desembolso imediato.",
-        nota: "Sem capital de lance? O crédito +LE (lance embutido) cobre o lance sem desembolso imediato." },
-      { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Seu lance cobre mais de 30% do crédito. Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva para as próximas assembleias. Se o lance alcançar 60% do crédito, já é possível potencializar com o Lance Livre.",
-        nota: "A partir de 60% do crédito, o cliente pode potencializar com o Lance Livre." },
-      { max: 54.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado"],
-        copy: "Além do sorteio e do Lance Fixo de 30%, o cliente já pode disputar o Lance Limitado (até 60% do crédito) — boa relação entre valor ofertado e chance de contemplação." },
-      { max: 100, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"],
-        copy: "Lance forte: o cliente disputa o sorteio, o Lance Fixo de 30%, o Lance Limitado e o Lance Livre na mesma assembleia, maximizando a chance de contemplação." }
-    ];
-  } else if (tipo === "le") {
-    faixas = [
-      { max: 29.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "O crédito com Lance Embutido soma 30% ao lance do cliente, sem desembolso imediato. Com o percentual efetivo, o cliente participa do sorteio e do Lance Fixo de 30% com folga." },
-      { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Com o lance embutido de 30% somado ao lance do cliente, o percentual efetivo cobre o Lance Fixo de 30% com folga. Participe do sorteio e do Lance Fixo de 30%." },
-      { max: 54.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Livre"],
-        copy: "O percentual efetivo (lance do cliente +30% embutido) alcança a faixa do Lance Livre. Até 30% do lance pode ser pago com o próprio crédito embutido — participe do sorteio, do Lance Fixo de 30% e do Lance Livre." },
-      { max: 100, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Livre"],
-        copy: "Lance forte: com o percentual efetivo elevado, participe do sorteio, do Lance Fixo de 30% e do Lance Livre. Até 30% do lance pode ser pago com o crédito embutido." }
-    ];
-  } else { /* BAJ09 - credito 120% (Dominar 400 e NS400Z) */
-    faixas = [
-      { max: 15.99, caminho: ["Sorteio"],
-        copy: "Com esse percentual, a estratégia recomendada é participar do sorteio e aguardar o acúmulo de crédito para as próximas assembleias.",
-        nota: "Regra do crédito 120% (BAJ09): abaixo de 16% do crédito, o caminho é o sorteio." },
-      { max: 30.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Participe do sorteio e do Lance Fixo de 30%. Com o crédito 120% (BAJ09), o recurso embutido disponível (máx. 16,5% do crédito) potencializa o lance.",
-        nota: "Crédito 120% (BAJ09): teto de recurso embutido de 16,5% do crédito." },
-      { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva." },
-      { max: 55.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado"],
-        copy: "Participe do sorteio, do Lance Fixo de 30% e do Lance Limitado." },
-      { max: 100, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"],
-        copy: "Lance forte: participe do sorteio, do Lance Fixo de 30%, do Lance Limitado e do Lance Livre na mesma assembleia." }
-    ];
-  }
-  for (var i = 0; i < faixas.length; i++) {
-    if (pct <= faixas[i].max) return faixas[i];
-  }
-  return faixas[faixas.length - 1];
-}
-
-function calcularRecomendacao(){
-  if (!planoSelecionado || !planoSelecionado.oferta) return null;
-  var oferta = planoSelecionado.oferta;
-  var variacao = oferta[3] || "";
-  var tipo = (oferta[4] === "BAJ09" || variacao === "120%") ? "linha400" : (variacao === "+LE" ? "le" : "base");
-  var credito = oferta[5];
-  var pctCliente = (lanceCliente / credito) * 100;
-
-  /* Bônus de lance embutido somado ao percentual do cliente */
-  var leBonus = 0;
-  if (tipo === "le") { leBonus = 30; }
-  else if (tipo === "linha400") { leBonus = 16.5; }
-  var pctEfetivo = pctCliente + leBonus;
-
-  /* Lance embutido disponível em R$ = excedente do crédito sobre a moto */
-  var lanceEmbutidoDisponivel = 0;
-  if (tipo === "le" || tipo === "linha400") {
-    lanceEmbutidoDisponivel = credito - valorMotoDoModelo(modeloSelecionado);
-  }
-
-  var rec = obterRecomendacao(tipo, pctEfetivo);
-  var faixaTxt = "";
-  if (tipo === "base" || tipo === "le") {
-    faixaTxt = pctEfetivo < 30 ? "0–29%" : (pctEfetivo < 50 ? "30–49%" : (pctEfetivo < 55 ? "50–54%" : "55%+"));
-  } else {
-    faixaTxt = pctEfetivo < 16 ? "0–15%" : (pctEfetivo < 31 ? "16–30%" : (pctEfetivo < 50 ? "31–49%" : (pctEfetivo < 56 ? "50–55%" : "55%+")));
-  }
-  return {
-    tipo: tipo,
-    tipoNome: tipo === "base" ? "Crédito base" : (tipo === "le" ? "Crédito +LE (lance embutido)" : "Crédito 120% (BAJ09)"),
-    pctCliente: pctCliente,
-    leBonus: leBonus,
-    pctEfetivo: pctEfetivo,
-    lanceEmbutidoDisponivel: lanceEmbutidoDisponivel,
-    faixa: faixaTxt,
-    caminho: rec.caminho,
-    copy: rec.copy,
-    nota: rec.nota || "",
-    codigo: oferta[4],
-    credito: credito
-  };
-}
-
-function renderRecomendacao(){
-  if (!planoSelecionado) return;
-  var container = $("resultadoRecomendacao");
-  if (lanceCliente === null) {
-    container.innerHTML = '<div class="rec-card"><h3>Caminho de contemplação</h3><p style="color:var(--cinza)">Informe o valor do lance que o cliente pretende ofertar e clique em "Ver recomendação" para calcular o caminho ideal. Você também pode continuar sem calcular.</p></div>';
+function renderVariacao(){
+  const box=document.getElementById("variacao-box");
+  const dispo=variacoesDisponiveis(ESTADO.modelo,ESTADO.grupo,ESTADO.plano);
+  if(dispo.length<=1){
+    box.style.display="none";
     return;
   }
-  var r = calcularRecomendacao();
-  if (!r) { container.innerHTML = ""; return; }
-
-  var passos = "";
-  for (var i = 0; i < r.caminho.length; i++) {
-    if (i > 0) passos += '<span class="caminho__seta">→</span>';
-    passos += '<span class="caminho__passo' + (i === r.caminho.length - 1 ? " destaque" : "") + '">' + r.caminho[i] + '</span>';
-  }
-
-  var linhasLance = "";
-  if (r.tipo === "le") {
-    linhasLance =
-      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + ' (' + r.pctCliente.toFixed(1).replace(".", ",") + '%)</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Lance embutido +LE (30%)</span><span class="rec-valor rec-valor--destaque">+' + formatarDinheiro(r.lanceEmbutidoDisponivel) + '</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Percentual efetivo do lance (já com +30%)</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
-  } else if (r.tipo === "linha400") {
-    linhasLance =
-      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + ' (' + r.pctCliente.toFixed(1).replace(".", ",") + '%)</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Lance embutido 120% (16,5%)</span><span class="rec-valor rec-valor--destaque">+' + formatarDinheiro(r.lanceEmbutidoDisponivel) + '</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Percentual efetivo do lance (já com +16,5%)</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
-  } else {
-    linhasLance =
-      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + '</span></div>' +
-      '<div class="rec-linha"><span class="rec-label">Percentual sobre o crédito</span><span class="rec-valor">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
-  }
-
-  var notaLinha400 = r.tipo === "linha400" ? '<div class="rec-nota">Crédito 120% (BAJ09) — bem compartilhado entre os créditos base BAJ03 (Dominar 400) e BAJ18 (NS400Z): o teto de recurso embutido é de 16,5% do valor do crédito. O valor de +' + formatarDinheiro(r.lanceEmbutidoDisponivel) + ' é o excedente do crédito sobre o valor da moto, que o cliente pode usar como lance embutido.</div>' : "";
-
-  var html = '<div class="rec-card">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
-      '<h3 style="margin:0">Caminho de contemplação</h3>' +
-      '<span class="faixa-badge">Faixa ' + r.faixa + '</span>' +
-    '</div>' +
-    '<div class="rec-linha"><span class="rec-label">Variação de crédito</span><span class="rec-valor">' + r.tipoNome + ' (' + r.codigo + ')</span></div>' +
-    '<div class="rec-linha"><span class="rec-label">Crédito da oferta</span><span class="rec-valor">' + formatarDinheiro(r.credito) + '</span></div>' +
-    linhasLance +
-    '<div class="caminho">' + passos + '</div>' +
-    '<p class="rec-copy">' + r.copy + '</p>' +
-    (r.tipo === "le" ? '<div class="rec-le"><strong>Como funciona o +LE:</strong> o crédito com lance embutido soma 30% ao lance que o cliente tem em mãos. O valor de +' + formatarDinheiro(r.lanceEmbutidoDisponivel) + ' é o excedente do crédito sobre o valor da moto, que pode ser usado como lance. O percentual efetivo acima é o que define a faixa e o caminho de contemplação.</div>' : '') +
-    (r.nota ? '<div class="rec-nota">' + r.nota + '</div>' : '') +
-    notaLinha400 +
-  '</div>' +
-  '<div class="mega-card"><strong>Mega assembleia</strong><p>O grupo realiza mega assembleias nas assembleias 6ª, 12ª, 18ª e 24ª — maior volume de contemplações. Próxima mega assembleia: ' + proximaMegaAssembleia + '.</p></div>' +
-  '<div class="regras"><strong>Como funciona cada lance:</strong><br>' + REGRAS_LANCE.join("<br>") + '</div>';
-
-  container.innerHTML = html;
+  box.style.display="block";
+  document.getElementById("variacao-pills").innerHTML=dispo.map(v=>
+    '<div class="variacao-pill'+(ESTADO.variacao===v?" selecionada":"")+'" data-variacao="'+v+'">'+ROTULO_VARIACAO[v]+'</div>'
+  ).join("");
+  document.getElementById("variacao-desc").textContent=DESCRICAO_VARIACAO[ESTADO.variacao];
+  box.querySelectorAll(".variacao-pill").forEach(pill=>{
+    pill.addEventListener("click",()=>{
+      ESTADO.variacao=pill.dataset.variacao;
+      ESTADO.oferta=encontrarOferta(ESTADO.modelo,ESTADO.grupo,ESTADO.plano,ESTADO.variacao);
+      ESTADO.recomendacao=null;
+      renderVariacao();
+      renderPlanos();
+      renderRecomendacao();
+    });
+  });
 }
 
-function lerValorLance(){
-  var raw = $("valorLance").value.trim();
-  if (!raw) return null;
-  var n = parseFloat(raw.replace(/[R$\s.]/g, "").replace(",", "."));
-  return isNaN(n) || n <= 0 ? null : n;
-}
+/* ================= RENDER: ETAPA 5 — RECOMENDAÇÃO ================= */
+function renderRecomendacao(){
+  const box=document.getElementById("resultado-recomendacao");
+  box.innerHTML="";
+  if(!ESTADO.oferta)return;
+  const lance=parseFloat(document.getElementById("input-lance").value)||0;
+  const atual=calcularLance(ESTADO.oferta,lance);
+  const media=MEDIAS[ESTADO.grupo];
+  const caminho=caminhoRecomendado(atual.pct,media);
+  const badge=atual.pct>=media
+    ?'<span class="badge-media badge-acima">Acima da média do grupo ('+fmtPct(media)+')</span>'
+    :'<span class="badge-media badge-abaixo">Abaixo da média do grupo ('+fmtPct(media)+')</span>';
 
-/* ============ ETAPA 6: MEDIA DO MENOR LANCE ============ */
-function renderMedia(){
-  var grupo = planoSelecionado.grupo;
-  var media = MEDIAS[grupo];
-  var info = GRUPOS_INFO[grupo];
-  $("cardMedia").innerHTML =
-    '<div class="media-card">' +
-      '<p class="media-card__label">Média do menor lance contemplado · Grupo ' + grupo + '</p>' +
-      '<p class="media-card__valor">' + media.toLocaleString("pt-BR") + '%</p>' +
-      '<p class="media-card__info">Taxa de administração ' + info.taxaAdm + ' · Fundo de reserva ' + fundoReserva + ' · Próxima assembleia ' + proximaAssembleia + '</p>' +
-      '<p class="media-card__mega">Mega assembleia: assembleias 6ª, 12ª, 18ª e 24ª · Próxima: ' + proximaMegaAssembleia + '</p>' +
+  let html='<div class="lance-cards">';
+  /* Card atual */
+  html+='<div class="lance-card">'+
+    '<h4>'+ROTULO_VARIACAO[ESTADO.oferta.variacao]+' · BAJ'+ESTADO.oferta.codigo+'</h4>'+
+    '<div class="linha-lance"><span>Crédito contratado</span><strong>'+fmtDinheiro(ESTADO.oferta.credito)+'</strong></div>'+
+    '<div class="linha-lance"><span>Lance em dinheiro</span><strong>'+fmtDinheiro(lance)+'</strong></div>'+
+    '<div class="linha-lance"><span>Lance embutido disponível (gordura do crédito)</span><strong>'+fmtDinheiro(atual.embutido)+'</strong></div>'+
+    '<div class="linha-lance total"><span>VALOR TOTAL DO LANCE</span><strong>'+fmtDinheiro(atual.total)+'</strong></div>'+
+    '<div class="linha-lance"><span>Percentual efetivo do crédito</span><strong>'+fmtPct(atual.pct)+'</strong></div>'+
+    badge+
+    '<div class="caminho-box"><div class="c-titulo">'+caminho.titulo+'</div><div class="c-texto">'+caminho.texto+'</div></div>'+
+  '</div>';
+
+  /* Card sugestão */
+  const sug=sugestaoMigracao(ESTADO.oferta,lance);
+  if(sug){
+    const dif=sug.novo.total-sug.atual.total;
+    const difPct=sug.novo.pct-sug.atual.pct;
+    html+='<div class="lance-card destaque">'+
+      '<h4>Sugestão do consultor</h4>'+
+      '<div class="sugestao-box">'+
+        '<h4>Migre para '+ROTULO_VARIACAO[sug.alvo]+'</h4>'+
+        '<div class="linha-lance"><span>Novo crédito (BAJ'+sug.ofertaAlvo.codigo+')</span><strong>'+fmtDinheiro(sug.ofertaAlvo.credito)+'</strong></div>'+
+        '<div class="linha-lance"><span>Novo lance embutido disponível</span><strong>'+fmtDinheiro(sug.novo.embutido)+'</strong></div>'+
+        '<div class="linha-lance"><span>Nova parcela ('+sug.ofertaAlvo.plano+')</span><strong>'+fmtDinheiro(sug.ofertaAlvo.parcela)+'/mês</strong></div>'+
+        '<div class="linha-lance total"><span>NOVO VALOR TOTAL DO LANCE</span><strong>'+fmtDinheiro(sug.novo.total)+'</strong></div>'+
+        '<div class="linha-lance"><span>Novo percentual efetivo</span><strong>'+fmtPct(sug.novo.pct)+'</strong></div>'+
+        '<p style="font-size:13px;margin-top:8px">Seu poder de lance sobe <strong>'+fmtDinheiro(dif)+' ('+(difPct>=0?"+":"")+fmtPct(difPct)+' do crédito)</strong>, contra a média de '+fmtPct(media)+' do grupo.</p>'+
+        '<button class="btn btn-cta" id="btn-aplicar-sugestao">Aplicar '+ROTULO_VARIACAO[sug.alvo]+' na proposta</button>'+
+      '</div>'+
     '</div>';
+  }else{
+    html+='<div class="lance-card destaque" style="background:#fff">'+
+      '<h4>Consultor</h4>'+
+      '<p style="font-size:14px">Você já está no maior crédito disponível para este modelo no grupo/plano selecionado. Não há migração maior para ampliar o lance embutido.</p>'+
+    '</div>';
+  }
+  html+='</div>';
+  box.innerHTML=html;
+
+  const btn=document.getElementById("btn-aplicar-sugestao");
+  if(btn){
+    btn.addEventListener("click",()=>{
+      ESTADO.variacao=sug.alvo;
+      ESTADO.oferta=encontrarOferta(ESTADO.modelo,ESTADO.grupo,ESTADO.plano,ESTADO.variacao);
+      ESTADO.recomendacao=null;
+      renderPlanos();
+      renderVariacao();
+      renderRecomendacao();
+    });
+  }
 }
 
-/* ============ ETAPA 8: RESUMO ============ */
+/* ================= RENDER: ETAPA 6 — MÉDIA ================= */
+function renderMedia(){
+  const g=GRUPOS_INFO[ESTADO.grupo];
+  document.getElementById("media-card").innerHTML=
+    '<div class="m-rotulo">Média do menor lance contemplado — Grupo '+ESTADO.grupo+' ('+g.rotulo+')</div>'+
+    '<div class="m-valor">'+fmtPct(MEDIAS[ESTADO.grupo])+'</div>'+
+    '<div class="m-extra">Próxima assembleia: '+CONFIG.proximaAssembleia+' · Mega assembleia: '+CONFIG.proximaMega+'</div>';
+}
+
+/* ================= RENDER: ETAPA 8 — RESUMO ================= */
 function renderResumo(){
-  var m = MODELOS[modeloSelecionado];
-  var info = GRUPOS_INFO[planoSelecionado.grupo];
-  var oferta = planoSelecionado.oferta;
-  var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
-  var nomeCliente = $("nomeCliente").value.trim() || "—";
-  var rotVar = variacaoRotulo(oferta[3]);
-
-  var linhas = [
-    ["Modelo", m.nome],
-    ["Cor", cor],
-    ["Cliente", nomeCliente],
-    ["Grupo", String(planoSelecionado.grupo)],
-    ["Plano", planoSelecionado.plano],
-    ["Variação de crédito", rotVar.nome + " (" + oferta[4] + ")"],
-    ["Parcelas", info.parcelas + "x"],
-    ["Taxa de administração", info.taxaAdm],
-    ["Valor do crédito", formatarDinheiro(oferta[5])],
-    ["Parcela atual", formatarDinheiro(oferta[6])],
-    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + "%"],
-    ["Próxima assembleia", proximaAssembleia]
+  const m=MODELOS[ESTADO.modelo];
+  const g=GRUPOS_INFO[ESTADO.grupo];
+  const rows=[
+    ["Modelo",m.nome],
+    ["Cor",ESTADO.cor],
+    ["Crédito",ROTULO_VARIACAO[ESTADO.variacao]+" (BAJ"+ESTADO.oferta.codigo+")"],
+    ["Valor do crédito",fmtDinheiro(ESTADO.oferta.credito)],
+    ["Grupo / Plano","Grupo "+ESTADO.grupo+" · "+ESTADO.plano],
+    ["Parcelas",g.parcelas+"x"],
+    ["Taxa de administração",g.taxaAdm],
+    ["Fundo de reserva",CONFIG.fundoReserva],
+    ["Vencimento da parcela","dia "+CONFIG.vencimento],
+    ["Valor da parcela",fmtDinheiro(ESTADO.oferta.parcela)+"/mês"],
+    ["Média do menor lance contemplado",fmtPct(MEDIAS[ESTADO.grupo])],
+    ["Próxima assembleia",CONFIG.proximaAssembleia]
   ];
-  if (lanceCliente !== null && recomendacaoAtual) {
-    linhas.push(["Lance informado", formatarDinheiro(lanceCliente)]);
-    if (recomendacaoAtual.tipo === "le") {
-      linhas.push(["Lance embutido +LE (30%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
-      linhas.push(["Percentual efetivo (já com +30%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
-    } else if (recomendacaoAtual.tipo === "linha400") {
-      linhas.push(["Lance embutido 120% (16,5%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
-      linhas.push(["Percentual efetivo (já com +16,5%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
-    }
-    linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
+  document.getElementById("resumo").innerHTML=rows.map(r=>
+    "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>"
+  ).join("");
+
+  const box=document.getElementById("resumo-lance");
+  const rec=ESTADO.recomendacao;
+  if(rec){
+    box.innerHTML=
+      "<strong>Caminho da contemplação</strong><br>"+
+      "Lance em dinheiro: "+fmtDinheiro(rec.atual.lanceDinheiro)+"<br>"+
+      "Lance embutido disponível: "+fmtDinheiro(rec.atual.embutido)+"<br>"+
+      "<strong>Valor total do lance: "+fmtDinheiro(rec.atual.total)+" ("+fmtPct(rec.atual.pct)+" do crédito)</strong><br>"+
+      (rec.sug?("Sugestão aplicada? "+(rec.aplicou?"Sim — migrado para "+ROTULO_VARIACAO[rec.sug.alvo]+" (BAJ"+rec.sug.ofertaAlvo.codigo+")":"Crédito atual mantido")):"");
+  }else{
+    box.innerHTML="Informe o lance na Etapa 5 para incluir o caminho da contemplação na proposta.";
   }
-  var html = "";
-  for (var i = 0; i < linhas.length; i++) {
-    html += '<div class="resumo__linha"><span class="resumo__label">' + linhas[i][0] + '</span><span class="resumo__valor">' + linhas[i][1] + '</span></div>';
-  }
-  $("cardResumo").innerHTML = html;
 }
 
-/* ============ NAVEGACAO ============ */
-var ETAPAS = ["etapa-modelo","etapa-cor","etapa-visualizacao","etapa-grupo","etapa-recomendacao","etapa-media","etapa-dados","etapa-resumo"];
-
-function irParaEtapa(n){
-  for (var i = 0; i < ETAPAS.length; i++) {
-    $(ETAPAS[i]).hidden = (i + 1) !== n;
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function bindNavegacao(){
-  $("btnAvancarModelo").addEventListener("click", function(){ renderCores(); irParaEtapa(2); });
-  $("btnAvancarCor").addEventListener("click", function(){ renderVisualizacao(); irParaEtapa(3); });
-  $("btnAvancarVisualizacao").addEventListener("click", function(){ renderPlanos(); irParaEtapa(4); });
-  $("btnAvancarGrupo").addEventListener("click", function(){ renderRecomendacao(); irParaEtapa(5); });
-  $("btnCalcularLance").addEventListener("click", function(){
-    lanceCliente = lerValorLance();
-    if (lanceCliente === null) {
-      alert("Informe um valor de lance válido (ex.: 8000) para calcular a recomendação.");
-      return;
-    }
-    recomendacaoAtual = calcularRecomendacao();
-    renderRecomendacao();
-  });
-  $("btnAvancarRecomendacao").addEventListener("click", function(){ renderMedia(); irParaEtapa(6); });
-  $("btnAvancarMedia").addEventListener("click", function(){ irParaEtapa(7); });
-  $("btnAvancarDados").addEventListener("click", function(){
-    if (!$("nomeCliente").value.trim()) {
-      alert("Preencha o nome do cliente para continuar.");
-      return;
-    }
-    renderResumo();
-    irParaEtapa(8);
-  });
-  var voltar = document.querySelectorAll("[data-voltar]");
-  for (var i = 0; i < voltar.length; i++) {
-    (function(btn){
-      btn.addEventListener("click", function(){ irParaEtapa(parseInt(btn.dataset.voltar, 10)); });
-    })(voltar[i]);
-  }
-  $("valorLance").addEventListener("keydown", function(e){
-    if (e.key === "Enter") { e.preventDefault(); $("btnCalcularLance").click(); }
-  });
-}
-
-/* ============ CARTA (PDF) ============ */
+/* ================= CARTA PDF ================= */
 function montarCarta(){
-  var m = MODELOS[modeloSelecionado];
-  var info = GRUPOS_INFO[planoSelecionado.grupo];
-  var oferta = planoSelecionado.oferta;
-  var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
-  var nomeCliente = $("nomeCliente").value.trim() || "—";
-  var nomeVendedor = $("nomeVendedor").value.trim() || "—";
-  var whats = $("whatsVendedor").value.trim() || "—";
-  var hoje = new Date().toLocaleDateString("pt-BR");
-  var rotVar = variacaoRotulo(oferta[3]);
-
-  var box = $("cartaMotoBox");
-  box.innerHTML = "";
-  if (imagemMotoAtual) {
-    var img = document.createElement("img");
-    img.src = imagemMotoAtual;
-    img.alt = m.nome + " " + cor;
-    box.appendChild(img);
-  } else {
-    var fb = document.createElement("div");
-    fb.className = "img-fallback";
-    fb.textContent = "Imagem da moto indisponível";
-    box.appendChild(fb);
+  const m=MODELOS[ESTADO.modelo];
+  const g=GRUPOS_INFO[ESTADO.grupo];
+  const rec=ESTADO.recomendacao;
+  const imgData=document.getElementById("moto-grande-img").src;
+  let html='<div class="c-header">'+
+    '<img src="assets/logos/logo-bajaj-vertical.png" alt="Bajaj">'+
+    '<div style="text-align:right"><strong>Consórcio Nacional Bajaj</strong><br>administrado por Âncora Consórcios</div>'+
+  '</div>';
+  html+='<h1>Proposta de Consórcio</h1>';
+  html+='<p>Prezado(a) <strong>'+esc(document.getElementById("cliente-nome").value||"—")+'</strong>, segue a proposta personalizada do seu consórcio Bajaj.</p>';
+  html+='<h2>O veículo</h2>';
+  html+='<table><tr><td style="width:40%;text-align:center"><img src="'+imgData+'" style="max-width:180px"></td><td><table>'+
+    Object.keys(m.ficha).map(k=>"<tr><th style='width:40%'>"+k+"</th><td>"+m.ficha[k]+"</td></tr>").join("")+
+  '</table></td></tr></table>';
+  html+='<h2>Condições do consórcio</h2>';
+  html+='<table>'+
+    "<tr><th>Modelo</th><td>"+m.nome+" · cor "+ESTADO.cor+"</td></tr>"+
+    "<tr><th>Crédito</th><td>"+ROTULO_VARIACAO[ESTADO.variacao]+" (BAJ"+ESTADO.oferta.codigo+")</td></tr>"+
+    "<tr><th>Valor do crédito</th><td>"+fmtDinheiro(ESTADO.oferta.credito)+"</td></tr>"+
+    "<tr><th>Grupo</th><td>"+ESTADO.grupo+"</td></tr>"+
+    "<tr><th>Plano</th><td>"+ESTADO.plano+"</td></tr>"+
+    "<tr><th>Parcelas</th><td>"+g.parcelas+"x</td></tr>"+
+    "<tr><th>Taxa de administração</th><td>"+g.taxaAdm+"</td></tr>"+
+    "<tr><th>Fundo de reserva</th><td>"+CONFIG.fundoReserva+"</td></tr>"+
+    "<tr><th>Vencimento da parcela</th><td>dia "+CONFIG.vencimento+"</td></tr>"+
+    "<tr><th>Valor da parcela</th><td>"+fmtDinheiro(ESTADO.oferta.parcela)+"/mês</td></tr>"+
+  '</table>';
+  if(rec){
+    html+='<h2>Caminho da contemplação</h2>';
+    html+='<table>'+
+      "<tr><th>Lance em dinheiro</th><td>"+fmtDinheiro(rec.atual.lanceDinheiro)+"</td></tr>"+
+      "<tr><th>Lance embutido disponível</th><td>"+fmtDinheiro(rec.atual.embutido)+"</td></tr>"+
+      "<tr><th>Valor total do lance</th><td>"+fmtDinheiro(rec.atual.total)+" ("+fmtPct(rec.atual.pct)+" do crédito)</td></tr>"+
+      (rec.sug&&rec.aplicou?"<tr><th>Crédito final</th><td>"+ROTULO_VARIACAO[rec.sug.alvo]+" (BAJ"+rec.sug.ofertaAlvo.codigo+")</td></tr>":"")+
+    '</table>';
   }
-
-  $("cartaModelo").textContent = m.nome;
-  $("cartaCor").textContent = "Cor: " + cor + " · " + rotVar.nome + " (" + oferta[4] + ")";
-
-  var fichaHtml = "";
-  for (var k in m.ficha) {
-    fichaHtml += '<div><span class="flabel">' + k + '</span><span class="fvalor">' + m.ficha[k] + '</span></div>';
-  }
-  $("cartaFicha").innerHTML = fichaHtml;
-
-  $("cartaDestaque").innerHTML =
-    '<div class="d-item"><div class="d-rotulo">Valor da parcela</div><div class="d-valor">' + formatarDinheiro(oferta[6]) + '</div></div>' +
-    '<div class="d-item"><div class="d-rotulo">Valor do crédito</div><div class="d-valor d-valor--menor">' + formatarDinheiro(oferta[5]) + '</div></div>' +
-    '<div class="d-item"><div class="d-rotulo">Grupo ' + planoSelecionado.grupo + '</div><div class="d-valor d-valor--menor">' + planoSelecionado.plano + '</div></div>';
-
-  var linhas = [
-    ["Cliente", nomeCliente],
-    ["Vendedor", nomeVendedor],
-    ["WhatsApp", whats],
-    ["Plano", planoSelecionado.plano],
-    ["Variação de crédito", rotVar.nome + " (" + oferta[4] + ")"],
-    ["Número de parcelas", info.parcelas + "x"],
-    ["Taxa de administração", info.taxaAdm],
-    ["Fundo de reserva", fundoReserva],
-    ["Vencimento da parcela", "dia " + info.vencimento],
-    ["Média do menor lance contemplado", MEDIAS[planoSelecionado.grupo].toLocaleString("pt-BR") + "%"],
-    ["Próxima assembleia", proximaAssembleia]
-  ];
-  if (lanceCliente !== null && recomendacaoAtual) {
-    linhas.push(["Lance informado pelo cliente", formatarDinheiro(lanceCliente)]);
-    if (recomendacaoAtual.tipo === "le") {
-      linhas.push(["Lance embutido +LE (30%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
-      linhas.push(["Percentual efetivo (já com +30%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
-    } else if (recomendacaoAtual.tipo === "linha400") {
-      linhas.push(["Lance embutido 120% (16,5%)", "+" + formatarDinheiro(recomendacaoAtual.lanceEmbutidoDisponivel)]);
-      linhas.push(["Percentual efetivo (já com +16,5%)", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
-    }
-    linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
-  }
-  var detHtml = "";
-  for (var i = 0; i < linhas.length; i++) {
-    detHtml += '<div><span class="flabel">' + linhas[i][0] + '</span><span class="fvalor">' + linhas[i][1] + '</span></div>';
-  }
-  $("cartaDetalhes").innerHTML = detHtml;
-
-  $("cartaRodape").innerHTML =
-    '<p class="tit">Proposta gerada em ' + hoje + ' · Vendedor: ' + nomeVendedor + ' · WhatsApp: ' + whats + '</p>' +
-    '<p>Consórcio Nacional Bajaj · administrado por Âncora Consórcios · Lei 11.795/2008</p>' +
-    '<p>Valores de crédito e parcela vigentes na data de emissão, sujeitos a atualização em assembleia. Recomendação de lance baseada na média do menor lance contemplado do grupo.</p>';
+  html+='<div class="bloco-azul">'+
+    "<strong>Média do menor lance contemplado do grupo: "+fmtPct(MEDIAS[ESTADO.grupo])+"</strong><br>"+
+    "Próxima assembleia: "+CONFIG.proximaAssembleia+" · Mega assembleia: "+CONFIG.proximaMega+
+  '</div>';
+  html+='<p style="margin-top:14px">Vendedor responsável: <strong>'+esc(document.getElementById("vendedor-nome").value||"—")+'</strong> · WhatsApp: <strong>'+esc(document.getElementById("vendedor-whats").value||"—")+'</strong></p>';
+  html+='<div class="c-rodape">Consórcio Nacional Bajaj · administrado por Âncora Consórcios · Valores de referência sujeitos à atualização mensal · Consórcio regulado pela Lei 11.795/2008</div>';
+  document.getElementById("carta").innerHTML=html;
+}
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
-/* ============ GERAR PDF (maximo 2 paginas) ============ */
+/* ================= GERAR PDF ================= */
 async function gerarPDF(){
   montarCarta();
-  var carta = $("carta");
-  carta.hidden = false;
-  try {
-    if (typeof html2canvas === "undefined" || typeof window.jspdf === "undefined") {
-      throw new Error("Bibliotecas de PDF não carregaram");
+  const carta=document.getElementById("carta");
+  carta.style.position="absolute";
+  carta.style.left="-9999px";
+  try{
+    const canvas=await html2canvas(carta,{scale:2,useCORS:true,backgroundColor:"#ffffff"});
+    const img=canvas.toDataURL("image/png");
+    const pdf=new jspdf.jsPDF({unit:"mm",format:"a4"});
+    const pw=210,ph=297;
+    const ratio=canvas.height/canvas.width;
+    let imgH=pw*ratio;
+    let y=0;
+    if(imgH>ph){ /* multi-página */
+      let restante=imgH;
+      let posY=0;
+      while(restante>0){
+        const fatia=Math.min(ph,restante);
+        const srcY=(posY/canvas.height)*canvas.height;
+        const sliceH=(fatia/imgH)*canvas.height;
+        const imgSlice=document.createElement("canvas");
+        imgSlice.width=canvas.width;
+        imgSlice.height=sliceH;
+        imgSlice.getContext("2d").drawImage(canvas,0,srcY,canvas.width,sliceH,0,0,canvas.width,sliceH);
+        if(posY>0)pdf.addPage();
+        pdf.addImage(imgSlice.toDataURL("image/png"),"PNG",0,0,pw,fatia);
+        restante-=fatia;
+        posY+=fatia;
+      }
+    }else{
+      pdf.addImage(img,"PNG",0,0,pw,imgH);
     }
-    var canvas = await html2canvas(carta, { scale: 2, useCORS: true, backgroundColor: "#FFFFFF", logging: false });
-
-    var JSPDF = window.jspdf.jsPDF;
-    var pdf = new JSPDF({ orientation: "p", unit: "mm", format: "a4" });
-    var pw = 210, ph = 297;
-    var imgHeightMm = (canvas.height * pw) / canvas.width;
-    var maxH = ph * 2;
-
-    if (imgHeightMm > maxH) {
-      var fator = maxH / imgHeightMm;
-      var nw = Math.round(canvas.width * fator);
-      var nh = Math.round(canvas.height * fator);
-      var nc = document.createElement("canvas");
-      nc.width = nw; nc.height = nh;
-      nc.getContext("2d").drawImage(canvas, 0, 0, nw, nh);
-      canvas = nc;
-      imgHeightMm = maxH;
-    }
-
-    var imgData = canvas.toDataURL("image/png");
-    var altura = 0;
-    var primeira = true;
-    while (altura < imgHeightMm) {
-      if (!primeira) pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, -altura, pw, imgHeightMm);
-      altura += ph;
-      primeira = false;
-    }
-    pdf.save("Proposta-Consorcio-Bajaj-" + ($("nomeCliente").value.trim() || "Cliente") + ".pdf");
-  } catch (e) {
-    window.print();
-  } finally {
-    carta.hidden = true;
+    pdf.save("proposta-consorcio-bajaj.pdf");
+  }catch(e){
+    alert("Não foi possível gerar o PDF. Tente novamente.");
   }
 }
 
-/* ============ INIT ============ */
+/* ================= INIT ================= */
 function init(){
   renderModelos();
-  bindNavegacao();
-  $("btnGerarPDF").addEventListener("click", gerarPDF);
-  carregarDadosPlanilha();
+  irPara(1);
+  document.getElementById("btn-recomendar").addEventListener("click",()=>{
+    const lance=parseFloat(document.getElementById("input-lance").value)||0;
+    if(!ESTADO.oferta)return;
+    const atual=calcularLance(ESTADO.oferta,lance);
+    const sug=sugestaoMigracao(ESTADO.oferta,lance);
+    ESTADO.recomendacao={ atual, sug, aplicou:false, lanceDinheiro:lance };
+    renderRecomendacao();
+    renderResumo();
+  });
+  document.getElementById("btn-pdf").addEventListener("click",gerarPDF);
+  document.querySelectorAll("#etapa7 input").forEach(inp=>{
+    inp.addEventListener("input",renderResumo);
+  });
+  carregarDadosPlanilha().then(()=>{
+    renderPlanos();
+    renderRecomendacao();
+    renderMedia();
+  });
 }
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded",init);
 </script>
 </body>
 </html>
