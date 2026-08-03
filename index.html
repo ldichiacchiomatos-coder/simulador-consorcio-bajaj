@@ -34,6 +34,7 @@ img{max-width:100%;display:block}
 .card__titulo{font-size:1.2rem;font-weight:700;color:var(--azul-escuro);margin-bottom:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .badge{background:var(--azul-claro);color:var(--azul);font-size:.75rem;font-weight:800;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto}
 .subtitulo{font-size:.85rem;font-weight:500;color:var(--cinza)}
+.aviso{font-size:.85rem;color:var(--cinza);margin-bottom:16px;max-width:640px}
 
 .grid-modelos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
 .modelo-card{border:2px solid var(--borda);border-radius:var(--raio);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;background:var(--branco)}
@@ -63,7 +64,7 @@ img{max-width:100%;display:block}
 .ficha__label{color:var(--cinza)}
 .ficha__valor{font-weight:600;text-align:right}
 
-.grid-planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.grid-planos{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
 .plano-card{border:2px solid var(--borda);border-radius:var(--raio);padding:20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;background:var(--branco)}
 .plano-card:hover{box-shadow:var(--sombra)}
 .plano-card.selecionado{border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.15)}
@@ -71,13 +72,18 @@ img{max-width:100%;display:block}
 .plano-card__linha{display:flex;justify-content:space-between;font-size:.88rem;padding:4px 0;color:var(--cinza)}
 .plano-card__linha strong{color:var(--texto)}
 .plano-card__parcela{margin-top:12px;padding:10px 12px;background:var(--azul-claro);border-radius:10px;text-align:center;font-weight:800;color:var(--azul-escuro);font-size:1rem}
+.var-seletor{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.var-pill{flex:1 1 auto;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 10px;border:2px solid var(--borda);border-radius:10px;background:var(--branco);cursor:pointer;transition:border-color .2s,box-shadow .2s;font-family:var(--fonte);text-align:center}
+.var-pill:hover{border-color:var(--azul)}
+.var-pill.ativa{border-color:var(--azul);background:var(--azul-claro);box-shadow:0 0 0 2px rgba(0,74,153,.12)}
+.var-pill__nome{font-size:.82rem;font-weight:800;color:var(--azul-escuro)}
+.var-pill__sub{font-size:.7rem;color:var(--cinza);line-height:1.2}
 
 .lance-form{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;max-width:600px;margin-bottom:16px}
 .lance-form label{font-size:.88rem;font-weight:600;color:var(--azul-escuro);display:block;margin-bottom:6px}
 .lance-form input{width:100%;padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:1rem;font-family:var(--fonte)}
 .lance-form input:focus{outline:none;border-color:var(--azul);box-shadow:0 0 0 3px rgba(0,74,153,.12)}
 .lance-field{flex:1 1 240px}
-.lance-aviso{font-size:.85rem;color:var(--cinza);margin-bottom:16px;max-width:600px}
 
 .recomendacao{display:grid;gap:16px}
 .rec-card{background:var(--fundo);border:1px solid var(--borda);border-radius:var(--raio);padding:22px}
@@ -86,6 +92,7 @@ img{max-width:100%;display:block}
 .rec-linha:last-child{border-bottom:none}
 .rec-label{color:var(--cinza)}
 .rec-valor{font-weight:700;text-align:right}
+.rec-valor--destaque{color:var(--azul);font-weight:800}
 .faixa-badge{display:inline-block;background:var(--azul);color:#fff;font-size:.78rem;font-weight:800;padding:4px 12px;border-radius:999px}
 .caminho{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
 .caminho__passo{background:var(--branco);border:2px solid var(--azul);color:var(--azul);font-weight:700;font-size:.85rem;padding:8px 14px;border-radius:999px}
@@ -93,6 +100,7 @@ img{max-width:100%;display:block}
 .caminho__seta{color:var(--cinza);font-weight:800}
 .rec-copy{font-size:.92rem;line-height:1.7;color:var(--texto)}
 .rec-nota{font-size:.84rem;color:var(--azul);background:var(--azul-claro);border-radius:10px;padding:10px 14px;margin-top:10px}
+.rec-le{font-size:.84rem;color:#7A4E00;background:#FFF4DE;border-radius:10px;padding:10px 14px;margin-top:10px}
 .mega-card{margin-top:4px;background:linear-gradient(135deg,var(--azul) 0%,var(--azul-escuro) 100%);color:#fff;border-radius:var(--raio);padding:16px 20px}
 .mega-card strong{display:block;font-size:.95rem;margin-bottom:4px}
 .mega-card p{font-size:.85rem;color:rgba(255,255,255,.92)}
@@ -127,7 +135,6 @@ img{max-width:100%;display:block}
 .btn--cta{background:var(--cta);color:var(--branco);box-shadow:0 4px 14px rgba(228,0,43,.3)}
 .btn--cta:hover{background:var(--cta-hover);transform:translateY(-1px)}
 
-/* Carta (PDF) - layout compacto e visual */
 .carta{background:var(--branco);color:var(--texto);width:660px;padding:22px 26px;font-size:12px}
 .carta__header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--azul);padding-bottom:10px;margin-bottom:14px}
 .carta__logo{height:58px;width:auto}
@@ -225,7 +232,8 @@ img{max-width:100%;display:block}
   </section>
 
   <section class="card" id="etapa-grupo" hidden>
-    <div class="card__titulo"><span class="badge">4</span>Grupo e plano do consórcio</div>
+    <div class="card__titulo"><span class="badge">4</span>Grupo, plano e variação de crédito</div>
+    <p class="aviso">Escolha o grupo e o plano. Quando o modelo tiver mais de uma variação de crédito (base, +LE com lance embutido ou 120% — BAJ09), ela aparece dentro do card — basta tocar na opção desejada.</p>
     <div class="grid-planos" id="listaPlanos"></div>
     <div class="nav">
       <button class="btn btn--ghost" data-voltar="3">Voltar</button>
@@ -235,7 +243,7 @@ img{max-width:100%;display:block}
 
   <section class="card" id="etapa-recomendacao" hidden>
     <div class="card__titulo"><span class="badge">5</span>Recomendação de lance e caminho de contemplação</div>
-    <p class="lance-aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da oferta escolhida e recomenda o caminho de contemplação ideal.</p>
+    <p class="aviso">Informe quanto o cliente pretende ofertar de lance. O sistema calcula o percentual sobre o crédito da variação escolhida e recomenda o caminho de contemplação ideal. No crédito +LE, o percentual considera o lance do cliente +30% de lance embutido coberto pelo próprio crédito.</p>
     <div class="lance-form">
       <div class="lance-field">
         <label for="valorLance">Valor do lance disponível do cliente (R$)</label>
@@ -322,6 +330,25 @@ img{max-width:100%;display:block}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+/* ================================================================
+   SIMULADOR CONSÓRCIO NACIONAL BAJAJ
+   ================================================================
+   >>> REGRA DE BENS COMPARTILHADOS (BAJ09) <<<
+   O bem BAJ09 (crédito 120%, R$ 32.388) pode ser usado TANTO com o
+   crédito base BAJ03 (Dominar 400) QUANTO com o BAJ18 (NS400Z).
+   Por isso a NS400Z também oferece o seletor base <-> 120%.
+   >>> EXTENSÃO DAS IMAGENS POR MODELO <<<
+   pulsar-n150 e dominar-ns400z usam .webp — os demais usam .png.
+   ================================================================ */
+var EXTENSOES = {
+  "pulsar-n150":    "webp",
+  "dominar-ns160":  "png",
+  "dominar-ns200":  "png",
+  "dominar-250":    "png",
+  "dominar-400":    "png",
+  "dominar-ns400z": "webp"
+};
+
 /* ============ CONFIG: PLANILHA (com anti-cache) ============ */
 var CONFIG = {
   urlTabelas: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWkHKLgnwSr8G5zUNe0D2SrYkC3_z78JRQa82cra_XbBqITndpKriiI3FB1mp3B2SSC93SSxLEPpEe/pub?gid=2089215310&single=true&output=csv",
@@ -344,7 +371,9 @@ var MODELOS = {
     "Cilindrada":"373,27 cc","Potência":"40 CV @ 8.500 RPM","Torque":"3,57 kgf.m @ 7.000 RPM","Tanque":"12 litros","Peso":"174 kg","Freios":"Disco ABS + controle de tração" } }
 };
 
-/* ============ TABELAS (fallback local identico a planilha) ============ */
+/* ============ TABELAS (fallback local identico a planilha) ============
+   [modelo, grupo, plano, variacao, codigo, credito, parcela]
+   38 linhas oficiais + 4 linhas BAJ09 replicadas para NS400Z (bem compartilhado) */
 var TABELAS_RAW = [
   ["dominar-ns160",6001,"44x Normal","","BAJ12",19500,543.62],
   ["dominar-ns200",6001,"44x Normal","","BAJ14",22500,627.27],
@@ -355,6 +384,7 @@ var TABELAS_RAW = [
   ["dominar-ns160",6001,"44x Normal","+LE","BAJ13",27857.14,776.60],
   ["dominar-ns200",6001,"44x Normal","+LE","BAJ15",32142.86,896.08],
   ["dominar-400",6001,"44x Normal","120%","BAJ09",32388,902.90],
+  ["dominar-ns400z",6001,"44x Normal","120%","BAJ09",32388,902.90],
   ["dominar-ns160",6001,"44x 70%","","BAJ12",19500,410.64],
   ["dominar-ns200",6001,"44x 70%","","BAJ14",22500,473.81],
   ["dominar-250",6001,"44x 70%","","BAJ07",23400,492.77],
@@ -364,6 +394,7 @@ var TABELAS_RAW = [
   ["dominar-ns160",6001,"44x 70%","+LE","BAJ13",27857.14,586.64],
   ["dominar-ns200",6001,"44x 70%","+LE","BAJ15",32142.86,676.90],
   ["dominar-400",6001,"44x 70%","120%","BAJ09",32388,682.04],
+  ["dominar-ns400z",6001,"44x 70%","120%","BAJ09",32388,682.04],
   ["dominar-ns160",6000,"68x Normal","","BAJ12",19500,360.49],
   ["dominar-ns200",6000,"68x Normal","","BAJ14",22500,416.00],
   ["dominar-250",6000,"68x Normal","","BAJ07",23400,432.58],
@@ -373,6 +404,7 @@ var TABELAS_RAW = [
   ["dominar-ns160",6000,"68x Normal","+LE","BAJ13",27857.14,515.03],
   ["dominar-ns200",6000,"68x Normal","+LE","BAJ15",32142.86,594.19],
   ["dominar-400",6000,"68x Normal","120%","BAJ09",32388,598.78],
+  ["dominar-ns400z",6000,"68x Normal","120%","BAJ09",32388,598.78],
   ["dominar-250",6000,"68x Normal","+LE","BAJ08",33428.57,618.00],
   ["dominar-ns160",6000,"68x 70%","","BAJ12",19500,274.48],
   ["dominar-ns200",6000,"68x 70%","","BAJ14",22500,316.72],
@@ -383,6 +415,7 @@ var TABELAS_RAW = [
   ["dominar-ns160",6000,"68x 70%","+LE","BAJ13",27857.14,392.08],
   ["dominar-ns200",6000,"68x 70%","+LE","BAJ15",32142.86,452.42],
   ["dominar-400",6000,"68x 70%","120%","BAJ09",32388,455.88],
+  ["dominar-ns400z",6000,"68x 70%","120%","BAJ09",32388,455.88],
   ["dominar-250",6000,"68x 70%","+LE","BAJ08",33428.57,470.50]
 ];
 
@@ -419,30 +452,59 @@ function formatarDinheiro(v){
   return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
-/* Pastas candidatas: cobre a grafia correta e a variante "dominario" encontrada no print */
-function pastasCandidatas(modeloId){
-  var m = MODELOS[modeloId];
-  var lista = [m.pasta];
-  if (m.pasta.indexOf("dominar") === 0) {
-    lista.push("dominario" + m.pasta.slice(7));
-  }
-  return lista;
+function variacaoRotulo(v){
+  if (v === "+LE") return { nome: "Crédito +LE", sub: "lance embutido +30%" };
+  if (v === "120%") return { nome: "Crédito 120%", sub: "BAJ09 · recurso embutido máx. 16,5%" };
+  return { nome: "Crédito base", sub: "" };
 }
 
-/* Imagem: busca .png E .webp (e .jpg), em ambas grafias de pasta, com placeholder final */
-function carregarImagem(el, modeloId, cor, label){
-  var pastas = pastasCandidatas(modeloId);
-  var m = MODELOS[modeloId];
-  var nomes = [cor, m.pasta + "-" + cor, m.pasta + "_" + cor, modeloId + "-" + cor];
-  var ext = ["png","webp","jpg"];
-  var padroes = [];
-  for (var p = 0; p < pastas.length; p++) {
-    for (var n = 0; n < nomes.length; n++) {
-      for (var e = 0; e < ext.length; e++) {
-        padroes.push("assets/" + pastas[p] + "/" + nomes[n] + "." + ext[e]);
-      }
+/* Ofertas de um modelo+grupo+plano, ordenadas: base, +LE, 120% */
+function encontrarOfertas(modelo, grupo, plano){
+  var res = [], ordem = { "": 0, "+LE": 1, "120%": 2 };
+  for (var i = 0; i < tabelas.length; i++) {
+    if (tabelas[i][0] === modelo && tabelas[i][1] === grupo && tabelas[i][2] === plano) res.push(tabelas[i]);
+  }
+  res.sort(function(a,b){ return (ordem[a[3]] || 0) - (ordem[b[3]] || 0); });
+  return res;
+}
+
+function encontrarOferta(modelo, grupo, plano){
+  var o = encontrarOfertas(modelo, grupo, plano);
+  return o.length ? o[0] : null;
+}
+
+function montarPlano(grupo, plano, variacao, codigo){
+  for (var i = 0; i < tabelas.length; i++) {
+    if (tabelas[i][0] === modeloSelecionado && tabelas[i][1] === grupo && tabelas[i][2] === plano && tabelas[i][4] === codigo) {
+      return { grupo: grupo, plano: plano, oferta: tabelas[i] };
     }
   }
+  return { grupo: grupo, plano: plano, oferta: encontrarOferta(modeloSelecionado, grupo, plano) };
+}
+
+function montarFichaHTML(ficha){
+  var html = "";
+  for (var k in ficha) {
+    html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
+  }
+  return html;
+}
+
+/* Imagem: tenta a extensao do mapa EXTENSOES primeiro e faz fallback automatico */
+function carregarImagem(el, modeloId, cor, label){
+  var m = MODELOS[modeloId];
+  var pasta = m.pasta;
+  var extPrincipal = EXTENSOES[modeloId] || "png";
+  var outrasExt = extPrincipal === "webp" ? ["png","jpg"] : ["webp","jpg"];
+  var padroes = [];
+  padroes.push("assets/" + pasta + "/" + cor + "." + extPrincipal);
+  padroes.push("assets/" + pasta + "/" + cor + "." + outrasExt[0]);
+  padroes.push("assets/" + pasta + "/" + cor + "." + outrasExt[1]);
+  padroes.push("assets/" + pasta + "/" + pasta + "-" + cor + "." + extPrincipal);
+  padroes.push("assets/" + pasta + "/" + pasta + "-" + cor + "." + outrasExt[0]);
+  padroes.push("assets/" + pasta + "/" + pasta + "_" + cor + "." + extPrincipal);
+  padroes.push("assets/" + pasta + "/" + pasta + "_" + cor + "." + outrasExt[0]);
+
   var i = 0;
   function tentar(){
     if (i >= padroes.length) {
@@ -470,26 +532,6 @@ function carregarImagem(el, modeloId, cor, label){
     i++;
   }
   tentar();
-}
-
-function encontrarOferta(modelo, grupo, plano){
-  var base = null;
-  for (var j = 0; j < tabelas.length; j++) {
-    if (tabelas[j][0] === modelo && tabelas[j][1] === grupo && tabelas[j][2] === plano && tabelas[j][3] === "") { base = tabelas[j]; break; }
-  }
-  if (base) return base;
-  for (var k = 0; k < tabelas.length; k++) {
-    if (tabelas[k][0] === modelo && tabelas[k][1] === grupo && tabelas[k][2] === plano) return tabelas[k];
-  }
-  return null;
-}
-
-function montarFichaHTML(ficha){
-  var html = "";
-  for (var k in ficha) {
-    html += '<div class="ficha__linha"><span class="ficha__label">' + k + '</span><span class="ficha__valor">' + ficha[k] + '</span></div>';
-  }
-  return html;
 }
 
 /* ============ PARSER CSV ============ */
@@ -547,7 +589,8 @@ async function carregarDadosPlanilha(){
     var mapaModelo = {
       "dominarns160":"dominar-ns160","dominarns200":"dominar-ns200","dominar250":"dominar-250",
       "pulsarn150le":"pulsar-n150","pulsarn150":"pulsar-n150","dominar400":"dominar-400",
-      "ns400z":"dominar-ns400z","dominar250le":"dominar-250","dominar400120":"dominar-400"
+      "ns400z":"dominar-ns400z","dominarns400z":"dominar-ns400z","dominar250le":"dominar-250",
+      "dominar400120":"dominar-400","120dominar400":"dominar-400","120dominarns400z":"dominar-ns400z"
     };
     for (var i = 1; i < linhas2.length; i++) {
       var l2 = linhas2[i];
@@ -564,11 +607,52 @@ async function carregarDadosPlanilha(){
       var variacao = /\+ ?le/i.test(nome) ? "+LE" : (nome.indexOf("120%") >= 0 ? "120%" : "");
       novas.push([modelo, parseInt(grupo,10), String(plano).trim(), variacao, String(codigo).trim(), limparNumero(credito), limparNumero(parcela)]);
     }
+
+    /* REGRA BAJ09 (bem compartilhado): se a planilha nao trouxer NS400Z 120%,
+       replica as linhas BAJ09 do Dominar 400 para a NS400Z — mesmo credito,
+       mesmas parcelas, mesmo codigo. Nenhum credito novo e criado. */
+    var temNs400z120 = novas.some(function(l){ return l[0] === "dominar-ns400z" && l[3] === "120%"; });
+    if (!temNs400z120) {
+      var baj09 = [];
+      for (var r9 = 0; r9 < novas.length; r9++) {
+        if (novas[r9][4] === "BAJ09") baj09.push(novas[r9].slice());
+      }
+      for (var r10 = 0; r10 < baj09.length; r10++) {
+        baj09[r10][0] = "dominar-ns400z";
+        novas.push(baj09[r10]);
+      }
+    }
     if (novas.length >= 38) tabelas = novas;
   } catch (e) { /* usa tabelas locais */ }
 
-  if (planoSelecionado) { renderPlanos(); }
-  if (planoSelecionado && lanceCliente !== null) { renderRecomendacao(); }
+  if (planoSelecionado) {
+    var antigo = planoSelecionado;
+    renderPlanos();
+    var cardsSel = document.querySelectorAll(".plano-card");
+    for (var s = 0; s < cardsSel.length; s++) {
+      var cd = cardsSel[s];
+      if (cd.dataset.grupo === String(antigo.grupo) && cd.dataset.plano === antigo.plano) {
+        var pills = cd.querySelectorAll(".var-pill");
+        var alvo = null;
+        for (var pv = 0; pv < pills.length; pv++) {
+          if (pills[pv].dataset.codigo === antigo.oferta[4]) alvo = pills[pv];
+        }
+        if (alvo) {
+          for (var pv2 = 0; pv2 < pills.length; pv2++) pills[pv2].classList.remove("ativa");
+          alvo.classList.add("ativa");
+          cd.querySelector(".v-credito").textContent = formatarDinheiro(parseFloat(alvo.dataset.credito));
+          cd.querySelector(".v-parcela").textContent = formatarDinheiro(parseFloat(alvo.dataset.parcela));
+          planoSelecionado = montarPlano(antigo.grupo, antigo.plano, alvo.dataset.variacao, alvo.dataset.codigo);
+        } else {
+          planoSelecionado = montarPlano(antigo.grupo, antigo.plano, "", antigo.oferta[4]);
+        }
+        cd.classList.add("selecionado");
+        $("btnAvancarGrupo").disabled = false;
+        break;
+      }
+    }
+    if (lanceCliente !== null) renderRecomendacao();
+  }
 }
 
 /* ============ ETAPA 1: MODELOS ============ */
@@ -578,7 +662,7 @@ function renderModelos(){
   for (var id in MODELOS) {
     var m = MODELOS[id];
     html += '<div class="modelo-card" data-modelo="' + id + '">' +
-      '<div class="modelo-card__img"><img data-src="assets/' + m.pasta + '/' + m.cores[0] + '.png" alt="' + m.nome + '"></div>' +
+      '<div class="modelo-card__img"><img data-src="assets/' + m.pasta + '/' + m.cores[0] + '.' + (EXTENSOES[id] || "png") + '" alt="' + m.nome + '"></div>' +
       '<p class="modelo-card__nome">' + m.nome + '</p>' +
       '<p class="modelo-card__cores">' + m.cores.join(" · ") + '</p></div>';
   }
@@ -641,7 +725,7 @@ function renderVisualizacao(){
   $("fichaTecnica").innerHTML = "<h3>Ficha técnica — " + m.nome + "</h3>" + montarFichaHTML(m.ficha);
 }
 
-/* ============ ETAPA 4: GRUPO + PLANO ============ */
+/* ============ ETAPA 4: GRUPO + PLANO + VARIACAO DE CREDITO ============ */
 function renderPlanos(){
   var combos = [
     { grupo: 6001, plano: "44x Normal" },
@@ -654,26 +738,66 @@ function renderPlanos(){
   for (var i = 0; i < combos.length; i++) {
     var c = combos[i];
     var info = GRUPOS_INFO[c.grupo];
-    var oferta = encontrarOferta(modeloSelecionado, c.grupo, c.plano);
-    if (!oferta) continue;
-    var rotulo = oferta[3] ? " (" + oferta[3] + ")" : "";
+    var ofertas = encontrarOfertas(modeloSelecionado, c.grupo, c.plano);
+    if (!ofertas.length) continue;
     var tag = c.grupo === 6001 ? "Quita mais rápido." : "Parcelas mais leves, você dilui o valor em mais tempo.";
-    html += '<div class="plano-card" data-grupo="' + c.grupo + '" data-plano="' + c.plano + '">' +
-      '<p class="plano-card__titulo">Grupo ' + c.grupo + ' · ' + c.plano + rotulo + '</p>' +
-      '<div class="plano-card__linha"><span>Crédito</span><strong>' + formatarDinheiro(oferta[5]) + '</strong></div>' +
+
+    var seletorHtml = "";
+    if (ofertas.length > 1) {
+      seletorHtml = '<div class="var-seletor">';
+      for (var v = 0; v < ofertas.length; v++) {
+        var o = ofertas[v];
+        var rot = variacaoRotulo(o[3]);
+        seletorHtml += '<button class="var-pill' + (v === 0 ? " ativa" : "") + '" data-variacao="' + o[3] + '" data-codigo="' + o[4] + '" data-credito="' + o[5] + '" data-parcela="' + o[6] + '">' +
+          '<span class="var-pill__nome">' + rot.nome + '</span>' +
+          (rot.sub ? '<span class="var-pill__sub">' + rot.sub + '</span>' : '') +
+          '</button>';
+      }
+      seletorHtml += '</div>';
+    }
+
+    var o0 = ofertas[0];
+    var rot0 = variacaoRotulo(o0[3]);
+    var tituloExtra = (ofertas.length === 1 && o0[3]) ? " · " + rot0.nome : "";
+
+    html += '<div class="plano-card" data-grupo="' + c.grupo + '" data-plano="' + c.plano + '" data-codigo="' + o0[4] + '" data-variacao="' + o0[3] + '">' +
+      '<p class="plano-card__titulo">Grupo ' + c.grupo + ' · ' + c.plano + tituloExtra + '</p>' +
+      seletorHtml +
+      '<div class="plano-card__linha"><span>Crédito</span><strong class="v-credito">' + formatarDinheiro(o0[5]) + '</strong></div>' +
       '<div class="plano-card__linha"><span>Parcelas</span><strong>' + info.parcelas + 'x</strong></div>' +
       '<div class="plano-card__linha"><span>Taxa de administração</span><strong>' + info.taxaAdm + '</strong></div>' +
       '<div class="plano-card__linha"><span>Diferencial</span><strong style="color:var(--azul)">' + tag + '</strong></div>' +
-      '<div class="plano-card__parcela">Parcela: ' + formatarDinheiro(oferta[6]) + '</div></div>';
+      '<div class="plano-card__parcela">Parcela: <span class="v-parcela">' + formatarDinheiro(o0[6]) + '</span></div></div>';
   }
   container.innerHTML = html;
+
   var cards = container.querySelectorAll(".plano-card");
   for (var j = 0; j < cards.length; j++) {
     (function(card){
+      var pills = card.querySelectorAll(".var-pill");
+      for (var p = 0; p < pills.length; p++) {
+        (function(pill){
+          pill.addEventListener("click", function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            for (var p2 = 0; p2 < pills.length; p2++) pills[p2].classList.remove("ativa");
+            pill.classList.add("ativa");
+            card.querySelector(".v-credito").textContent = formatarDinheiro(parseFloat(pill.dataset.credito));
+            card.querySelector(".v-parcela").textContent = formatarDinheiro(parseFloat(pill.dataset.parcela));
+            card.dataset.variacao = pill.dataset.variacao;
+            card.dataset.codigo = pill.dataset.codigo;
+            if (card.classList.contains("selecionado")) {
+              planoSelecionado = montarPlano(parseInt(card.dataset.grupo,10), card.dataset.plano, pill.dataset.variacao, pill.dataset.codigo);
+              lanceCliente = null;
+              recomendacaoAtual = null;
+            }
+          });
+        })(pills[p]);
+      }
       card.addEventListener("click", function(){
         for (var c2 = 0; c2 < cards.length; c2++) cards[c2].classList.remove("selecionado");
         card.classList.add("selecionado");
-        planoSelecionado = { grupo: parseInt(card.dataset.grupo, 10), plano: card.dataset.plano };
+        planoSelecionado = montarPlano(parseInt(card.dataset.grupo,10), card.dataset.plano, card.dataset.variacao, card.dataset.codigo);
         lanceCliente = null;
         recomendacaoAtual = null;
         $("btnAvancarGrupo").disabled = false;
@@ -682,11 +806,24 @@ function renderPlanos(){
   }
 }
 
-/* ============ MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final) ============
-   BASE:   0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 | 50-54% +LanceLimitado | 55%+ +LanceLivre
-   +LE:    0-49% Sorteio+LanceFixo30 | 50%+ +LanceLivre
-   LINHA400 (BAJ09): 0-15% Sorteio | 16-30% +LanceFixo30 (sugestão 120%) | 31-49% Sorteio+LanceFixo30 | 50-55% +LanceLimitado | 55%+ +LanceLivre
-   Mega assembleia: chamada fixa em todas (6ª, 12ª, 18ª, 24ª - primeira em setembro/2026) */
+/* ================================================================
+   MOTOR DE RECOMENDACAO (Seção 9 do PDF - versão final)
+   ================================================================
+   REGRA +LE: percentual de lance SEMPRE considera o lance do cliente
+   +30% de lance embutido coberto pelo próprio crédito.
+   REGRA BAJ09: o bem BAJ09 (crédito 120%) serve tanto para o crédito
+   base BAJ03 (Dominar 400) quanto para o BAJ18 (NS400Z). Vale o teto
+   de recurso embutido de 16,5% do crédito.
+   ================================================================
+   Caminhos (versão final do PDF):
+   BASE:   0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 |
+           50-54% +LanceLimitado | 55%+ +LanceLimitado+LanceLivre
+   +LE:    0-29% Sorteio+LanceFixo30 | 30-49% Sorteio+LanceFixo30 |
+           50-54% +LanceLivre | 55%+ +LanceLivre
+   BAJ09 (120%): 0-15% Sorteio | 16-30% +LanceFixo30 | 31-49% Sorteio+LanceFixo30 |
+             50-55% +LanceLimitado | 55%+ +LanceLimitado+LanceLivre
+   Mega assembleia: chamada fixa em todas (6ª, 12ª, 18ª, 24ª). */
+
 var REGRAS_LANCE = [
   "Lance Fixo 30%: todos ofertam 30% do crédito; desempate pela proximidade do número da Loteria Federal; aceita recurso embutido.",
   "Lance Limitado: de 1% a 60% do crédito; não aceita recurso embutido; desempate pela Loteria Federal.",
@@ -711,22 +848,22 @@ function obterRecomendacao(tipo, pct){
   } else if (tipo === "le") {
     faixas = [
       { max: 29.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "O crédito com Lance Embutido cobre parte do lance sem desembolso imediato. Participe do sorteio e do Lance Fixo de 30%." },
+        copy: "O crédito com Lance Embutido soma 30% ao lance do cliente, sem desembolso imediato. Com o percentual efetivo, o cliente participa do sorteio e do Lance Fixo de 30% com folga." },
       { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Participe do sorteio e do Lance Fixo de 30%, com o crédito +LE cobrindo parte do lance." },
+        copy: "Com o lance embutido de 30% somado ao lance do cliente, o percentual efetivo cobre o Lance Fixo de 30% com folga. Participe do sorteio e do Lance Fixo de 30%." },
       { max: 54.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Livre"],
-        copy: "O crédito potencializado permite entrar também no Lance Livre — até 30% do lance pode ser pago com o próprio crédito embutido." },
+        copy: "O percentual efetivo (lance do cliente +30% embutido) alcança a faixa do Lance Livre. Até 30% do lance pode ser pago com o próprio crédito embutido — participe do sorteio, do Lance Fixo de 30% e do Lance Livre." },
       { max: 100, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Livre"],
-        copy: "Lance forte: participe do sorteio, do Lance Fixo de 30% e do Lance Livre. Até 30% do lance pode ser pago com o crédito embutido." }
+        copy: "Lance forte: com o percentual efetivo elevado, participe do sorteio, do Lance Fixo de 30% e do Lance Livre. Até 30% do lance pode ser pago com o crédito embutido." }
     ];
-  } else { /* linha 400 (BAJ09) */
+  } else { /* BAJ09 - credito 120% (Dominar 400 e NS400Z) */
     faixas = [
       { max: 15.99, caminho: ["Sorteio"],
         copy: "Com esse percentual, a estratégia recomendada é participar do sorteio e aguardar o acúmulo de crédito para as próximas assembleias.",
-        nota: "Regra interna da linha 400: abaixo de 16% do crédito, o caminho é o sorteio." },
+        nota: "Regra do crédito 120% (BAJ09): abaixo de 16% do crédito, o caminho é o sorteio." },
       { max: 30.99, caminho: ["Sorteio", "Lance Fixo 30%"],
-        copy: "Participe do sorteio e do Lance Fixo de 30%. Para potencializar o lance, avalie o crédito 120% (BAJ09) — mais crédito significa mais poder de lance embutido.",
-        nota: "Sugestão da linha 400: o crédito 120% (BAJ09) potencializa o lance." },
+        copy: "Participe do sorteio e do Lance Fixo de 30%. Com o crédito 120% (BAJ09), o recurso embutido disponível (máx. 16,5% do crédito) potencializa o lance.",
+        nota: "Crédito 120% (BAJ09): teto de recurso embutido de 16,5% do crédito." },
       { max: 49.99, caminho: ["Sorteio", "Lance Fixo 30%"],
         copy: "Participe do sorteio e do Lance Fixo de 30%, mantendo o excedente como reserva." },
       { max: 55.99, caminho: ["Sorteio", "Lance Fixo 30%", "Lance Limitado"],
@@ -742,23 +879,30 @@ function obterRecomendacao(tipo, pct){
 }
 
 function calcularRecomendacao(){
-  var oferta = encontrarOferta(modeloSelecionado, planoSelecionado.grupo, planoSelecionado.plano);
-  if (!oferta) return null;
+  if (!planoSelecionado || !planoSelecionado.oferta) return null;
+  var oferta = planoSelecionado.oferta;
   var variacao = oferta[3] || "";
-  var tipo = variacao === "120%" ? "linha400" : (variacao === "+LE" ? "le" : "base");
+  var tipo = (oferta[4] === "BAJ09" || variacao === "120%") ? "linha400" : (variacao === "+LE" ? "le" : "base");
   var credito = oferta[5];
-  var pct = (lanceCliente / credito) * 100;
-  var rec = obterRecomendacao(tipo, pct);
+  var pctCliente = (lanceCliente / credito) * 100;
+
+  var leBonus = 0;
+  if (tipo === "le") { leBonus = 30; }
+  var pctEfetivo = pctCliente + leBonus;
+
+  var rec = obterRecomendacao(tipo, pctEfetivo);
   var faixaTxt = "";
   if (tipo === "base" || tipo === "le") {
-    faixaTxt = pct < 30 ? "0–29%" : (pct < 50 ? "30–49%" : (pct < 55 ? "50–54%" : "55%+"));
+    faixaTxt = pctEfetivo < 30 ? "0–29%" : (pctEfetivo < 50 ? "30–49%" : (pctEfetivo < 55 ? "50–54%" : "55%+"));
   } else {
-    faixaTxt = pct < 16 ? "0–15%" : (pct < 31 ? "16–30%" : (pct < 50 ? "31–49%" : (pct < 56 ? "50–55%" : "55%+")));
+    faixaTxt = pctEfetivo < 16 ? "0–15%" : (pctEfetivo < 31 ? "16–30%" : (pctEfetivo < 50 ? "31–49%" : (pctEfetivo < 56 ? "50–55%" : "55%+")));
   }
   return {
     tipo: tipo,
-    tipoNome: tipo === "base" ? "Crédito base" : (tipo === "le" ? "Crédito +LE (lance embutido)" : "Linha 400 (120%)"),
-    pct: pct,
+    tipoNome: tipo === "base" ? "Crédito base" : (tipo === "le" ? "Crédito +LE (lance embutido)" : "Crédito 120% (BAJ09)"),
+    pctCliente: pctCliente,
+    leBonus: leBonus,
+    pctEfetivo: pctEfetivo,
     faixa: faixaTxt,
     caminho: rec.caminho,
     copy: rec.copy,
@@ -784,18 +928,33 @@ function renderRecomendacao(){
     passos += '<span class="caminho__passo' + (i === r.caminho.length - 1 ? " destaque" : "") + '">' + r.caminho[i] + '</span>';
   }
 
+  var linhasLance = "";
+  if (r.tipo === "le") {
+    linhasLance =
+      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + ' (' + r.pctCliente.toFixed(1).replace(".", ",") + '%)</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Lance embutido +LE</span><span class="rec-valor rec-valor--destaque">+30%</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Percentual efetivo para recomendação</span><span class="rec-valor rec-valor--destaque">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
+  } else {
+    linhasLance =
+      '<div class="rec-linha"><span class="rec-label">Lance informado pelo cliente</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + '</span></div>' +
+      '<div class="rec-linha"><span class="rec-label">Percentual sobre o crédito</span><span class="rec-valor">' + r.pctEfetivo.toFixed(1).replace(".", ",") + '%</span></div>';
+  }
+
+  var notaLinha400 = r.tipo === "linha400" ? '<div class="rec-nota">Crédito 120% (BAJ09) — bem compartilhado entre os créditos base BAJ03 (Dominar 400) e BAJ18 (NS400Z): o teto de recurso embutido é de 16,5% do valor do crédito.</div>' : "";
+
   var html = '<div class="rec-card">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:6px">' +
       '<h3 style="margin:0">Caminho de contemplação</h3>' +
       '<span class="faixa-badge">Faixa ' + r.faixa + '</span>' +
     '</div>' +
-    '<div class="rec-linha"><span class="rec-label">Tipo de crédito</span><span class="rec-valor">' + r.tipoNome + ' (' + r.codigo + ')</span></div>' +
+    '<div class="rec-linha"><span class="rec-label">Variação de crédito</span><span class="rec-valor">' + r.tipoNome + ' (' + r.codigo + ')</span></div>' +
     '<div class="rec-linha"><span class="rec-label">Crédito da oferta</span><span class="rec-valor">' + formatarDinheiro(r.credito) + '</span></div>' +
-    '<div class="rec-linha"><span class="rec-label">Lance informado</span><span class="rec-valor">' + formatarDinheiro(lanceCliente) + '</span></div>' +
-    '<div class="rec-linha"><span class="rec-label">Percentual sobre o crédito</span><span class="rec-valor">' + r.pct.toFixed(1).replace(".", ",") + '%</span></div>' +
+    linhasLance +
     '<div class="caminho">' + passos + '</div>' +
     '<p class="rec-copy">' + r.copy + '</p>' +
+    (r.tipo === "le" ? '<div class="rec-le"><strong>Como funciona o +LE:</strong> o crédito com lance embutido soma 30% ao lance que o cliente tem em mãos. O percentual efetivo é o que define a faixa e o caminho de contemplação acima.</div>' : '') +
     (r.nota ? '<div class="rec-nota">' + r.nota + '</div>' : '') +
+    notaLinha400 +
   '</div>' +
   '<div class="mega-card"><strong>Mega assembleia</strong><p>O grupo realiza mega assembleias nas assembleias 6ª, 12ª, 18ª e 24ª — maior volume de contemplações. Próxima mega assembleia: ' + proximaMegaAssembleia + '.</p></div>' +
   '<div class="regras"><strong>Como funciona cada lance:</strong><br>' + REGRAS_LANCE.join("<br>") + '</div>';
@@ -828,17 +987,18 @@ function renderMedia(){
 function renderResumo(){
   var m = MODELOS[modeloSelecionado];
   var info = GRUPOS_INFO[planoSelecionado.grupo];
-  var oferta = encontrarOferta(modeloSelecionado, planoSelecionado.grupo, planoSelecionado.plano);
+  var oferta = planoSelecionado.oferta;
   var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
   var nomeCliente = $("nomeCliente").value.trim() || "—";
-  var variacao = oferta && oferta[3] ? " (" + oferta[3] + ")" : "";
+  var rotVar = variacaoRotulo(oferta[3]);
 
   var linhas = [
-    ["Modelo", m.nome + variacao],
+    ["Modelo", m.nome],
     ["Cor", cor],
     ["Cliente", nomeCliente],
     ["Grupo", String(planoSelecionado.grupo)],
     ["Plano", planoSelecionado.plano],
+    ["Variação de crédito", rotVar.nome + " (" + oferta[4] + ")"],
     ["Parcelas", info.parcelas + "x"],
     ["Taxa de administração", info.taxaAdm],
     ["Valor do crédito", formatarDinheiro(oferta[5])],
@@ -848,6 +1008,10 @@ function renderResumo(){
   ];
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado", formatarDinheiro(lanceCliente)]);
+    if (recomendacaoAtual.tipo === "le") {
+      linhas.push(["Lance embutido +LE", "+30%"]);
+      linhas.push(["Percentual efetivo", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+    }
     linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
   var html = "";
@@ -906,15 +1070,14 @@ function bindNavegacao(){
 function montarCarta(){
   var m = MODELOS[modeloSelecionado];
   var info = GRUPOS_INFO[planoSelecionado.grupo];
-  var oferta = encontrarOferta(modeloSelecionado, planoSelecionado.grupo, planoSelecionado.plano);
+  var oferta = planoSelecionado.oferta;
   var cor = corSelecionada.charAt(0).toUpperCase() + corSelecionada.slice(1);
   var nomeCliente = $("nomeCliente").value.trim() || "—";
   var nomeVendedor = $("nomeVendedor").value.trim() || "—";
   var whats = $("whatsVendedor").value.trim() || "—";
   var hoje = new Date().toLocaleDateString("pt-BR");
-  var variacao = oferta && oferta[3] ? " (" + oferta[3] + ")" : "";
+  var rotVar = variacaoRotulo(oferta[3]);
 
-  /* imagem da moto (a mesma que carregou na tela) */
   var box = $("cartaMotoBox");
   box.innerHTML = "";
   if (imagemMotoAtual) {
@@ -929,8 +1092,8 @@ function montarCarta(){
     box.appendChild(fb);
   }
 
-  $("cartaModelo").textContent = m.nome + variacao;
-  $("cartaCor").textContent = "Cor: " + cor;
+  $("cartaModelo").textContent = m.nome;
+  $("cartaCor").textContent = "Cor: " + cor + " · " + rotVar.nome + " (" + oferta[4] + ")";
 
   var fichaHtml = "";
   for (var k in m.ficha) {
@@ -948,6 +1111,7 @@ function montarCarta(){
     ["Vendedor", nomeVendedor],
     ["WhatsApp", whats],
     ["Plano", planoSelecionado.plano],
+    ["Variação de crédito", rotVar.nome + " (" + oferta[4] + ")"],
     ["Número de parcelas", info.parcelas + "x"],
     ["Taxa de administração", info.taxaAdm],
     ["Fundo de reserva", fundoReserva],
@@ -957,6 +1121,10 @@ function montarCarta(){
   ];
   if (lanceCliente !== null && recomendacaoAtual) {
     linhas.push(["Lance informado pelo cliente", formatarDinheiro(lanceCliente)]);
+    if (recomendacaoAtual.tipo === "le") {
+      linhas.push(["Lance embutido +LE", "+30%"]);
+      linhas.push(["Percentual efetivo", recomendacaoAtual.pctEfetivo.toFixed(1).replace(".", ",") + "%"]);
+    }
     linhas.push(["Caminho de contemplação", recomendacaoAtual.caminho.join(" → ") + " (faixa " + recomendacaoAtual.faixa + ")"]);
   }
   var detHtml = "";
@@ -971,7 +1139,7 @@ function montarCarta(){
     '<p>Valores de crédito e parcela vigentes na data de emissão, sujeitos a atualização em assembleia. Recomendação de lance baseada na média do menor lance contemplado do grupo.</p>';
 }
 
-/* ============ GERAR PDF (maximo 2 paginas, com redimensionamento) ============ */
+/* ============ GERAR PDF (maximo 2 paginas) ============ */
 async function gerarPDF(){
   montarCarta();
   var carta = $("carta");
@@ -988,7 +1156,6 @@ async function gerarPDF(){
     var imgHeightMm = (canvas.height * pw) / canvas.width;
     var maxH = ph * 2;
 
-    /* se o conteúdo passar de 2 páginas, reduz para caber exatamente em 2 */
     if (imgHeightMm > maxH) {
       var fator = maxH / imgHeightMm;
       var nw = Math.round(canvas.width * fator);
