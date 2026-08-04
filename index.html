@@ -133,7 +133,7 @@ header{background:var(--azul);padding:16px 0;box-shadow:0 2px 10px rgba(0,0,0,.1
 .btn-voltar{background:var(--branco);color:var(--azul);border:2px solid var(--azul);padding:13px 26px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;font-family:var(--fonte-corpo)}
 .btn-voltar:hover{background:var(--azul);color:#fff}
 .btn-continuar{background:var(--vermelho);color:#fff;border:none;padding:13px 30px;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;transition:background .2s;font-family:var(--fonte-corpo)}
-.btn-continuar:hover{background:#C20024}
+.btn-continuar:hover{background:#002B5C}
 .btn-continuar:disabled{background:#F3B6C0;cursor:not-allowed}
 /* FOOTER */
 footer{background:var(--azul-escuro);color:rgba(255,255,255,.8);padding:34px 0;margin-top:20px;text-align:center;font-size:13px}
@@ -1013,7 +1013,7 @@ function calcularRecomendacao(){
   var input = document.getElementById("lance-input");
   var valor = parseFloat(String(input.value).replace(",", "."));
   if(!valor || valor <= 0 || !ESTADO.oferta){
-    document.getElementById("resultado-recomendacao").innerHTML = '<p style="color:#C20024;font-weight:600">Informe um valor de lance válido em reais.</p>';
+    document.getElementById("resultado-recomendacao").innerHTML = '<p style="color:#004A99;font-weight:600">Informe um valor de lance válido em reais.</p>';
     return;
   }
   ESTADO.lance = valor;
