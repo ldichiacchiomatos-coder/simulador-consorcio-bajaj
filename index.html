@@ -1018,50 +1018,93 @@ function aplicarMascaraMoeda(valor){
 function lerLanceDoCampo(){
   var digitos = (document.getElementById("lance-input").value.match(/\d/g) || []).join("");
   return parseInt(digitos || "0", 10) / 100;
-}
-  function calcularRecomendacao(){
+function calcularRecomendacao(){
   var input = document.getElementById("lance-input");
   var valor = lerLanceDoCampo();
   if(!valor || valor <= 0 || !ESTADO.oferta){
     document.getElementById("resultado-recomendacao").innerHTML = '<p style="color:#004A99;font-weight:600">Informe um valor de lance válido em reais.</p>';
     return;
   }
-  var credito = ESTADO.oferta.credito;
-  if(valor > credito){
-    document.getElementById("resultado-recomendacao").innerHTML = '<p style="color:#004A99;font-weight:600">O lance não pode ultrapassar 100% do crédito (' + formatarDinheiro(credito) + '). Ajuste o valor.</p>';
-    input.value = aplicarMascaraMoeda(credito);
+  var creditoBase = ESTADO.oferta.credito;
+  if(valor > creditoBase){
+    document.getElementById("resultado-recomendacao").innerHTML = '<p style="color:#004A99;font-weight:600">O lance não pode ultrapassar 100% do crédito (' + formatarDinheiro(creditoBase) + '). Ajuste o valor.</p>';
+    input.value = aplicarMascaraMoeda(creditoBase);
     return;
   }
   ESTADO.lance = valor;
-  var pct = (valor / credito) * 100;
-  var embutido = 0;
-  var pctEfetivo = pct;
-  var copy = "";
-  var modalidades = [];
-  if(ESTADO.variacao === "+LE"){
-    embutido = 30;
-    pctEfetivo = pct + 30;
-    copy = "Como você está no crédito +LE, o lance embutido de 30% do crédito já está incluído na parcela.";
-  } else if(ESTADO.variacao === "120%"){
-    embutido = 16.5;
-    pctEfetivo = pct + 16.5;
-    copy = "Nesta variação de crédito (BAJ09), o lance embutido máximo é de 16,5% do crédito.";
+
+  // Percentual do lance sobre o crédito base
+  var pct = (valor / creditoBase) * 100;
+
+  // Determina o crédito +LE (lido da planilha via objeto do plano, fallback base/0.7)
+  var creditoLE = null;
+  if(ESTADO.planos && ESTADO.planos.length){
+    for(var i=0; i<ESTADO.planos.length; i++){
+      var p = ESTADO.planos[i];
+      if(p && p.variacao && String(p.variacao).toUpperCase().indexOf("+LE") > -1 && p.credito){
+        creditoLE = p.credito;
+        break;
+      }
+    }
   }
-  var faixa = "";
-  if(pct < 30){
-    faixa = "Compra planejada";
-    modalidades.push("Lance Fixo 30%");
-  } else if(pct < 55){
-    faixa = "Compra acelerada";
-    modalidades.push("Lance Fixo 30%");
-    if(ESTADO.variacao === "+LE" && pctEfetivo >= 60) modalidades.push("Lance Livre");
+  if(!creditoLE) creditoLE = creditoBase / 0.7;
+
+  // Já está em crédito +LE?
+  var jaLE = ESTADO.variacao && String(ESTADO.variacao).toUpperCase().indexOf("+LE") > -1;
+
+  // y% = (lance / creditoLE) * 100 + 30  (o +30 é o lance embutido do +LE)
+  var pctLE = (valor / creditoLE) * 100;
+  var y = pctLE + 30;
+  var lanceEmbutidoValor = 0.30 * creditoLE;
+
+  // Média do grupo escolhido (fallback local, sobrescrito pela planilha)
+  var grupo = (typeof planoSelecionado !== "undefined" && planoSelecionado && planoSelecionado.grupo)
+            ? planoSelecionado.grupo
+            : (ESTADO.oferta.grupo || null);
+  var media = 0;
+  if(grupo != null && typeof MEDIAS !== "undefined" && MEDIAS[grupo]) media = MEDIAS[grupo];
+
+  // 4 faixas
+  var caminho = [];
+  var sugerirLE = false;
+  var motivo = "";
+  var faixa = 0;
+
+  if(jaLE){
+    // Já contratou +LE: caminho já considera o embutido
+    faixa = pct < 30 ? 1 : pct <= 49 ? 2 : pct <= 60 ? 3 : 4;
+    caminho = pct >= 50
+      ? ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"]
+      : ["Sorteio", "Lance Fixo 30%", "Lance Livre"];
+  } else if(pct < 30){
+    faixa = 1;
+    caminho = ["Sorteio"];
+    sugerirLE = true;
+    motivo = "complemento de lance";
+  } else if(pct <= 49){
+    faixa = 2;
+    caminho = ["Sorteio", "Lance Fixo 30%"];
+    sugerirLE = (y >= 55);
+    motivo = "aproximar da média de contemplação";
+  } else if(pct <= 60){
+    faixa = 3;
+    caminho = ["Sorteio", "Lance Fixo 30%", "Lance Limitado"];
+    sugerirLE = true;
+    motivo = "complemento de lance";
   } else {
-    faixa = "Compra imediata";
-    modalidades.push("Lance Fixo 30%");
-    if(ESTADO.variacao === "+LE") modalidades.push("Lance Livre");
-    else modalidades.push("Lance Limitado");
+    faixa = 4;
+    caminho = ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"];
+    if(media > 0){
+      sugerirLE = (pct < media);
+      motivo = "elevar o percentual sobre o crédito";
+    }
   }
-  ESTADO.recomendacao = { pct: pct, pctEfetivo: pctEfetivo, embutido: embutido, faixa: faixa, modalidades: modalidades, copy: copy };
+
+  ESTADO.recomendacao = {
+    pct: pct, y: y, creditoBase: creditoBase, creditoLE: creditoLE,
+    lanceEmbutidoValor: lanceEmbutidoValor, caminho: caminho,
+    sugerirLE: sugerirLE, motivo: motivo, faixa: faixa, media: media, jaLE: jaLE
+  };
   exibirRecomendacao();
 }
 
