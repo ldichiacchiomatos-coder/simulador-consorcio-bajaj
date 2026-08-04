@@ -1006,7 +1006,7 @@ function exibirRecomendacao(){
   document.getElementById("resultado-recomendacao").innerHTML = html;
 }
 function renderLance(){
-  document.getElementById("lance-input").value = ESTADO.lance ? aplicarMascaraMoeda(ESTADO.lance) : "";
+  document.getElementById("lance-input").value = ESTADO.lance ? formatarDinheiro(ESTADO.lance) : "";
   if(ESTADO.recomendacao) exibirRecomendacao();
   else document.getElementById("resultado-recomendacao").innerHTML = "";
 }
