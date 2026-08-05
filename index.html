@@ -745,53 +745,85 @@ function nomeFaixaLinha400(n){
   if(n === 4) return "Linha 400 · lance de 50% a 60% do crédito";
   return "Linha 400 · lance acima de 60% do crédito";
 }
+/* =========================================================
+   LEITURA DA PLANILHA — CORRIGIDA (05/08/2026)
+   O site agora lê as duas abas publicadas da planilha:
+   - TABELAS (6 colunas: Modelo, Código, Grupo, Plano, Crédito, Parcela)
+   - ATUAL (2 colunas: Chave, Valor)
+   Se a planilha falhar ou retornar dados inválidos, o fallback
+   local (TABELAS_RAW e MEDIAS embutidos) continua funcionando.
+   ========================================================= */
+function converterMoeda(texto){
+  if(!texto) return 0;
+  var limpo = String(texto).replace(/R\$/g, "").replace(/\s+/g, "").replace(/\./g, "").replace(",", ".");
+  return parseFloat(limpo) || 0;
+}
+function converterPct(texto){
+  if(!texto) return 0;
+  var limpo = String(texto).replace("%", "").replace(/\s+/g, "").replace(",", ".");
+  return parseFloat(limpo) || 0;
+}
 function parseCSV(texto){
   var linhas = [];
-  var atual = "";
-  var emAspas = false;
+  var linhaAtual = [];
+  var campoAtual = "";
+  var dentroAspas = false;
   for(var i=0;i<texto.length;i++){
     var c = texto[i];
-    if(emAspas){
-      if(c === '"'){
-        if(texto[i+1] === '"'){ atual += '"'; i++; }
-        else emAspas = false;
-      } else atual += c;
-    } else {
-      if(c === '"') emAspas = true;
-      else if(c === ","){ linhas.push(atual); atual = ""; }
-      else if(c === "\n" || c === "\r"){
-        if(c === "\r" && texto[i+1] === "\n") i++;
-        linhas.push(atual); atual = "";
-      }
-      else atual += c;
+    var prox = texto[i+1];
+    if(c === '"' && dentroAspas && prox === '"'){ campoAtual += '"'; i++; }
+    else if(c === '"'){ dentroAspas = !dentroAspas; }
+    else if(c === "," && !dentroAspas){ linhaAtual.push(campoAtual.trim()); campoAtual = ""; }
+    else if((c === "\n" || c === "\r") && !dentroAspas){
+      if(campoAtual || linhaAtual.length > 0){ linhaAtual.push(campoAtual.trim()); linhas.push(linhaAtual); }
+      campoAtual = ""; linhaAtual = [];
+      if(c === "\r" && prox === "\n") i++;
     }
+    else campoAtual += c;
   }
-  linhas.push(atual);
-  var resultado = [];
-  var linhaAtual = [];
-  for(var j=0;j<linhas.length;j++){
-    var val = linhas[j].trim();
-    if(val === "" && linhaAtual.length === 0) continue;
-    linhaAtual.push(val);
-    if(linhaAtual.length >= 7){
-      resultado.push(linhaAtual.slice(0,7));
-      linhaAtual = [];
-    }
-  }
-  if(linhaAtual.length) resultado.push(linhaAtual);
-  return resultado;
+  if(campoAtual || linhaAtual.length > 0){ linhaAtual.push(campoAtual.trim()); linhas.push(linhaAtual); }
+  return linhas;
 }
 function carregarTabelas(){
   if(!window.fetch) return;
+  var MAPEAMENTO_MODELOS = {
+    "Dominar NS 160": "dominar-ns160",
+    "Dominar NS 200": "dominar-ns200",
+    "Dominar 250": "dominar-250",
+    "Pulsar N150": "pulsar-n150",
+    "Dominar 400": "dominar-400",
+    "NS400Z": "dominar-ns400z"
+  };
   fetch(CONFIG.urlTabelas)
     .then(function(r){ if(!r.ok) throw new Error("http"); return r.text(); })
     .then(function(texto){
       var linhas = parseCSV(texto);
       var dados = [];
-      for(var i=0;i<linhas.length;i++){
+      for(var i=1;i<linhas.length;i++){
         var l = linhas[i];
-        if(!MODELOS[String(l[0]).trim()]) continue;
-        dados.push([String(l[0]).trim(), Number(l[1]), normalizarPlano(l), normalizarVariacao(l), l[4], Number(l[5]), Number(l[6])]);
+        if(!l || l.length < 6) continue;
+        var nomePlanilha = String(l[0] || "").trim();
+        if(!nomePlanilha) continue;
+        var nomeLimpo = nomePlanilha.replace(/\s+/g, "").toLowerCase();
+        var modeloId = "";
+        for(var chave in MAPEAMENTO_MODELOS){
+          var chaveLimpa = chave.replace(/\s+/g, "").toLowerCase();
+          if(nomeLimpo.indexOf(chaveLimpa) > -1){ modeloId = MAPEAMENTO_MODELOS[chave]; break; }
+        }
+        if(!modeloId) continue;
+        var variacao = "base";
+        var nomeMaiusculo = nomePlanilha.toUpperCase();
+        if(nomeMaiusculo.indexOf("+LE") > -1 || nomeMaiusculo.indexOf("+ LE") > -1) variacao = "+LE";
+        else if(nomeMaiusculo.indexOf("120%") > -1) variacao = "120%";
+        dados.push([
+          modeloId,
+          Number(l[2]),
+          String(l[3] || "").trim(),
+          variacao,
+          String(l[1] || "").trim(),
+          converterMoeda(l[4]),
+          converterMoeda(l[5])
+        ]);
       }
       if(dados.length >= 10) TABELAS_RAW = dados;
     })
@@ -806,14 +838,16 @@ function carregarAtual(){
       var mapa = {};
       for(var i=0;i<linhas.length;i++){
         var l = linhas[i];
-        if(l.length >= 2) mapa[String(l[0]).trim().toLowerCase()] = String(l[1]).trim();
+        if(l && l.length >= 2) mapa[String(l[0]).trim().toLowerCase()] = String(l[1]).trim();
       }
-      if(mapa["media_menor_lance_6000"]) MEDIAS[6000] = parseFloat(mapa["media_menor_lance_6000"].replace(",","."));
-      if(mapa["media_menor_lance_6001"]) MEDIAS[6001] = parseFloat(mapa["media_menor_lance_6001"].replace(",","."));
+      if(mapa["media_menor_lance_6000"]) MEDIAS[6000] = converterPct(mapa["media_menor_lance_6000"]);
+      if(mapa["media_menor_lance_6001"]) MEDIAS[6001] = converterPct(mapa["media_menor_lance_6001"]);
       if(mapa["proxima_assembleia"]) PROXIMA_ASSEMBLEIA = mapa["proxima_assembleia"];
       if(mapa["proxima_mega_assembleia"]) PROXIMA_MEGA_ASSEMBLEIA = mapa["proxima_mega_assembleia"];
       if(mapa["taxa_adm_6000"]) GRUPOS_INFO[6000].taxaAdm = mapa["taxa_adm_6000"];
       if(mapa["taxa_adm_6001"]) GRUPOS_INFO[6001].taxaAdm = mapa["taxa_adm_6001"];
+      if(mapa["fundo_reserva"]) CONFIG.fundoReserva = mapa["fundo_reserva"];
+      if(mapa["vencimento"]) CONFIG.vencimento = mapa["vencimento"];
     })
     .catch(function(){});
 }
