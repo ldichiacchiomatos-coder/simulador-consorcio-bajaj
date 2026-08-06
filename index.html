@@ -1172,7 +1172,7 @@ function calcularRecomendacao(){
     return;
   }
   var creditoContratado = ESTADO.oferta.credito;
-  if(!valor || valor <= 0){
+  if(!valor || valor &lt;= 0){
     box.innerHTML = '<p style="color:#004A99;font-weight:600">Informe um valor de lance válido em reais.</p>';
     return;
   }
@@ -1183,77 +1183,120 @@ function calcularRecomendacao(){
   }
   ESTADO.lance = valor;
   var media = MEDIAS[ESTADO.grupo] || 0;
-  var pct = (valor / creditoContratado) * 100;
+  var modelo = ESTADO.modelo;
+  var grupo = ESTADO.grupo;
+  var plano = ESTADO.plano;
+  var variacao = ESTADO.variacao;
 
-  /* REGRA 3 — CLIENTE JÁ NO +LE (2 faixas sobre o crédito +LE) */
-  if(ESTADO.variacao === "+LE"){
-    var faixaLE = (pct <= 24) ? 1 : 2;
+  /* REGRA 2 — CLIENTE JÁ NO +LE (2 faixas sobre o crédito +LE) */
+  if(variacao === "+LE"){
+    var pctLE = (valor / creditoContratado) * 100;
+    var faixaLE = (pctLE &lt;= 24) ? 1 : 2;
     var caminhoLE = (faixaLE === 1)
       ? ["Sorteio", "Lance Fixo 30%"]
       : ["Sorteio", "Lance Fixo 30%", "Lance Livre"];
     ESTADO.recomendacao = {
-      jaLE: true, jaLinha400: false, faixaLE: faixaLE, faixa: 0,
-      pct: pct, y: 0, creditoBase: creditoContratado, creditoLE: creditoContratado,
+      jaLE: true, jaLinha400: false, variacao120: false, faixaLE: faixaLE, faixa: 0,
+      pct: pctLE, y: 0, creditoBase: creditoContratado, creditoLE: creditoContratado,
       codigoLE: ESTADO.oferta.codigo, lanceEmbutidoValor: 0,
       caminho: caminhoLE, caminhoExibicao: caminhoLE,
-      sugerirLE: false, motivo: "", media: media, le: null
+      sugerirLE: false, motivo: "", media: media, le: null, caminhoPosLE: null
     };
     exibirRecomendacao();
     return;
   }
 
-  /* REGRA 2 — CLIENTE JÁ NO 120% (linha 400, Seção 10.1) */
-  if(ESTADO.variacao === "120%"){
-    var dif = 5398.00;
-    var y400 = ((valor + dif) / 32388.00) * 100;
-    var caminho400 = [], faixa400 = 0, sugerir400 = false;
-    if(pct < 17){
-      faixa400 = 1; caminho400 = ["Sorteio"]; sugerir400 = false;
-    } else if(pct <= 29){
-      faixa400 = 2; caminho400 = ["Sorteio"]; sugerir400 = false;
-    } else if(pct <= 49){
-      faixa400 = 3; caminho400 = ["Sorteio", "Lance Fixo 30%"]; sugerir400 = (y400 >= 55);
-    } else if(pct <= 60){
-      faixa400 = 4; caminho400 = ["Sorteio", "Lance Fixo 30%", "Lance Limitado"]; sugerir400 = false;
+  /* REGRA 4 — CLIENTE JÁ NO 120% (linha 400) */
+  if(variacao === "120%"){
+    var n = (valor / 32388.00) * 100 + 16.66;
+    var faixa4 = 0, caminho4 = [];
+    if(n &lt; 15){ faixa4 = 1; caminho4 = ["Sorteio"]; }
+    else if(n &lt;= 38){ faixa4 = 2; caminho4 = ["Sorteio", "Lance Fixo 30%"]; }
+    else { faixa4 = 3; caminho4 = ["Sorteio", "Lance Fixo 30%", "Lance Livre"]; }
+    ESTADO.recomendacao = {
+      jaLE: false, jaLinha400: true, variacao120: true, faixaLE: 0, faixa: faixa4,
+      pct: n, y: 0, creditoBase: creditoContratado, creditoLE: 32388,
+      codigoLE: "BAJ09", lanceEmbutidoValor: 0,
+      caminho: caminho4, caminhoExibicao: caminho4,
+      sugerirLE: false, motivo: "", media: media, le: null, caminhoPosLE: null
+    };
+    exibirRecomendacao();
+    return;
+  }
+
+  var eLinha400 = (modelo === "dominar-400" || modelo === "dominar-ns400z");
+
+  /* REGRA 3 — LINHA 400 NO CRÉDITO BASE */
+  if(eLinha400 && variacao === "base"){
+    var z = (valor / 26990.00) * 100;
+    var y400 = (valor / 32388.00) * 100 + 16.66;
+    var faixa3 = 0, caminho3 = [], sugerir3 = false, motivo3 = "", posLE3 = null;
+    if(z &lt; 16){
+      faixa3 = 1; caminho3 = ["Sorteio"];
+    } else if(z &lt;= 29){
+      faixa3 = 2; caminho3 = ["Sorteio"];
+      sugerir3 = true; motivo3 = "potencializar o lance e competir no lance fixo 30%";
+      posLE3 = ["Sorteio", "Lance Fixo 30%"];
+    } else if(z &lt;= 46){
+      faixa3 = 3; caminho3 = ["Sorteio", "Lance Fixo 30%"];
     } else {
-      faixa400 = 5; caminho400 = ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"]; sugerir400 = false;
+      faixa3 = 4;
+      caminho3 = (z >= 55)
+        ? ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"]
+        : ["Sorteio", "Lance Fixo 30%", "Lance Livre"];
+      sugerir3 = (y400 >= 55); motivo3 = "elevar o percentual sobre o crédito";
+      posLE3 = caminho3;
     }
     ESTADO.recomendacao = {
-      jaLE: false, jaLinha400: true, faixaLE: 0, faixa: faixa400,
-      pct: pct, y: y400, creditoBase: creditoContratado, creditoLE: 32388,
-      codigoLE: "BAJ09", lanceEmbutidoValor: dif,
-      caminho: caminho400, caminhoExibicao: caminho400,
-      sugerirLE: false, motivo: "", media: media, le: null
+      jaLE: false, jaLinha400: true, variacao120: false, faixaLE: 0, faixa: faixa3,
+      pct: z, y: y400, creditoBase: 26990, creditoLE: 32388,
+      codigoLE: "BAJ09", lanceEmbutidoValor: 5398.00,
+      caminho: caminho3, caminhoExibicao: caminho3,
+      sugerirLE: sugerir3, motivo: motivo3, media: media,
+      le: { codigo: "BAJ09", credito: 32388, variacao: "120%" }, caminhoPosLE: posLE3
     };
     exibirRecomendacao();
     return;
   }
 
-  /* REGRA 1 — CRÉDITO BASE (4 faixas, Seção 10) */
-  var creditoBase = ESTADO.oferta.credito;
-  var le = ofertaLE(ESTADO.modelo, ESTADO.grupo, ESTADO.plano);
-  var creditoLE = le ? le.credito : creditoBase / 0.7;
+  /* REGRA 1 — CRÉDITO BASE (DEMAIS MODELOS) */
+  var x = (valor / creditoContratado) * 100;
+  var le = ofertaLE(modelo, grupo, plano);
+  var creditoLE = le ? le.credito : creditoContratado / 0.7;
   var codigoLE = le ? le.codigo : "";
-  var pctLE = (valor / creditoLE) * 100;
-  var y = pctLE + 30;
+  var y = (valor / creditoLE) * 100 + 30;
   var lanceEmbutidoValor = 0.30 * creditoLE;
-  var caminho = [], sugerirLE = false, motivo = "", faixa = 0;
-  if(pct < 30){
-    faixa = 1; caminho = ["Sorteio"]; sugerirLE = !!le; motivo = "complemento de lance";
-  } else if(pct <= 49){
-    faixa = 2; caminho = ["Sorteio", "Lance Fixo 30%"]; sugerirLE = !!le && (y >= 55); motivo = "aproximar da média de contemplação";
-  } else if(pct <= 60){
-    faixa = 3; caminho = ["Sorteio", "Lance Fixo 30%", "Lance Limitado"]; sugerirLE = !!le; motivo = "complemento de lance";
+  var faixa1 = 0, caminho1 = [], sugerir1 = false, motivo1 = "", posLE1 = null;
+
+  if(x &lt; 30){
+    faixa1 = 1; caminho1 = ["Sorteio"];
+    sugerir1 = !!le; motivo1 = "complemento de lance";
+    posLE1 = ["Sorteio", "Lance Fixo 30%"];
+  } else if(x &lt;= 49){
+    faixa1 = 2; caminho1 = ["Sorteio", "Lance Fixo 30%"];
+    sugerir1 = !!le;
+    if(x &lt;= 35){
+      motivo1 = "preservar capital próprio";
+      posLE1 = ["Sorteio", "Lance Fixo 30%"];
+    } else {
+      motivo1 = "potencializar o lance e ofertar lance livre";
+      posLE1 = ["Sorteio", "Lance Fixo 30%", "Lance Livre"];
+    }
   } else {
-    faixa = 4; caminho = ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"];
-    if(media > 0){ sugerirLE = !!le && (pct < media); motivo = "elevar o percentual sobre o crédito"; }
+    faixa1 = 3;
+    caminho1 = (x >= media)
+      ? ["Sorteio", "Lance Fixo 30%", "Lance Limitado", "Lance Livre"]
+      : ["Sorteio", "Lance Fixo 30%", "Lance Limitado"];
+    sugerir1 = !!le && (y >= media); motivo1 = "elevar o percentual sobre o crédito";
+    posLE1 = caminho1;
   }
+
   ESTADO.recomendacao = {
-    jaLE: false, jaLinha400: false, faixaLE: 0, faixa: faixa,
-    pct: pct, y: y, creditoBase: creditoBase, creditoLE: creditoLE,
+    jaLE: false, jaLinha400: false, variacao120: false, faixaLE: 0, faixa: faixa1,
+    pct: x, y: y, creditoBase: creditoContratado, creditoLE: creditoLE,
     codigoLE: codigoLE, lanceEmbutidoValor: lanceEmbutidoValor,
-    caminho: caminho, caminhoExibicao: caminho,
-    sugerirLE: sugerirLE, motivo: motivo, media: media, le: le
+    caminho: caminho1, caminhoExibicao: caminho1,
+    sugerirLE: sugerir1, motivo: motivo1, media: media, le: le, caminhoPosLE: posLE1
   };
   exibirRecomendacao();
 }
