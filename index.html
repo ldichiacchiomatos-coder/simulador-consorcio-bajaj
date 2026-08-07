@@ -1305,7 +1305,7 @@ function calcularRecomendacao(){
 function aceitarLE(){
   var r = ESTADO.recomendacao;
   if(!r || !r.sugerirLE || !r.le) return;
-  var novaVariacao = (ESTADO.modelo === "dominar-ns400z") ? "120%" : "+LE";
+  var novaVariacao = (ESTADO.modelo === "dominar-400" || ESTADO.modelo === "dominar-ns400z") ? "120%" : "+LE";
   var novaOferta = encontrarOferta(ESTADO.modelo, ESTADO.grupo, ESTADO.plano, novaVariacao);
   if(!novaOferta) return;
   ESTADO.variacao = novaVariacao;
