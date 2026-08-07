@@ -1172,7 +1172,7 @@ function calcularRecomendacao(){
     return;
   }
   var creditoContratado = ESTADO.oferta.credito;
-  if(!valor || valor &lt;= 0){
+  if(!valor || valor <= 0){
     box.innerHTML = '<p style="color:#004A99;font-weight:600">Informe um valor de lance válido em reais.</p>';
     return;
   }
@@ -1191,7 +1191,7 @@ function calcularRecomendacao(){
   /* REGRA 2 — CLIENTE JÁ NO +LE (2 faixas sobre o crédito +LE) */
   if(variacao === "+LE"){
     var pctLE = (valor / creditoContratado) * 100;
-    var faixaLE = (pctLE &lt;= 24) ? 1 : 2;
+    var faixaLE = (pctLE <= 24) ? 1 : 2;
     var caminhoLE = (faixaLE === 1)
       ? ["Sorteio", "Lance Fixo 30%"]
       : ["Sorteio", "Lance Fixo 30%", "Lance Livre"];
@@ -1210,8 +1210,8 @@ function calcularRecomendacao(){
   if(variacao === "120%"){
     var n = (valor / 32388.00) * 100 + 16.66;
     var faixa4 = 0, caminho4 = [];
-    if(n &lt; 15){ faixa4 = 1; caminho4 = ["Sorteio"]; }
-    else if(n &lt;= 38){ faixa4 = 2; caminho4 = ["Sorteio", "Lance Fixo 30%"]; }
+    if(n < 15){ faixa4 = 1; caminho4 = ["Sorteio"]; }
+    else if(n <= 38){ faixa4 = 2; caminho4 = ["Sorteio", "Lance Fixo 30%"]; }
     else { faixa4 = 3; caminho4 = ["Sorteio", "Lance Fixo 30%", "Lance Livre"]; }
     ESTADO.recomendacao = {
       jaLE: false, jaLinha400: true, variacao120: true, faixaLE: 0, faixa: faixa4,
@@ -1231,13 +1231,13 @@ function calcularRecomendacao(){
     var z = (valor / 26990.00) * 100;
     var y400 = (valor / 32388.00) * 100 + 16.66;
     var faixa3 = 0, caminho3 = [], sugerir3 = false, motivo3 = "", posLE3 = null;
-    if(z &lt; 16){
+    if(z < 16){
       faixa3 = 1; caminho3 = ["Sorteio"];
-    } else if(z &lt;= 29){
+    } else if(z <= 29){
       faixa3 = 2; caminho3 = ["Sorteio"];
       sugerir3 = true; motivo3 = "potencializar o lance e competir no lance fixo 30%";
       posLE3 = ["Sorteio", "Lance Fixo 30%"];
-    } else if(z &lt;= 46){
+    } else if(z <= 46){
       faixa3 = 3; caminho3 = ["Sorteio", "Lance Fixo 30%"];
     } else {
       faixa3 = 4;
@@ -1268,14 +1268,14 @@ function calcularRecomendacao(){
   var lanceEmbutidoValor = 0.30 * creditoLE;
   var faixa1 = 0, caminho1 = [], sugerir1 = false, motivo1 = "", posLE1 = null;
 
-  if(x &lt; 30){
+  if(x < 30){
     faixa1 = 1; caminho1 = ["Sorteio"];
     sugerir1 = !!le; motivo1 = "complemento de lance";
     posLE1 = ["Sorteio", "Lance Fixo 30%"];
-  } else if(x &lt;= 49){
+  } else if(x <= 49){
     faixa1 = 2; caminho1 = ["Sorteio", "Lance Fixo 30%"];
     sugerir1 = !!le;
-    if(x &lt;= 35){
+    if(x <= 35){
       motivo1 = "preservar capital próprio";
       posLE1 = ["Sorteio", "Lance Fixo 30%"];
     } else {
