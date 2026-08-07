@@ -1083,7 +1083,7 @@ function exibirRecomendacao(){
   if(!r){ box.innerHTML = ""; return; }
   var html = "";
   if(r.jaLE){
-    /* REGRA NOVA DO +LE: 2 faixas sobre o crédito +LE */
+    /* REGRA 2 — +LE CONTRATADO */
     html += "<h4>" + nomeFaixaLE(r.faixaLE) + "</h4>";
     html += "<p><strong>Lance informado:</strong> " + formatarDinheiro(ESTADO.lance) + " (" + formatarPct(r.pct) + " do crédito de " + formatarDinheiro(r.creditoBase) + ")</p>";
     html += "<p><strong>Caminho recomendado:</strong></p>";
@@ -1094,8 +1094,9 @@ function exibirRecomendacao(){
     html += "<p><strong>Crédito " + nomeVariacao(ESTADO.variacao) + " (" + ESTADO.oferta.codigo + ") contratado.</strong> Seu lance de " + formatarDinheiro(ESTADO.lance) + " representa <strong>" + formatarPct(r.pct) + "</strong> do crédito de " + formatarDinheiro(ESTADO.oferta.credito) + ".</p>";
     html += "</div>";
   } else if(r.jaLinha400){
-    /* REGRA LINHA 400 — NÃO ALTERADA */
-    html += "<h4>" + nomeFaixaLinha400(r.faixa) + "</h4>";
+    /* REGRA 3 (linha 400 no base) OU REGRA 4 (120% contratado) */
+    var titulo = r.variacao120 ? nomeFaixa120(r.faixa) : nomeFaixaLinha400(r.faixa);
+    html += "<h4>" + titulo + "</h4>";
     html += "<p><strong>Lance informado:</strong> " + formatarDinheiro(ESTADO.lance) + " (" + formatarPct(r.pct) + " do crédito de " + formatarDinheiro(r.creditoBase) + ")</p>";
     html += "<p><strong>Caminho recomendado:</strong></p>";
     for(var k=0;k<r.caminho.length;k++){
@@ -1103,13 +1104,19 @@ function exibirRecomendacao(){
     }
     if(r.sugerirLE && r.le && r.codigoLE){
       html += '<div class="sugestao-le">';
-      html += "<p>Seu lance corresponde a <strong>" + formatarPct(r.pct) + "</strong> do valor do crédito. Considere contratar o crédito de linha 120% (BAJ09). Dessa forma, seu lance passará a corresponder a <strong>" + formatarPct(r.y) + "%</strong>.</p>";
+      html += "<p>Considere a contratação do bem <strong>BAJ09 120% Dominar 400</strong> para potencializar seu lance e poder competir através do lance fixo 30%.</p>";
       html += '<p class="gatilho-le"><strong>Contrate o BAJ09 e tenha R$ 5.398,00 para ofertar de lance embutido.</strong></p>';
+      if(r.caminhoPosLE){
+        html += '<p style="font-size:13px;margin-bottom:8px">Ao aceitar, seu caminho passa a ser:</p>';
+        for(var m=0;m<r.caminhoPosLE.length;m++){
+          html += '<span class="caminho-modalidade">' + r.caminhoPosLE[m] + "</span>";
+        }
+      }
       html += '<button type="button" class="btn-le" id="btn-aceitar-le">Aceitar sugestão: contratar BAJ09</button>';
       html += "</div>";
     }
   } else {
-    /* REGRA DO CRÉDITO BASE — NÃO ALTERADA */
+    /* REGRA 1 — CRÉDITO BASE (DEMAIS MODELOS) */
     html += "<h4>" + nomeFaixa(r.faixa) + "</h4>";
     html += "<p><strong>Lance informado:</strong> " + formatarDinheiro(ESTADO.lance) + " (" + formatarPct(r.pct) + " do crédito de " + formatarDinheiro(r.creditoBase) + ")</p>";
     html += "<p><strong>Caminho recomendado:</strong></p>";
@@ -1117,10 +1124,21 @@ function exibirRecomendacao(){
       html += '<span class="caminho-modalidade">' + r.caminho[j] + "</span>";
     }
     if(r.sugerirLE && r.le && r.codigoLE){
-      var nomeBem = (ESTADO.modelo === "dominar-ns400z") ? "crédito de linha 120% (BAJ09)" : "crédito +LE (" + r.codigoLE + ")";
+      var txtMotivo = "Considere contratar o crédito +LE para elevar o percentual sobre o crédito e aumentar suas chances.";
+      if(r.motivo === "preservar capital próprio"){
+        txtMotivo = "Considere contratar o crédito +LE para preservar capital próprio e participar da modalidade lance fixo.";
+      } else if(r.motivo === "potencializar o lance e ofertar lance livre"){
+        txtMotivo = "Considere contratar o bem " + r.codigoLE + " +LE para potencializar seu lance e conseguir ofertar também o lance livre.";
+      }
       html += '<div class="sugestao-le">';
-      html += "<p>Seu lance corresponde a <strong>" + formatarPct(r.pct) + "</strong> do valor do crédito. Considere contratar o " + nomeBem + ". Dessa forma, seu lance passará a corresponder a <strong>" + formatarPct(r.y) + "%</strong>.</p>";
+      html += "<p>" + txtMotivo + "</p>";
       html += '<p class="gatilho-le"><strong>Contrate o ' + r.codigoLE + " e tenha " + formatarDinheiro(r.lanceEmbutidoValor) + " para ofertar de lance embutido.</strong></p>";
+      if(r.caminhoPosLE){
+        html += '<p style="font-size:13px;margin-bottom:8px">Ao aceitar, seu caminho passa a ser:</p>';
+        for(var n=0;n<r.caminhoPosLE.length;n++){
+          html += '<span class="caminho-modalidade">' + r.caminhoPosLE[n] + "</span>";
+        }
+      }
       html += '<button type="button" class="btn-le" id="btn-aceitar-le">Aceitar sugestão: contratar ' + r.codigoLE + "</button>";
       html += "</div>";
     }
