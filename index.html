@@ -995,7 +995,7 @@ function renderModelos(){
     var sel = (ESTADO.modelo === id) ? " selecionado" : "";
     var mini = "";
     for(var c=0;c<m.cores.length;c++){
-      mini += '<span class="mini-dot" style="background:' + (CORES_VISUAIS[m.cores[c]] || "#ccc") + '"></span>';
+      mini += '<span class="mini-dot" style="background:' + corBackground(id, m.cores[c]) + '"></span>';
     }
     html += '<div class="card-modelo' + sel + '" data-modelo="' + id + '">' +
       '<div class="foto"><img src="' + caminhoImagem(id, m.cores[0]) + '" alt="' + m.nome + '" loading="lazy" onerror="this.style.opacity=0.25"></div>' +
@@ -1025,8 +1025,8 @@ function renderCores(){
     var cor = m.cores[i];
     var sel = (ESTADO.cor === cor) ? " selecionada" : "";
     html += '<button type="button" class="cor-opcao' + sel + '" data-cor="' + cor + '">' +
-      '<span class="cor-bolinha" style="background:' + (CORES_VISUAIS[cor] || "#ccc") + '"></span>' +
-      "<span>" + cor.charAt(0).toUpperCase() + cor.slice(1) + "</span></button>";
+  '<span class="cor-bolinha" style="background:' + corBackground(ESTADO.modelo, cor) + '"></span>' +
+  "<span>" + nomeCorAtual(ESTADO.modelo, cor) + "</span></button>";
   }
   el.innerHTML = html;
   var botoes = el.querySelectorAll(".cor-opcao");
