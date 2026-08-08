@@ -709,6 +709,16 @@ function formatarPct(v){
 function caminhoImagem(modeloId, cor){
   return "assets/" + modeloId + "/" + cor + "." + MODELOS[modeloId].ext;
 }
+  function corBackground(modeloId, cor){
+  var info = (CORES_INFO[modeloId] || {})[cor];
+  if(!info) return "#ccc";
+  if(info.contraste) return "linear-gradient(135deg, " + info.hex + " 50%, " + info.contraste + " 50%)";
+  return info.hex;
+}
+function nomeCorAtual(modeloId, cor){
+  var info = (CORES_INFO[modeloId] || {})[cor];
+  return info ? info.nome : (cor ? cor.charAt(0).toUpperCase() + cor.slice(1) : "");
+}
 function normalizarVariacao(linha){
   var v = String(linha[3] || "").trim().toUpperCase();
   if(v.indexOf("LE") > -1) return "+LE";
