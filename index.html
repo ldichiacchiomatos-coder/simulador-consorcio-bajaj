@@ -921,11 +921,23 @@ function renderNav(){
   } else {
     html += "<span></span>";
   }
-    if(ESTADO.etapa < 6){
+  if(ESTADO.etapa < 6){
     html += '<button type="button" class="btn-continuar" id="btn-continuar">Continuar</button>';
   } else {
     html += '<button type="button" class="btn-continuar" id="btn-gerar-pdf">Gerar Proposta em PDF</button>';
   }
+  nav.innerHTML = html;
+  if(ESTADO.etapa > 1){
+    document.getElementById("btn-voltar").addEventListener("click", function(){ goToStep(ESTADO.etapa-1); });
+  }
+  if(ESTADO.etapa < 6){
+    var btn = document.getElementById("btn-continuar");
+    btn.addEventListener("click", avancar);
+    atualizarEstadoBotao(btn);
+  } else {
+    document.getElementById("btn-gerar-pdf").addEventListener("click", gerarPDF);
+  }
+}
 function atualizarEstadoBotao(btn){
   btn.disabled = !validarEtapa(ESTADO.etapa);
   if(btn.disabled) btn.title = "Complete os campos desta etapa para continuar.";
