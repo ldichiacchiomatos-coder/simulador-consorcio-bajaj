@@ -990,24 +990,40 @@ function renderModelos(){
   for(var i=0;i<ids.length;i++){
     var id = ids[i];
     var m = MODELOS[id];
+    var corAtual = (ESTADO.modelo === id && ESTADO.cor) ? ESTADO.cor : m.cores[0];
     var sel = (ESTADO.modelo === id) ? " selecionado" : "";
     var mini = "";
     for(var c=0;c<m.cores.length;c++){
-      mini += '<span class="mini-dot" style="background:' + corBackground(id, m.cores[c]) + '"></span>';
+      var cor = m.cores[c];
+      var clsDot = "mini-dot" + ((ESTADO.modelo === id && ESTADO.cor === cor) ? " selecionada" : "");
+      mini += '<span class="' + clsDot + '" data-cor="' + cor + '" title="' + nomeCorAtual(id, cor) + '" style="background:' + corBackground(id, cor) + '"></span>';
     }
+    var nomeCor = (ESTADO.modelo === id && ESTADO.cor) ? nomeCorAtual(id, ESTADO.cor) : "";
     html += '<div class="card-modelo' + sel + '" data-modelo="' + id + '">' +
-      '<div class="foto"><img src="' + caminhoImagem(id, m.cores[0]) + '" alt="' + m.nome + '" loading="lazy" onerror="this.style.opacity=0.25"></div>' +
+      '<div class="foto"><img src="' + caminhoImagem(id, corAtual) + '" alt="' + m.nome + '" loading="lazy" onerror="this.style.opacity=0.25"></div>' +
       "<h3>" + m.nome + "</h3>" +
-    '<div class="mini-cores">' + mini + "</div></div>";
+      '<div class="mini-cores">' + mini + "</div>" +
+      '<div class="cor-nome">' + nomeCor + "</div></div>";
   }
   grid.innerHTML = html;
   var cards = grid.querySelectorAll(".card-modelo");
   for(var j=0;j<cards.length;j++){
-    cards[j].addEventListener("click", function(){
-      ESTADO.modelo = this.getAttribute("data-modelo");
-      ESTADO.cor = null;
-      limparRecomendacao();
-      renderModelos();
+    cards[j].addEventListener("click", function(ev){
+      var dot = ev.target.closest(".mini-dot");
+      var id = this.getAttribute("data-modelo");
+      if(dot){
+        /* Clique numa bolinha: seleciona a moto e troca a cor */
+        ESTADO.modelo = id;
+        ESTADO.cor = dot.getAttribute("data-cor");
+        limparRecomendacao();
+        renderModelos();
+      } else {
+        /* Clique no card (fora da bolinha): seleciona com a cor padrão */
+        ESTADO.modelo = id;
+        if(!ESTADO.cor) ESTADO.cor = MODELOS[id].cores[0];
+        limparRecomendacao();
+        renderModelos();
+      }
       var btn = document.getElementById("btn-continuar");
       if(btn) atualizarEstadoBotao(btn);
     });
