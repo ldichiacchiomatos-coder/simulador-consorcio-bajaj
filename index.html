@@ -1029,30 +1029,6 @@ function renderModelos(){
     });
   }
 }
-function renderCores(){
-  if(!ESTADO.modelo) return;
-  var m = MODELOS[ESTADO.modelo];
-  document.getElementById("cor-sub").textContent = m.nome + " — escolha a cor preferida do cliente.";
-  var el = document.getElementById("seletor-cores");
-  var html = "";
-  for(var i=0;i<m.cores.length;i++){
-    var cor = m.cores[i];
-    var sel = (ESTADO.cor === cor) ? " selecionada" : "";
-    html += '<button type="button" class="cor-opcao' + sel + '" data-cor="' + cor + '">' +
-  '<span class="cor-bolinha" style="background:' + corBackground(ESTADO.modelo, cor) + '"></span>' +
-  "<span>" + nomeCorAtual(ESTADO.modelo, cor) + "</span></button>";
-  }
-  el.innerHTML = html;
-  var botoes = el.querySelectorAll(".cor-opcao");
-  for(var j=0;j<botoes.length;j++){
-    botoes[j].addEventListener("click", function(){
-      ESTADO.cor = this.getAttribute("data-cor");
-      renderCores();
-      var btn = document.getElementById("btn-continuar");
-      if(btn) atualizarEstadoBotao(btn);
-    });
-  }
-}
 function renderVisualizacao(){
   var m = MODELOS[ESTADO.modelo];
   document.getElementById("moto-visual-nome").textContent = m.nome;
