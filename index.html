@@ -954,8 +954,7 @@ function renderModelos(){
     html += '<div class="card-modelo' + sel + '" data-modelo="' + id + '">' +
       '<div class="foto"><img src="' + caminhoImagem(id, m.cores[0]) + '" alt="' + m.nome + '" loading="lazy" onerror="this.style.opacity=0.25"></div>' +
       "<h3>" + m.nome + "</h3>" +
-      '<p class="preco">A partir de ' + formatarDinheiro(m.preco) + "</p>" +
-      '<div class="mini-cores">' + mini + "</div></div>";
+    '<div class="mini-cores">' + mini + "</div></div>";
   }
   grid.innerHTML = html;
   var cards = grid.querySelectorAll(".card-modelo");
