@@ -904,14 +904,14 @@ function carregarAtual(){
 function renderSteps(){
   var el = document.getElementById("steps-demo");
   var html = "";
-  for(var i=1;i<=7;i++){
+  for(var i=1;i<=6;i++){
     var cls = "step-dot";
     if(i < ESTADO.etapa) cls += " done";
     if(i === ESTADO.etapa) cls += " active";
     html += '<span class="' + cls + '" title="Etapa ' + i + ': ' + NOMES_ETAPAS[i-1] + '">' + i + "</span>";
   }
   el.innerHTML = html;
-  document.getElementById("steps-label").textContent = "Etapa " + ESTADO.etapa + " de 7 · " + NOMES_ETAPAS[ESTADO.etapa-1];
+  document.getElementById("steps-label").textContent = "Etapa " + ESTADO.etapa + " de 6 · " + NOMES_ETAPAS[ESTADO.etapa-1];
 }
 function renderNav(){
   var nav = document.getElementById("nav-buttons");
