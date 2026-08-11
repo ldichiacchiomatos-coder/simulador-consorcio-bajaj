@@ -958,7 +958,7 @@ function avancar(){
   goToStep(ESTADO.etapa + 1);
 }
 function goToStep(n){
-  if(n < 1 || n > 7) return;
+  if(n < 1 || n > 6) return;
   ESTADO.etapa = n;
   var etapas = document.querySelectorAll(".etapa");
   for(var i=0;i<etapas.length;i++){
@@ -1023,7 +1023,7 @@ function renderModelos(){
 function renderVisualizacao(){
   var m = MODELOS[ESTADO.modelo];
   document.getElementById("moto-visual-nome").textContent = m.nome;
-  document.getElementById("moto-visual-cor").textContent = "Cor: " + ESTADO.cor;
+  document.getElementById("moto-visual-cor").textContent = "Cor: " + nomeCorAtual(ESTADO.modelo, ESTADO.cor);
   document.getElementById("moto-visual-img").src = caminhoImagem(ESTADO.modelo, ESTADO.cor);
   document.getElementById("moto-visual-img").alt = m.nome + " " + ESTADO.cor;
   var ficha = document.getElementById("ficha-tecnica");
