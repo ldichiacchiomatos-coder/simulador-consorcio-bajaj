@@ -1428,7 +1428,7 @@ function montarCarta(){
     "<h2>Motocicleta escolhida</h2>" +
     '<div class="cp-moto">' +
     '<img src="' + caminhoImagem(ESTADO.modelo, ESTADO.cor) + '" alt="' + m.nome + '">' +
-    "<div><h3>" + m.nome + "</h3><p>Cor: " + ESTADO.cor + "</p><p>A partir de " + formatarDinheiro(m.preco) + "</p></div>" +
+    "<div><h3>" + m.nome + "</h3><p>Cor: " + nomeCorAtual(ESTADO.modelo, ESTADO.cor) + "</p></div>" +
     "</div>" +
     fichaHtml +
     "<h2>Condições do consórcio</h2>" +
