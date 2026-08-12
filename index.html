@@ -1192,7 +1192,7 @@ function renderRevisao(){
   html += '<div class="linha-resumo"><span>Vendedor</span><strong>' + (ESTADO.vendedor || "-") + "</strong></div>";
   html += '<div class="linha-resumo"><span>WhatsApp</span><strong>' + (ESTADO.whats || "-") + "</strong></div>";
   html += '<div class="linha-resumo"><span>Modelo</span><strong>' + MODELOS[ESTADO.modelo].nome + "</strong></div>";
-  html += '<div class="linha-resumo"><span>Cor</span><strong>' + ESTADO.cor.charAt(0).toUpperCase() + ESTADO.cor.slice(1) + "</strong></div>";
+  html += '<div class="linha-resumo"><span>Cor</span><strong>' + nomeCorAtual(ESTADO.modelo, ESTADO.cor) + "</strong></div>";
   html += '<div class="linha-resumo"><span>Grupo</span><strong>' + GRUPOS_INFO[ESTADO.grupo].label + "</strong></div>";
   html += '<div class="linha-resumo"><span>Plano</span><strong>' + ESTADO.plano.replace("x"," parcelas ") + "</strong></div>";
   document.getElementById("revisao-dados").innerHTML = html;
@@ -1367,7 +1367,7 @@ function renderResumo(){
   var v = variaveisDoGrupo(ESTADO.grupo);
   var linhas = [
     ["Modelo", m.nome],
-    ["Cor", ESTADO.cor.charAt(0).toUpperCase() + ESTADO.cor.slice(1)],
+    ["Cor", nomeCorAtual(ESTADO.modelo, ESTADO.cor)],
     ["Variação do crédito", nomeVariacao(ESTADO.variacao)],
     ["Código do produto", ESTADO.oferta.codigo],
     ["Cliente", ESTADO.cliente || "-"],
